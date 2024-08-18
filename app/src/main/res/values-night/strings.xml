@@ -1,6 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ITI_Project</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="full_name">Full Name</string>
     <string name="email_address">Email Address</string>
@@ -8,7 +7,6 @@
     <string name="info_details">Please enter your account details below!</string>
     <string name="welcome">Welcome to Recipe App</string>
     <string name="accept_terms_condition"><![CDATA[Accept terms & Condition]]></string>
-    <string name="create_account">Create Account</string>
     <string name="error_message"><![CDATA[your password should be greater than 8 and have A-z letters and number and special characters like _ , &]]></string>
     <string name="error_message_email">you already have an account with this email</string>
 </resources>
