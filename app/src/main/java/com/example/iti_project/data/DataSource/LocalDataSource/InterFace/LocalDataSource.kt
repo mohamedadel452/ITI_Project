@@ -12,5 +12,12 @@ interface LocalDataSource {
     suspend fun getUserByEmail(email: String): UserModel?
 
 
+    suspend fun isLoggedIn(): Boolean
+
+
+    //it will return true if it set the value successfully
+    suspend fun setLoggedIn(value: Boolean): Boolean
+
+
 
 }
