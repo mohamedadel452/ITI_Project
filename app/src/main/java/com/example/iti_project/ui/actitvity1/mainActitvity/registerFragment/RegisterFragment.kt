@@ -17,7 +17,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.iti_project.R
+import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
+import com.example.iti_project.data.repo.UserRepo.UserRepo
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -34,7 +36,7 @@ class RegisterFragment : Fragment() {
     private lateinit var tv_email_error: TextView
     private lateinit var cb_acceptance: CheckBox
     val registerFragmentViewModel: RegisterViewModel by viewModels {
-         RegisterViewModelFactory(UserRepoImp(RoomDataBaseImp.getInstance(requireContext())))
+         RegisterViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)))
     }
 
     override fun onCreateView(

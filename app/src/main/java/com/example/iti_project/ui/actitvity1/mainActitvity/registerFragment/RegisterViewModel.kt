@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.models.UserModel
 import com.example.iti_project.data.repo.UserRepo.UserRepo
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
@@ -15,7 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val userRepository: UserRepoImp
+    private val userRepository: UserRepo
 ) : ViewModel(){
 
     private val _isSuccess: MutableLiveData<Boolean> = MutableLiveData()
@@ -51,7 +52,7 @@ class RegisterViewModel(
     }
 }
 
-class RegisterViewModelFactory(private val userRepository : UserRepoImp) :
+class RegisterViewModelFactory(private val userRepository : UserRepo) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

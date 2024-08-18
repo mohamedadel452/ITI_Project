@@ -6,9 +6,9 @@ import com.example.iti_project.data.models.UserModel
 class  UserRepoImp(
     private   var    localdata : LocalDataSource? ,
 
-) :UserRepo {
+    ) :UserRepo {
     override suspend fun insertUser(user: UserModel): Long {
-       return localdata?.insertUser(user)?:-1L
+        return localdata?.insertUser(user)?:-1L
     }
 
     override suspend fun getUserByEmail(email: String): UserModel? {
