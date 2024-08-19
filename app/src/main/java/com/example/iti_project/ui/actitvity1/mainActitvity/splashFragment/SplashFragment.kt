@@ -37,14 +37,14 @@ class SplashFragment : Fragment() {
 
 
         Handler(Looper.getMainLooper()).postDelayed({
-            splashViewModel.checkLoginStatus { isLoggedIn ->
-                if (isLoggedIn) {
-                    findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
-                } else {
-                    findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
-
+            if (isAdded) {
+                splashViewModel.checkLoginStatus { isLoggedIn ->
+                    if (isLoggedIn) {
+                        findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+                    } else {
+                        findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+                    }
                 }
-
             }
         }, 5000) //  5 secs
     }
