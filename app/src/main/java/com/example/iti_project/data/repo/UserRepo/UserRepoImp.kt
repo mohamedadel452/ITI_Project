@@ -4,7 +4,7 @@ import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDa
 import com.example.iti_project.data.models.UserModel
 
 class  UserRepoImp(
-    private   var    localdata : LocalDataSource? ,
+    private   var    localdata : LocalDataSource?,
 
     ) :UserRepo {
     override suspend fun insertUser(user: UserModel): Long {

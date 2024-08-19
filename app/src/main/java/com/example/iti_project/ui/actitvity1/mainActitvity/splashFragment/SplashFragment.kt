@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.example.iti_project.R
@@ -42,9 +43,13 @@ class SplashFragment : Fragment() {
             if (isAdded) {
                 splashViewModel.checkLoginStatus { isLoggedIn ->
                     if (isLoggedIn) {
-                        findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+                        findNavController().navigate(R.id.action_splashFragment_to_homeFragment, null,
+                            NavOptions.Builder().setPopUpTo(R.id.splashFragment, true).build())
+
                     } else {
-                        findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+                        findNavController().navigate(R.id.action_splashFragment_to_loginFragment, null,
+                            NavOptions.Builder().setPopUpTo(R.id.splashFragment, true).build())
+
                     }
                 }
             }
