@@ -1,7 +1,6 @@
 package com.example.iti_project.ui.actitvity1.mainActitvity.registerFragment
 
 import android.graphics.Color
-import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,20 +10,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentContainer
+import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
-import com.example.iti_project.data.repo.UserRepo.UserRepo
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
+import com.example.iti_project.ui.actitvity1.mainActitvity.signupSuccessful.CongratsFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+
 
 class RegisterFragment : Fragment() {
 
@@ -32,9 +34,12 @@ class RegisterFragment : Fragment() {
     private lateinit var et_user_name: TextInputLayout
     private lateinit var et_email: TextInputLayout
     private lateinit var et_password: TextInputLayout
+    private lateinit var et_confirm_password: TextInputLayout
+    private lateinit var tv_equality_password_error: TextView
     private lateinit var tv_password_error: TextView
     private lateinit var tv_email_error: TextView
     private lateinit var cb_acceptance: CheckBox
+    private var fcv_welcome : FragmentContainerView? = null
     val registerFragmentViewModel: RegisterViewModel by viewModels {
          RegisterViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)))
     }
@@ -56,6 +61,8 @@ class RegisterFragment : Fragment() {
         et_password = view.findViewById(R.id.et_password)
         tv_password_error = view.findViewById(R.id.tx_password_error)
         tv_email_error = view.findViewById(R.id.tx_email_error)
+        et_confirm_password = view.findViewById(R.id.et_confirm_password)
+        tv_equality_password_error = view.findViewById(R.id.tx_password_error_equality)
         cb_acceptance = view.findViewById(R.id.cb_acceptance)
         cb_acceptance.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -67,6 +74,7 @@ class RegisterFragment : Fragment() {
 
         }
 
+
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -77,44 +85,59 @@ class RegisterFragment : Fragment() {
             val password = et_password.editText?.text.toString() ?: ""
             val isValid = registerFragmentViewModel.checkedPassword(password)
             if (isValid) {
-                Log.i("TAG", "onClickListner:")
+//                Log.i("TAG", "onClickListner:")
                 tv_password_error.hint = ""
                 tv_password_error.visibility = View.GONE
-                val email = et_email.editText?.text.toString() ?: ""
-                val isEmailUnique = registerFragmentViewModel.checkedEmail(email)
-                if (isEmailUnique) {
-                    tv_email_error.hint = ""
-                    tv_email_error.visibility = View.GONE
-                    val userName = et_user_name.editText?.text.toString() ?: ""
-                    registerFragmentViewModel.insertData(userName, email, password)
-                    registerFragmentViewModel.isSuccess.observe(viewLifecycleOwner){
-                        if (it) {
-                            val action =
-                                RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
-                            findNavController().navigate(action)
-                        }else{
-                            Snackbar.make( btn_create_account , "Something is wrong, Try again" , Snackbar.LENGTH_SHORT).show()
+                val confirmPassword = et_confirm_password.editText?.text.toString() ?: ""
+                if (confirmPassword == password) {
+                    tv_equality_password_error.hint = ""
+                    tv_equality_password_error.visibility = View.GONE
+                    val email = et_email.editText?.text.toString() ?: ""
+                    val isEmailUnique = registerFragmentViewModel.checkedEmail(email)
+                    if (isEmailUnique) {
+                        tv_email_error.hint = ""
+                        tv_email_error.visibility = View.GONE
+                        val userName = et_user_name.editText?.text.toString() ?: ""
+                        registerFragmentViewModel.insertData(userName, email, password)
+                        registerFragmentViewModel.isSuccess.observe(viewLifecycleOwner) {
+                            if (it) {
+//                                findNavController().navigate(R.id.loginFragment)
+                                fcv_welcome = view?.findViewById(R.id.fcv_welcome)
+                                fcv_welcome?.visibility = View.VISIBLE
+                            } else {
+                                Snackbar.make(
+                                    btn_create_account,
+                                    getString(R.string.error_message_email),
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            }
                         }
+                    } else {
+                        showErrorMessage(et_email , tv_email_error )
+                        tv_email_error.text = getString(R.string.error_message_email)
                     }
-                }
-                else {
-                    showErrorMessage(tv_email_error, et_email)
-                    tv_email_error.text = getString(R.string.error_message_email)
+                }else{
+                    showErrorMessage( et_confirm_password , tv_equality_password_error)
+                    showErrorMessage( et_password , null)
+                    tv_equality_password_error.text = getString(R.string.error_message_password_equality)
                 }
             } else {
-                showErrorMessage(tv_password_error, et_password)
+                showErrorMessage( et_password,tv_password_error)
                 tv_password_error.text = getString(R.string.error_message)
                 Log.i("TAG", "nonoo")
             }
         }
     }
 
-    private fun showErrorMessage(tvError: TextView, et: TextInputLayout) {
-        et.editText?.setTextColor(Color.RED)
+    private fun showErrorMessage( et: TextInputLayout , tvError: TextView?) {
+        et.editText?.setHintTextColor(Color.RED)
         et.boxStrokeColor = Color.RED
-        tvError.visibility = View.VISIBLE
-        tvError.setTextColor(Color.RED)
+        if (tvError !=null) {
+            tvError.visibility = View.VISIBLE
+            tvError.setTextColor(Color.RED)
+        }
 
     }
+
 
 }

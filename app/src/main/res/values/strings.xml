@@ -11,4 +11,10 @@
     <string name="create_account">Create Account</string>
     <string name="error_message"><![CDATA[your password should be greater than 8 and have A-z letters and number and special characters like _ , &]]></string>
     <string name="error_message_email">you already have an account with this email</string>
+    <string name="error_message_password_equality">password and confirm password doesn\'t match</string>
+    <string name="sign_up">Sign up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up_successful">Sign up successful!</string>
+    <string name="congrat_message">Your account has been created. Please wait a moment, we are preparing for you...</string>
+    <string name="continue_button">Continue</string>
 </resources>

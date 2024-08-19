@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
+    android:background="@color/white"
     android:paddingTop="16dp"
     tools:context=".ui.actitvity1.mainActitvity.registerFragment.RegisterFragment">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
 
     <TextView
         android:id="@+id/tx_welcome"
@@ -146,6 +152,46 @@
         app:layout_constraintStart_toStartOf="@+id/et_password"
         app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_confirm_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:textSize="18sp"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tx_password_error"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/lock"
+            android:hint="@string/confirm_password"
+            android:textStyle="bold"
+            android:inputType="textPassword"
+            app:hintTextColor="@color/auth_text_color" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tx_password_error_equality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/et_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_confirm_password" />
+
     <CheckBox
         android:id="@+id/cb_acceptance"
         android:layout_width="wrap_content"
@@ -153,7 +199,7 @@
         android:text="@string/accept_terms_condition"
         android:textColor="@color/primaryColor"
         app:layout_constraintStart_toStartOf="@+id/et_password"
-        app:layout_constraintTop_toBottomOf="@+id/tx_password_error" />
+        app:layout_constraintTop_toBottomOf="@+id/tx_password_error_equality" />
 
     <Button
         android:id="@+id/btn_create_account"
@@ -166,4 +212,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cb_acceptance" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_welcome"
+        android:layout_width="300dp"
+        android:layout_height="380dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:name="com.example.iti_project.ui.actitvity1.mainActitvity.signupSuccessful.CongratsFragment"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

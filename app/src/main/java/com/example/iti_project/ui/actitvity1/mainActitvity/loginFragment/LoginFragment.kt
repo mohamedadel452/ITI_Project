@@ -1,60 +1,83 @@
 package com.example.iti_project.ui.actitvity1.mainActitvity.loginFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+
 import com.example.iti_project.R
+import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
+import com.example.iti_project.data.models.UiState
+import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var loginButton: Button
+    private lateinit var signUpTextView: TextView
+    val loginViewModel:LoginViewModel by viewModels(){
+        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)))
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+
+        emailEditText = view.findViewById(R.id.sign_in_email)
+        passwordEditText = view.findViewById(R.id.sign_in_password)
+        loginButton = view.findViewById(R.id.sign_in_login_btn)
+        signUpTextView = view.findViewById(R.id.tv_signUp)
+
+        signUpTextView.setOnClickListener {
+            findNavController().navigate(R.id.registerFragment)
+        }
+        loginButton.setOnClickListener {
+            val email = emailEditText.text.toString().trim()
+            val password = passwordEditText.text.toString().trim()
+
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                loginViewModel.Userlogin(email, password)
+            } else {
+                Toast.makeText(requireContext(), "Please enter both email and password", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        loginViewModel.LoginState.observe(viewLifecycleOwner, Observer { uiState ->
+            when (uiState) {
+                is UiState.Loading -> {
+                    // Show loading indicator if needed
+                }
+                is UiState.Success -> {
+                    // Handle successful login, perhaps navigate to the home screen
+                    Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+                }
+                is UiState.Error -> {
+                    // Display error message
+                    Toast.makeText(requireContext(), uiState.errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }
+        })
     }
 }
