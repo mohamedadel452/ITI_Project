@@ -18,6 +18,7 @@ class SplashFragment : Fragment() {
     private val splashViewModel: SplashViewModel by viewModels {
         SplashViewModelFactory(SharedPreferenceImp.getInstance(requireContext()))
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,6 +26,7 @@ class SplashFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
