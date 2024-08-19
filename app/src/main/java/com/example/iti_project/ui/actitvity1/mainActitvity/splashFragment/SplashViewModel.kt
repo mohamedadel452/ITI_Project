@@ -16,8 +16,7 @@ class SplashViewModel(private val sharedPreferences: SharedPreferenceInterface) 
             val isLoggedIn = withContext(Dispatchers.IO) {
                 sharedPreferences.isLoggedIn()
             }
-            if (isLoggedIn != null)
-                onResult(isLoggedIn)
+            onResult(isLoggedIn)
         }
     }
 

@@ -6,13 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.models.UserModel
+import com.example.iti_project.data.repo.UserRepo.UserRepo
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 import kotlinx.coroutines.launch
 
-class LoginViewModel ( private val UserRepo: UserRepoImp,
-                       private val sharedPreferences: SharedPreferenceImp
+class LoginViewModel (
+    private val UserRepo: UserRepo ,
+    private val sharedPreferences: SharedPreferenceInterface
 ) : ViewModel() {
 
     private val _LoginState = MutableLiveData<UiState<UserModel>>()
@@ -43,8 +46,11 @@ class LoginViewModelFactory(
     private val sharedPreferences: SharedPreferenceImp
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
             return LoginViewModel(userRepo,sharedPreferences) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 
 }
