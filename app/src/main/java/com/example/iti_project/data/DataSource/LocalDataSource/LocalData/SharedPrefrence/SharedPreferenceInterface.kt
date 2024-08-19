@@ -4,7 +4,7 @@ interface SharedPreferenceInterface {
 
     suspend fun isLoggedIn(): Boolean
 
-    suspend fun setLoggedIn(value: Boolean): Boolean
+    suspend fun setLoggedIn(value: Boolean ,email : String): Boolean
 
-
+    suspend fun getLoggedIn(): String?
 }

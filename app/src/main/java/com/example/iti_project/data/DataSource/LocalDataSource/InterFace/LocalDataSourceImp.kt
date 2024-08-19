@@ -5,28 +5,34 @@ import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedP
 import com.example.iti_project.data.models.UserModel
 
 class LocalDataSourceImp(
-    val roomDataSource: RoomDatabaseInterface? ,
+    val roomDataSource: RoomDatabaseInterface?,
     val sharedPreferencesDataSource: SharedPreferenceInterface?
-):LocalDataSource {
+) : LocalDataSource {
 
     override suspend fun insertUser(user: UserModel): Long {
         roomDataSource?.let { return roomDataSource.insertUser(user) }
-            ?:return -1
+            ?: return -1
     }
 
-    override  suspend fun getUserByEmail(email: String): UserModel? {
+    override suspend fun getUserByEmail(email: String): UserModel? {
         roomDataSource?.let { return roomDataSource.getUserByEmail(email) }
-            ?:return null
+            ?: return null
     }
 
     override suspend fun isLoggedIn(): Boolean {
         return sharedPreferencesDataSource?.isLoggedIn() ?: false
     }
 
-
     //returns true if changes were successfully written to persistent storage
-    override suspend fun setLoggedIn(value: Boolean): Boolean {
-        return sharedPreferencesDataSource?.setLoggedIn(value)?:false
-
-        }
+    override suspend fun setLoggedIn(value: Boolean , email: String): Boolean {
+        return sharedPreferencesDataSource?.setLoggedIn(value , email) ?: false
     }
+
+    override suspend fun addFavouriteRecipe(favoriteID: String): Boolean {
+        val email =  sharedPreferencesDataSource?.getLoggedIn() ?: "Not Found"
+        val user = roomDataSource?.getUserByEmail(email)
+        user?.favoriteID?.add(favoriteID)
+        roomDataSource?.let { return user?.let { it1 -> roomDataSource.insertUser(it1) } != -1L }
+            ?: return false
+    }
+}

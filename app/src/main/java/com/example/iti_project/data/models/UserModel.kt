@@ -9,6 +9,7 @@ data class UserModel (
 
     @PrimaryKey val email: String,
     val userName: String,
-    val password: String
+    val password: String,
+    val favoriteID : MutableList<String>? = null
 
 )

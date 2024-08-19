@@ -29,7 +29,7 @@ class LoginViewModel (
             if (user != null) {
                 if (user.password == password) {
                     _LoginState.value = UiState.Success(user)
-                    sharedPreferences.setLoggedIn(true)
+                    sharedPreferences.setLoggedIn(true, email)
                 } else {
 
                     _LoginState.value = UiState.Error("Invalid password")

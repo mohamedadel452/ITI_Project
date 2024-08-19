@@ -1,14 +1,21 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase
 
+import androidx.lifecycle.LiveData
 import com.example.iti_project.data.models.UserModel
 
 interface RoomDatabaseInterface {
 
 
-     suspend fun  insertUser(user: UserModel): Long
+     suspend fun insertUser(user: UserModel): Long
 
      suspend fun getUserByEmail(email: String): UserModel?
 
+//     suspend fun insertFavorite(id:String): Boolean
 
+//     suspend fun getAllRecipes(): LiveData<List<RecipesModel>>
+//
+//     suspend fun getRecipeDetails(id :String): RecipesModel?
+//
+//     suspend fun insertRecipesInfo(recipesModel :List<RecipesModel>)
 
 }

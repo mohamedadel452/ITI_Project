@@ -1,9 +1,11 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.userdao.UserDao
 import com.example.iti_project.data.models.UserModel
 
 
@@ -38,9 +40,22 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
     }
 
     //it will return null if the user not found
-    override suspend  fun getUserByEmail(email: String): UserModel? {
-
+    override suspend fun getUserByEmail(email: String): UserModel? {
         return getUserDao().getUserByEmail(email)
-
     }
+
+//    override suspend fun getAllRecipes(): LiveData<List<RecipesModel>> {
+//
+//    }
+//
+//    override suspend fun getRecipeDetails(id: String): RecipesModel? {
+//
+//    }
+//
+//    override suspend fun insertRecipesInfo(recipesModel: List<RecipesModel>) {
+//
+//    }
+//    override suspend fun insertFavorite(id: String) :Boolean {
+//        return getUserDao().insertNewUser()
+//    }
 }

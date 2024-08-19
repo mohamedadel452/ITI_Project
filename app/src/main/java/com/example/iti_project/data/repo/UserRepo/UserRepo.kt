@@ -17,7 +17,8 @@ interface UserRepo {
 
 
     //returns true if changes were successfully written to persistent storage
-    suspend fun setLoggedIn(value: Boolean): Boolean
+    suspend fun setLoggedIn(value: Boolean, email: String): Boolean
 
+    suspend fun addFavouriteRecipe(favoriteID : String) : Boolean
 
 }

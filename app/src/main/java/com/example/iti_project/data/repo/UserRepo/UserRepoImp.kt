@@ -20,10 +20,12 @@ class  UserRepoImp(
     }
 
     //returns true if changes were successfully written to persistent storage
-    override suspend fun setLoggedIn(value: Boolean):Boolean {
-        return localdata?.setLoggedIn(value)?:false
+    override suspend fun setLoggedIn(value: Boolean , email : String):Boolean {
+        return localdata?.setLoggedIn(value,email)?:false
 
     }
 
-
+    override suspend fun addFavouriteRecipe(favoriteID : String): Boolean {
+        return  localdata?.addFavouriteRecipe(favoriteID) ?: false
+    }
 }
