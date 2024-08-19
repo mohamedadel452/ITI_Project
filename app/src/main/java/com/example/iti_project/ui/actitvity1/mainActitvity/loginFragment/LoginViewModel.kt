@@ -11,8 +11,8 @@ import com.example.iti_project.data.models.UserModel
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 import kotlinx.coroutines.launch
 
-class LoginViewModel ( private val UserRepo: UserRepoImp,
-                       private val sharedPreferences: SharedPreferenceImp
+class LoginViewModel ( private val UserRepo: UserRepoImp
+                       //private val sharedPreferences: SharedPreferenceImp
 ) : ViewModel() {
 
     private val _LoginState = MutableLiveData<UiState<UserModel>>()
@@ -26,7 +26,7 @@ class LoginViewModel ( private val UserRepo: UserRepoImp,
             if (user != null) {
                 if (user.password == password) {
                     _LoginState.value = UiState.Success(user)
-                    sharedPreferences.setLoggedIn(true)
+                    UserRepo.setLoggedIn(true)
                 } else {
 
                     _LoginState.value = UiState.Error("Invalid password")
@@ -40,11 +40,11 @@ class LoginViewModel ( private val UserRepo: UserRepoImp,
 
 class LoginViewModelFactory(
     private val userRepo: UserRepoImp,
-    private val sharedPreferences: SharedPreferenceImp
+    //private val sharedPreferences: SharedPreferenceImp
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
-            return LoginViewModel(userRepo,sharedPreferences) as T
+            return LoginViewModel(userRepo) as T
     }
 
 }
