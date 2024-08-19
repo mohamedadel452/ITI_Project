@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.iti_project.R
 
@@ -25,7 +26,8 @@ class CongratsFragment : Fragment() {
         btn_continue = view.findViewById(R.id.btn_continue)
         btn_continue.setOnClickListener {
             findNavController().popBackStack()
-            findNavController().navigate(R.id.loginFragment)
+            findNavController().navigate(R.id.loginFragment, null,
+                NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build())
         }
 
     }
