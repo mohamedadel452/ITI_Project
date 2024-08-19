@@ -42,7 +42,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
         emailEditText = view.findViewById(R.id.sign_in_email)
         passwordEditText = view.findViewById(R.id.sign_in_password)
         loginButton = view.findViewById(R.id.sign_in_login_btn)

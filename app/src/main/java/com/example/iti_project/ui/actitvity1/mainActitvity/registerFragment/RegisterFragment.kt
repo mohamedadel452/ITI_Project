@@ -113,7 +113,7 @@ class RegisterFragment : Fragment() {
                         }
                     } else {
                         showErrorMessage(et_email , tv_email_error )
-                        tv_email_error.text = getString(R.string.error_message_email)
+                        tv_email_error.text = getString(R.string.error_message_invalid_email)
                     }
                 }else{
                     showErrorMessage( et_confirm_password , tv_equality_password_error)
