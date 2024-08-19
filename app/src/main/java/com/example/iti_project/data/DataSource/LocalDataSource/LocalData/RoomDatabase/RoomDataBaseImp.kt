@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.iti_project.data.models.UserModel
 
 
-@Database(entities = [UserModel::class], version = 2)
+@Database(entities = [UserModel::class], version = 1)
 abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
 
     abstract fun getUserDao(): UserDao

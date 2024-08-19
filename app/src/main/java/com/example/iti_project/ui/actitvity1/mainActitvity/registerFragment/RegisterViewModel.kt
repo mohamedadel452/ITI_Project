@@ -31,10 +31,7 @@ class RegisterViewModel(
     }
 
     fun checkedEmail(email : String): Boolean{
-        if(email.contains("@") && email.contains(".")) {
-           return true
-        }
-        return false
+        return email.contains("@") && email.contains(".")
     }
 
     fun insertData(userName : String, email: String, password: String){

@@ -11,11 +11,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 
 import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 
@@ -26,7 +28,7 @@ class LoginFragment : Fragment() {
     private lateinit var loginButton: Button
     private lateinit var signUpTextView: TextView
     val loginViewModel:LoginViewModel by viewModels(){
-        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)))
+        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)), SharedPreferenceImp.getInstance(requireContext()))
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,17 +69,24 @@ class LoginFragment : Fragment() {
         loginViewModel.LoginState.observe(viewLifecycleOwner, Observer { uiState ->
             when (uiState) {
                 is UiState.Loading -> {
-                    // Show loading indicator if needed
                 }
                 is UiState.Success -> {
-                    // Handle successful login, perhaps navigate to the home screen
+
                     Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(R.id.loginFragment, true)
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+
+
+                    }
+
+                    is UiState.Error -> {
+
+                        Toast.makeText(requireContext(), uiState.errorMessage, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
-                is UiState.Error -> {
-                    // Display error message
-                    Toast.makeText(requireContext(), uiState.errorMessage, Toast.LENGTH_SHORT).show()
-                }
-            }
         })
     }
 }
+

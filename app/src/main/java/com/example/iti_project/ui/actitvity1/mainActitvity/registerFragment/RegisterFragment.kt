@@ -86,17 +86,16 @@ class RegisterFragment : Fragment() {
             val isValid = registerFragmentViewModel.checkedPassword(password)
             if (isValid) {
 //                Log.i("TAG", "onClickListner:")
-                tv_password_error.hint = ""
-                tv_password_error.visibility = View.GONE
+                hideErrorMessage( et_password,tv_password_error)
+
                 val confirmPassword = et_confirm_password.editText?.text.toString() ?: ""
                 if (confirmPassword == password) {
-                    tv_equality_password_error.hint = ""
-                    tv_equality_password_error.visibility = View.GONE
+                    hideErrorMessage( et_confirm_password , tv_equality_password_error)
+                    hideErrorMessage( et_password , null)
                     val email = et_email.editText?.text.toString() ?: ""
-                    val isEmailUnique = registerFragmentViewModel.checkedEmail(email)
-                    if (isEmailUnique) {
-                        tv_email_error.hint = ""
-                        tv_email_error.visibility = View.GONE
+                    val isValidEmail = registerFragmentViewModel.checkedEmail(email)
+                    if (isValidEmail) {
+                        hideErrorMessage(et_email , tv_email_error )
                         val userName = et_user_name.editText?.text.toString() ?: ""
                         registerFragmentViewModel.insertData(userName, email, password)
                         registerFragmentViewModel.isSuccess.observe(viewLifecycleOwner) {
@@ -130,7 +129,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun showErrorMessage( et: TextInputLayout , tvError: TextView?) {
-        et.editText?.setHintTextColor(Color.RED)
+        et.editText?.setTextColor(Color.RED)
         et.boxStrokeColor = Color.RED
         if (tvError !=null) {
             tvError.visibility = View.VISIBLE
@@ -139,5 +138,15 @@ class RegisterFragment : Fragment() {
 
     }
 
+    private fun hideErrorMessage( et: TextInputLayout , tvError: TextView?) {
+        et.editText?.setTextColor(Color.BLACK)
+        et.boxStrokeColor = Color.GRAY
+        if (tvError !=null) {
+            tvError.hint = ""
+            tvError.visibility = View.GONE
+
+        }
+
+    }
 
 }
