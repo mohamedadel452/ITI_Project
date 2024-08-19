@@ -5,17 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
-import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.models.UserModel
 import com.example.iti_project.data.repo.UserRepo.UserRepo
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 import kotlinx.coroutines.launch
 
-class LoginViewModel (
-    private val UserRepo: UserRepo ,
-    private val sharedPreferences: SharedPreferenceInterface
+class LoginViewModel(
+    private val userRepo: UserRepo
 ) : ViewModel() {
 
     private val _LoginState = MutableLiveData<UiState<UserModel>>()
@@ -25,11 +22,11 @@ class LoginViewModel (
         _LoginState.value = UiState.Loading
 
         viewModelScope.launch {
-            val user = UserRepo.getUserByEmail(email)
+            val user = userRepo.getUserByEmail(email)
             if (user != null) {
                 if (user.password == password) {
                     _LoginState.value = UiState.Success(user)
-                    sharedPreferences.setLoggedIn(true, email)
+                    userRepo.setLoggedIn(true, email)
                 } else {
 
                     _LoginState.value = UiState.Error("Invalid password")
@@ -42,13 +39,12 @@ class LoginViewModel (
 }
 
 class LoginViewModelFactory(
-    private val userRepo: UserRepoImp,
-    private val sharedPreferences: SharedPreferenceImp
+    private val userRepo: UserRepoImp
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return LoginViewModel(userRepo,sharedPreferences) as T
+            return LoginViewModel(userRepo) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

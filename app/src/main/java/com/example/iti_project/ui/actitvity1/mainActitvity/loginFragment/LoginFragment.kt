@@ -28,7 +28,7 @@ class LoginFragment : Fragment() {
     private lateinit var loginButton: Button
     private lateinit var signUpTextView: TextView
     val loginViewModel:LoginViewModel by viewModels(){
-        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)), SharedPreferenceImp.getInstance(requireContext()))
+        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)))
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,15 +82,13 @@ class LoginFragment : Fragment() {
                         NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()
                     )
 
-
                 }
+                    is UiState.Error -> {
 
-                is UiState.Error -> {
-
-                    Toast.makeText(requireContext(), uiState.errorMessage, Toast.LENGTH_SHORT)
-                        .show()
+                        Toast.makeText(requireContext(), uiState.errorMessage, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
-            }
         })
     }
 }
