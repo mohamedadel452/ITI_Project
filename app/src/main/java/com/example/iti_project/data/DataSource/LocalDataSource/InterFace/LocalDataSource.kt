@@ -10,10 +10,10 @@ interface LocalDataSource {
     //it will return null if the user is not found
     suspend fun getUserByEmail(email: String): UserModel?
 
-    suspend fun isLoggedIn(): Boolean
+    suspend fun getLoggedIn(): String
 
     //it will return true if it set the value successfully
-    suspend fun setLoggedIn(value: Boolean, email : String): Boolean
+    suspend fun setLoggedIn(email : String): Boolean
 
     suspend fun addFavouriteRecipe(favoriteID : String):Boolean
 }

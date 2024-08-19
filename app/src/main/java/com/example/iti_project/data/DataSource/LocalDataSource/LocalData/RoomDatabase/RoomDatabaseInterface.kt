@@ -10,9 +10,9 @@ interface RoomDatabaseInterface {
 
      suspend fun getUserByEmail(email: String): UserModel?
 
-//     suspend fun insertFavorite(id:String): Boolean
+     suspend fun addFavouriteItem(user:UserModel): Int
 
-//     suspend fun getAllRecipes(): LiveData<List<RecipesModel>>
+//     suspend fun getAllRecipes(): LiveData<List<Meal>>
 //
 //     suspend fun getRecipeDetails(id :String): RecipesModel?
 //

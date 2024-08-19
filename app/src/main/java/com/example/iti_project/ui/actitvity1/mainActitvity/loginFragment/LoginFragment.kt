@@ -28,7 +28,10 @@ class LoginFragment : Fragment() {
     private lateinit var loginButton: Button
     private lateinit var signUpTextView: TextView
     val loginViewModel:LoginViewModel by viewModels(){
-        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)))
+        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),
+            SharedPreferenceImp.getInstance(requireContext())
+        )))
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

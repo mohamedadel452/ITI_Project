@@ -1,5 +1,6 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.InterFace
 
+import android.util.Log
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDatabaseInterface
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
 import com.example.iti_project.data.models.UserModel
@@ -19,20 +20,26 @@ class LocalDataSourceImp(
             ?: return null
     }
 
-    override suspend fun isLoggedIn(): Boolean {
-        return sharedPreferencesDataSource?.isLoggedIn() ?: false
+    override suspend fun getLoggedIn(): String {
+        return sharedPreferencesDataSource?.getLoggedIn() ?: "Not Found"
     }
 
     //returns true if changes were successfully written to persistent storage
-    override suspend fun setLoggedIn(value: Boolean , email: String): Boolean {
-        return sharedPreferencesDataSource?.setLoggedIn(value , email) ?: false
+    override suspend fun setLoggedIn(email: String): Boolean {
+        return sharedPreferencesDataSource?.setLoggedIn(email) ?: false
     }
 
     override suspend fun addFavouriteRecipe(favoriteID: String): Boolean {
-        val email =  sharedPreferencesDataSource?.getLoggedIn() ?: "Not Found"
-        val user = roomDataSource?.getUserByEmail(email)
-        user?.favoriteID?.add(favoriteID)
-        roomDataSource?.let { return user?.let { it1 -> roomDataSource.insertUser(it1) } != -1L }
-            ?: return false
+        val email =  getLoggedIn()
+        Log.i("favoriteID", email)
+        val user = getUserByEmail(email)
+        Log.i("favoriteID", user?.userName ?: "    sdasds  ")
+        return if( user != null) {
+            user.favoriteID.add(favoriteID)
+            Log.i("favoriteID", roomDataSource?.addFavouriteItem(user).toString())
+            true
+        }else{
+            false
+        }
     }
 }

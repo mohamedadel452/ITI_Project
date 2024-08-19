@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.userdao.UserDao
 import com.example.iti_project.data.models.UserModel
 
 
 @Database(entities = [UserModel::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
 
     abstract fun getUserDao(): UserDao
@@ -55,7 +57,7 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
 //    override suspend fun insertRecipesInfo(recipesModel: List<RecipesModel>) {
 //
 //    }
-//    override suspend fun insertFavorite(id: String) :Boolean {
-//        return getUserDao().insertNewUser()
-//    }
+    override suspend fun addFavouriteItem(user:UserModel): Int {
+        return getUserDao().addFavouriteItem(user)
+    }
 }

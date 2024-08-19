@@ -11,12 +11,14 @@ import com.example.iti_project.data.models.UserModel
 @Dao
 interface UserDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertNewUser(user: UserModel): Long
 
     @Query("SELECT * FROM users WHERE email = :email")
     suspend  fun getUserByEmail(email: String): UserModel?
 
+    @Update
+    suspend fun addFavouriteItem(user:UserModel): Int
 
 
 }
