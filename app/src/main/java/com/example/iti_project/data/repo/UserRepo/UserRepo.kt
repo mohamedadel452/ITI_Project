@@ -13,11 +13,13 @@ interface UserRepo {
     suspend fun getUserByEmail(email: String): UserModel?
 
 
-    suspend fun isLoggedIn(): Boolean
+    suspend fun getLoggedIn(): String
 
 
     //returns true if changes were successfully written to persistent storage
-    suspend fun setLoggedIn(value: Boolean): Boolean
+    suspend fun setLoggedIn(email: String): Boolean
 
+    suspend fun addFavouriteRecipe(favoriteID : String) : Boolean
 
+    suspend fun getFavouriteRecipeList() : MutableList<String>
 }

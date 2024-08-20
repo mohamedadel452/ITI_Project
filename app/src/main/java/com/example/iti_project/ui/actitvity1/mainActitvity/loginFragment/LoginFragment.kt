@@ -28,7 +28,10 @@ class LoginFragment : Fragment() {
     private lateinit var loginButton: Button
     private lateinit var signUpTextView: TextView
     val loginViewModel:LoginViewModel by viewModels(){
-        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)))
+        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),
+            SharedPreferenceImp.getInstance(requireContext())
+        )))
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,16 +73,17 @@ class LoginFragment : Fragment() {
             when (uiState) {
                 is UiState.Loading -> {
                 }
+
                 is UiState.Success -> {
 
                     Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(R.id.loginFragment, true)
-                  // findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment, null,
-                        NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build())
-
-
+                    // findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    findNavController().navigate(
+                        R.id.action_loginFragment_to_homeFragment, null,
+                        NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()
+                    )
 
                 }
                     is UiState.Error -> {

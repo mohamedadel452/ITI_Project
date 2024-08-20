@@ -14,7 +14,8 @@ class SplashViewModel(private val sharedPreferences: SharedPreferenceInterface) 
     fun checkLoginStatus(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val isLoggedIn = withContext(Dispatchers.IO) {
-                sharedPreferences.isLoggedIn()
+                val email = sharedPreferences.getLoggedIn()
+                ( email != "Not Found" && email?.isNotEmpty() ?: false)
             }
             onResult(isLoggedIn)
         }
