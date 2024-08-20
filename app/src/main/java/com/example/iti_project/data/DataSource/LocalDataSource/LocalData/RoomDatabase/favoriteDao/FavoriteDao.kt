@@ -1,7 +1,6 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.favoriteDao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -15,6 +14,6 @@ interface FavoriteDao {
     @Query("SELECT * FROM meals WHERE idMeal = :id")
     suspend fun getFavouriteRecipe(id : String) : Meals
 
-    @Delete
+    @Query("DELETE FROM meals WHERE idMeal=:id")
     suspend fun deleteFavouriteRecipeList(id : String) : Int
 }

@@ -2,11 +2,9 @@ package com.example.iti_project.data.repo.favouriteRepo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.liveData
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSource
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.ResultState
-import com.example.iti_project.data.models.UserModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -25,20 +23,28 @@ class  FavoriteRecipeRepoImp(
         GlobalScope.launch(Dispatchers.IO) {
             val favoriteList = async{localdata.getFavouriteListByEmail()}
             val favoriteRecipesList = favoriteList.await()
-            if (favoriteRecipesList != null) {
-                val favoriteRecipeList :  MutableList<Meals> = mutableListOf()
-                for (favoriteRecipe in favoriteRecipesList) {
-                    favoriteRecipeList.add( localdata.getFavouriteRecipe(favoriteRecipe))
-                }
-                 _favoriteRecipe.value =
-                    favoriteRecipeList
-
+            val favoriteRecipeList :  MutableList<Meals> = mutableListOf()
+            for (favoriteRecipe in favoriteRecipesList) {
+                favoriteRecipeList.add( localdata.getFavouriteRecipe(favoriteRecipe))
             }
+            _favoriteRecipe.postValue(
+               favoriteRecipeList)
+
         }
     }
 
-    override suspend fun fetchData() {
+    suspend fun listenOnChangeRecipe(favoriteRecipeID: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            var newfavoriteRecipe: Meals
+            newfavoriteRecipe = localdata.getFavouriteRecipe(favoriteRecipeID)
+            if (newfavoriteRecipe != null) {
+                _favoriteRecipe.addSource(favoriteRecipe) { favoriteRecipe ->
+                    favoriteRecipe.add(newfavoriteRecipe)
+                    _favoriteRecipe.postValue(favoriteRecipe)
+                }
+            }
 
+        }
     }
 
 
@@ -47,12 +53,11 @@ class  FavoriteRecipeRepoImp(
         return localdata.addFavouriteRecipe(meal)?: -1L
     }
 
-    override suspend fun getFavouriteRecipe(id: String): Meals {
-        return localdata.getFavouriteRecipe(id) ?: null
-    }
-
     override suspend fun deleteFavouriteRecipeList(id: String): Int {
-        TODO("Not yet implemented")
+        var mutableList =  localdata.getFavouriteListByEmail()
+        mutableList.remove(id)
+        localdata.addFavouriteRecipeList(mutableList)
+        return localdata.deleteFavouriteRecipeList(id)
     }
 
 

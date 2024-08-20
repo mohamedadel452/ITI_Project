@@ -18,6 +18,7 @@ interface LocalDataSource {
 
     suspend fun addFavouriteRecipe(favoriteID : String):Boolean
 
+    suspend fun addFavouriteRecipeList(favorite : List<String>): Boolean
     suspend fun getFavouriteListByEmail(): MutableList<String>
 
     suspend fun addFavouriteRecipe(meal: Meals): Long

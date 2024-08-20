@@ -13,7 +13,7 @@ import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.UserModel
 
 
-@Database(entities = [UserModel::class , MealsResponse::class], version = 1)
+@Database(entities = [UserModel::class , Meals::class], version = 6)
 @TypeConverters(Converters::class)
 abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
 

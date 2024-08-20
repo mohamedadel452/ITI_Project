@@ -11,21 +11,19 @@ import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
+import com.example.iti_project.data.models.Meals
+import com.example.iti_project.data.repo.UserRepo.UserRepo
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
+import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepo
+import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import com.example.iti_project.ui.actitvity1.mainActitvity.loginFragment.LoginViewModel
 import com.example.iti_project.ui.actitvity1.mainActitvity.loginFragment.LoginViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
-    val loginViewModel: LoginViewModel by viewModels(){
-        LoginViewModelFactory(UserRepoImp(
-            LocalDataSourceImp(
-                RoomDataBaseImp.getInstance(requireContext()),
-            SharedPreferenceImp.getInstance(requireContext())
-        )
-        ))
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,11 +33,6 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-            val s = loginViewModel.addFavorite()
-//            Log.i("favoriteIDs", ""+ i.toString())
-
-    }
 }
+
