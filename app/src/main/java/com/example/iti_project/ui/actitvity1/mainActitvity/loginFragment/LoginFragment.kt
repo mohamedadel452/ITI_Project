@@ -51,8 +51,9 @@ class LoginFragment : Fragment() {
         signUpTextView = view.findViewById(R.id.tv_signUp)
 
         signUpTextView.setOnClickListener {
-            findNavController().navigate(R.id.registerFragment, null,
-                NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build())
+            emailEditText.text.clear()
+            passwordEditText.text.clear()
+            findNavController().navigate(R.id.registerFragment)
         }
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
@@ -73,19 +74,20 @@ class LoginFragment : Fragment() {
             when (uiState) {
                 is UiState.Loading -> {
                 }
-
                 is UiState.Success -> {
 
                     Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(R.id.loginFragment, true)
-                    // findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    findNavController().navigate(
-                        R.id.action_loginFragment_to_homeFragment, null,
-                        NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()
-                    )
+                  // findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    findNavController().navigate(R.id.recipeActivity, null,
+                        NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build())
+
+
+
 
                 }
+
                     is UiState.Error -> {
 
                         Toast.makeText(requireContext(), uiState.errorMessage, Toast.LENGTH_SHORT)

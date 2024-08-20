@@ -6,6 +6,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="white.color" parent="ThemeOverlay.AppCompat.Dark"/>
+    <style name="main.menu" parent="android:TextAppearance.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/black</item>
+    </style>
     <!-- No Action Bar -->
 
     <style name="Theme.ITI_Project" parent="Base.Theme.ITI_Project" />

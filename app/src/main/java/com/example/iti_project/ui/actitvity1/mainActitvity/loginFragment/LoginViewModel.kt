@@ -11,6 +11,7 @@ import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.models.UserModel
 import com.example.iti_project.data.repo.UserRepo.UserRepo
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
+import com.example.iti_project.ui.RecipeActivity.main.RecipeActivityVIewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -42,7 +43,6 @@ class LoginViewModel(
             }
         }
     }
-
 }
 
 class LoginViewModelFactory(
