@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.RecipeActivity.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.RecipeActivity.HomeFragment.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="hello_blank_fragment" />
+        android:layout_marginTop="108dp"
+        app:layout_behavior="@string/fab_transformation_sheet_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_bar">
+        <!-- Screen content goes here. -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-</FrameLayout>
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/serach_bar_item"
+        android:paddingEnd="10dp"
+        >
+
+    </com.google.android.material.search.SearchBar>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

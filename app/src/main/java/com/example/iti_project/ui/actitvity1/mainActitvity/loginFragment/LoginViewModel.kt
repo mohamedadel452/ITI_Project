@@ -9,6 +9,7 @@ import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedP
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.models.UserModel
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
+import com.example.iti_project.ui.RecipeActivity.main.RecipeActivityVIewModel
 import kotlinx.coroutines.launch
 
 class LoginViewModel ( private val UserRepo: UserRepoImp
@@ -44,7 +45,15 @@ class LoginViewModelFactory(
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
             return LoginViewModel(userRepo) as T
+        } else {
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
+
+
+
     }
 
 }

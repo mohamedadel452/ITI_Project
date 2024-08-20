@@ -1,12 +1,16 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.InterFace
 
+import android.content.Context
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDatabaseInterface
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
 import com.example.iti_project.data.models.UserModel
 
 class LocalDataSourceImp(
-    val roomDataSource: RoomDatabaseInterface? ,
-    val sharedPreferencesDataSource: SharedPreferenceInterface?
+    context: Context,
+    private val roomDataSource: RoomDatabaseInterface= RoomDataBaseImp.getInstance(context) ,
+    private val sharedPreferencesDataSource: SharedPreferenceInterface= SharedPreferenceImp.getInstance(context)
 ):LocalDataSource {
 
     override suspend fun insertUser(user: UserModel): Long {

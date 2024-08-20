@@ -1,5 +1,7 @@
 package com.example.iti_project.data.DataSource.RemoteDataSource
 
+import android.util.Log
+import android.widget.Toast
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.ResultState
@@ -10,21 +12,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient : RemoteDataSource {
     private val gson
-        get() = GsonBuilder().serializeNulls().create()
+        get() =  GsonBuilder().setLenient().serializeNulls().create()
 
     private val retrofit
         get() = Retrofit.Builder()
-            .baseUrl("https://www.themealdb.com/api.php/")
+            .baseUrl("https://themealdb.com/api/json/v1/1/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     private val apiService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
 
-    override suspend fun getMeals(pattern: String): ResultState<MealsResponse> {
+    override suspend fun getMeals(): ResultState<MealsResponse> {
         return try {
-            val response = apiService.getMeals(pattern)
+            val response = apiService.getMeals()
             if (response.isSuccessful) {
+              Log.e( "getMealsCode:",response.code().toString())
                 response.body()?.let {
                     ResultState.Success(it)
                 } ?: ResultState.Error(Exception("Empty response body").toString())
@@ -33,6 +36,8 @@ object RetrofitClient : RemoteDataSource {
             }
         } catch (e: Exception) {
             ResultState.Error(e.toString())
+
+
         }
     }
 
