@@ -37,9 +37,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        for (i in 1 .. 3) {
-            val s = loginViewModel.addFavorite(""+i)
+
+            val s = loginViewModel.addFavorite()
 //            Log.i("favoriteIDs", ""+ i.toString())
-        }
+
     }
 }

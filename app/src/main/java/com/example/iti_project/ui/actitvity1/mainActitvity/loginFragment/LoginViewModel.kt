@@ -43,10 +43,13 @@ class LoginViewModel(
     }
 
 
-    fun addFavorite(id:String){
+    fun addFavorite(){
         viewModelScope.launch(Dispatchers.IO) {
 //            async {userRepo.getUserByEmail("xss")}
-            async { userRepo.addFavouriteRecipe(id)}
+            val x= async { userRepo.getFavouriteRecipeList()}
+            for (i in x.await()){
+                Log.i("addFavorite", i)
+            }
         }
     }
 }

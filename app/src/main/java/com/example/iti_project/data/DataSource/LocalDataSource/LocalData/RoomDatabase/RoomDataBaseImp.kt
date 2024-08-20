@@ -6,16 +6,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.favoriteDao.FavoriteDao
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.userdao.UserDao
+import com.example.iti_project.data.models.Meals
+import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.UserModel
 
 
-@Database(entities = [UserModel::class], version = 1)
+@Database(entities = [UserModel::class , MealsResponse::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
 
     abstract fun getUserDao(): UserDao
-
+    abstract fun getFavoriteDao(): FavoriteDao
     companion object{
 
         @Volatile
@@ -44,6 +47,22 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
     //it will return null if the user not found
     override suspend fun getUserByEmail(email: String): UserModel? {
         return getUserDao().getUserByEmail(email)
+    }
+
+    override suspend fun getFavouriteListByEmail(email: String): MutableList<String> {
+        return getUserDao().getFavouriteListByEmail(email)
+    }
+
+    override suspend fun addFavouriteRecipe(meal: Meals): Long{
+        return getFavoriteDao().addFavouriteRecipe(meal)
+    }
+
+    override suspend fun getFavouriteRecipe(id : String) : Meals{
+        return getFavoriteDao().getFavouriteRecipe(id)
+    }
+
+    override suspend fun deleteFavouriteRecipeList(id : String) : Int{
+        return getFavoriteDao().deleteFavouriteRecipeList(id)
     }
 
 //    override suspend fun getAllRecipes(): LiveData<List<RecipesModel>> {

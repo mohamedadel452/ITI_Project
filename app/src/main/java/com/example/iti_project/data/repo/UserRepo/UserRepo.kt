@@ -21,4 +21,5 @@ interface UserRepo {
 
     suspend fun addFavouriteRecipe(favoriteID : String) : Boolean
 
+    suspend fun getFavouriteRecipeList() : MutableList<String>
 }

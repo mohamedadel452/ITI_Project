@@ -2,9 +2,11 @@ package com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDa
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.UserModel
 
 @Dao
@@ -18,5 +20,6 @@ interface RecipeDao {
 //
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    suspend fun insertRecipesInfo(recipesModel :List<RecipesModel>)
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.InterFace
 
+import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.UserModel
 
 interface LocalDataSource {
@@ -16,4 +17,12 @@ interface LocalDataSource {
     suspend fun setLoggedIn(email : String): Boolean
 
     suspend fun addFavouriteRecipe(favoriteID : String):Boolean
+
+    suspend fun getFavouriteListByEmail(): MutableList<String>
+
+    suspend fun addFavouriteRecipe(meal: Meals): Long
+
+    suspend fun getFavouriteRecipe(id : String) : Meals
+
+    suspend fun deleteFavouriteRecipeList(id : String) : Int
 }

@@ -28,4 +28,8 @@ class  UserRepoImp(
     override suspend fun addFavouriteRecipe(favoriteID : String): Boolean {
         return  localdata?.addFavouriteRecipe(favoriteID) ?: false
     }
+
+    override suspend fun getFavouriteRecipeList(): MutableList<String> {
+        return localdata?.getFavouriteListByEmail() ?: mutableListOf()
+    }
 }
