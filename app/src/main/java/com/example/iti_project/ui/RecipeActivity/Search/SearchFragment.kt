@@ -1,4 +1,4 @@
-package com.example.iti_project.ui.actitvity1.mainActitvity.Search
+package com.example.iti_project.ui.RecipeActivity.Search
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -70,8 +70,8 @@ class SearchFragment : Fragment() {
 
                 is UiState.Success -> {
                     val mealsList = response.data
-                    val adapter = MealsAdapter(requireContext(), mealsList)
-                    searchListView.adapter = adapter
+//                    val adapter = MealsAdapter(requireContext(), mealsList)
+//                    searchListView.adapter = adapter
                 }
             }
         }

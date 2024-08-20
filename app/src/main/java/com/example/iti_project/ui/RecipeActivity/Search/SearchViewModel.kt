@@ -1,4 +1,4 @@
-package com.example.iti_project.ui.actitvity1.mainActitvity.Search
+package com.example.iti_project.ui.RecipeActivity.Search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

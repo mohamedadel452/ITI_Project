@@ -8,7 +8,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     android:paddingHorizontal="16dp"
     android:background="@color/white"
     android:paddingTop="16dp"
-    tools:context=".ui.actitvity1.mainActitvity.Search.SearchFragment">
+    tools:context=".ui.RecipeActivity.Search.SearchFragment">
 
     <ScrollView
         android:layout_width="match_parent"
