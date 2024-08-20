@@ -1,5 +1,6 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.InterFace
 
+import androidx.lifecycle.LiveData
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.UserModel
 
@@ -23,7 +24,7 @@ interface LocalDataSource {
 
     suspend fun addFavouriteRecipe(meal: Meals): Long
 
-    suspend fun getFavouriteRecipe(id : String) : Meals
+    fun getFavouriteRecipe(id : String) :Meals
 
     suspend fun deleteFavouriteRecipeList(id : String) : Int
 }

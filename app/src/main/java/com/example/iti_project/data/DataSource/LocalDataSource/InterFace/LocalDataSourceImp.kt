@@ -1,6 +1,7 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.InterFace
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDatabaseInterface
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
 import com.example.iti_project.data.models.Meals
@@ -33,9 +34,7 @@ class LocalDataSourceImp(
 
     override suspend fun addFavouriteRecipe(favoriteID: String): Boolean {
         val email =  getLoggedIn()
-//        Log.i("favoriteID", email)
         val user = getUserByEmail(email)
-//        Log.i("favoriteID", user?.userName ?: "    sdasds  ")
         return if( user != null) {
             user.favoriteID.add(favoriteID)
 
@@ -74,7 +73,7 @@ class LocalDataSourceImp(
         return roomDataSource.addFavouriteRecipe(meal) ?: -1L
     }
 
-    override suspend fun getFavouriteRecipe(id : String) : Meals{
+    override fun getFavouriteRecipe(id : String) :  Meals{
         return roomDataSource.getFavouriteRecipe(id)
     }
 

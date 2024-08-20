@@ -1,5 +1,6 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.favoriteDao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,7 +13,7 @@ interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addFavouriteRecipe(meal: Meals): Long
     @Query("SELECT * FROM meals WHERE idMeal = :id")
-    suspend fun getFavouriteRecipe(id : String) : Meals
+    fun getFavouriteRecipe(id : String) : Meals
 
     @Query("DELETE FROM meals WHERE idMeal=:id")
     suspend fun deleteFavouriteRecipeList(id : String) : Int

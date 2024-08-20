@@ -12,7 +12,7 @@ import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDa
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.models.Meals
-import com.example.iti_project.data.repo.UserRepo.UserRepo
+
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepo
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
@@ -20,6 +20,8 @@ import com.example.iti_project.ui.actitvity1.mainActitvity.loginFragment.LoginVi
 import com.example.iti_project.ui.actitvity1.mainActitvity.loginFragment.LoginViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -32,7 +34,6 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
-
 
 }
 

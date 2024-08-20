@@ -1,13 +1,14 @@
 package com.example.iti_project.data.repo.favouriteRepo
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.ResultState
 import com.example.iti_project.data.models.UserModel
 
 interface FavoriteRecipeRepo {
 
-    val favoriteRecipe: LiveData<MutableList<Meals>>
+    val favoriteRecipe: List<Meals>
 
     suspend fun addFavouriteRecipe(meal: Meals): Long
 
