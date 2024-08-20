@@ -8,6 +8,7 @@ data class MealsResponse(
 
 val  meals : List<Meals> = listOf(),
 )
+
 @Entity(tableName = "Meals")
 data class Meals (
 
