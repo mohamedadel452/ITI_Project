@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -87,7 +90,7 @@ dependencies {
     implementation libs.lottie
 
 
-
+    implementation "androidx.navigation:navigation-fragment-ktx:2.7.3"
 
 
 
