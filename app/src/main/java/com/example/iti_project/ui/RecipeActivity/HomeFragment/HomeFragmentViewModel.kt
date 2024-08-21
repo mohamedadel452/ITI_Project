@@ -23,22 +23,14 @@ class HomeFragmentViewModel(private val repository: MealsRepo) : ViewModel() {
     val meals: LiveData<UiState<List<Meals>>> = _meals
 
 
-    private val _isSaved = MutableLiveData<Boolean>(false)
-    val isSaved: LiveData<Boolean> = _isSaved
-
-
-    // Call this method to update the state
-    fun setIsSaved(saved: Boolean) {
-        _isSaved.value = saved
-    }
-
     fun getMeals() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
 
                 val response = async {  repository.getMeals()}.await()
 
-                // Switch to Main thread for UI updates
+
+                withContext(Dispatchers.Main) {
                     when (response) {
                         is ResultState.Success -> {
                             _meals.postValue(UiState.Success(response.data.meals))
@@ -46,7 +38,7 @@ class HomeFragmentViewModel(private val repository: MealsRepo) : ViewModel() {
                         is ResultState.Error -> {
                             _meals.postValue(UiState.Error(response.errorMessage))
                         }
-                    }
+                    }}
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Log.e("HomeFragmentViewModel", "Error fetching meals", e)

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -22,12 +23,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
+
 class HomeFragment : Fragment() {
 
     private lateinit var searchBar: SearchBar
     private lateinit var recyclerView: RecyclerView
-    private lateinit var mProgressDialog : ProgressDialog
-    private val viewModel: HomeFragmentViewModel by viewModels(){
+    private lateinit var adapter: AdapterForListRecipe
+    private val viewModel: HomeFragmentViewModel by viewModels() {
         ProductViewModelFactory(MealsRepoImpl())
     }
 
@@ -35,7 +37,6 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -44,56 +45,41 @@ class HomeFragment : Fragment() {
 
         searchBar = view.findViewById(R.id.search_bar)
         recyclerView = view.findViewById(R.id.list_recipe)
-        mProgressDialog = ProgressDialog(requireContext())
+        val progressBar =ProgressDialog(requireContext())
 
-        searchBar.setOnClickListener{
-          findNavController().navigate(R.id.search)
+        adapter = AdapterForListRecipe()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        searchBar.setOnClickListener {
+            findNavController().navigate(R.id.search)
         }
         searchBar.menu.getItem(0).setOnMenuItemClickListener {
             findNavController().navigate(R.id.search)
             true
         }
 
-        val adapter = AdapterForListRecipe()
 
-        GlobalScope.launch(Dispatchers.Main) {
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
+        viewModel.meals.observe(viewLifecycleOwner) { meals ->
+            when (meals) {
+                is UiState.Error -> {
+                    progressBar.cancel()
+                    Toast.makeText(requireContext(), "Error: ${meals.errorMessage}", Toast.LENGTH_SHORT).show()
+                    Log.e("error", meals.errorMessage)
+                }
+                is UiState.Loading -> {
+                    progressBar.setTitle("Loading Data")
+                    progressBar.setMessage("please wait while we are loading data")
+                    progressBar.show()
+                }
+                is UiState.Success -> {
+                    adapter.setData(meals.data)
+                    progressBar.cancel()
+                }
+            }
         }
 
-
-
+        // Trigger data loading
         viewModel.getMeals()
-        viewModel.meals.observe(viewLifecycleOwner) { meals ->
-            when(meals){
-                is UiState.Error ->
-                    {
-                        mProgressDialog.cancel()
-                        Toast.makeText(requireContext(), "there is an error :${meals.errorMessage}", Toast.LENGTH_SHORT).show()
-                        Log.e("error",meals.errorMessage)}
-                is UiState.Loading ->{
-                    mProgressDialog.setTitle("Loading Data")
-                    mProgressDialog.setMessage("please wait while we are loading data")
-                    mProgressDialog.show()
-                    Toast.makeText(requireContext(), "loading ", Toast.LENGTH_SHORT).show()}
-                is UiState.Success -> {
-                    GlobalScope.launch(Dispatchers.Main) {
-                        adapter.setData(meals.data)
-                    }
-                    mProgressDialog.cancel()
-                }
-
-            }
-    }
-
-
-}
-
-    override fun onStop() {
-        super.onStop()
-        // Update state in ViewModel
-        Toast.makeText(requireContext(), "hi am on stop", Toast.LENGTH_SHORT).show()
-        viewModel.setIsSaved(true)
     }
 }
