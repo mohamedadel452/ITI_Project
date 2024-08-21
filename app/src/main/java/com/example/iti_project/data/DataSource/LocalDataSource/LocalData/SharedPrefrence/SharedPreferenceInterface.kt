@@ -2,9 +2,7 @@ package com.example.iti_project.data.DataSource.LocalDataSource.LocalData.Shared
 
 interface SharedPreferenceInterface {
 
-    suspend fun isLoggedIn(): Boolean
+    suspend fun setLoggedIn(email : String): Boolean
 
-    suspend fun setLoggedIn(value: Boolean): Boolean
-
-
+    suspend fun getLoggedIn(): String?
 }

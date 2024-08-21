@@ -11,6 +11,7 @@ import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDa
 import com.example.iti_project.data.models.UserModel
 import com.example.iti_project.data.repo.UserRepo.UserRepo
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
+import com.example.iti_project.ui.actitvity1.mainActitvity.splashFragment.SplashViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -53,13 +54,12 @@ class RegisterViewModelFactory(private val userRepository : UserRepo) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-
         if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return RegisterViewModel(userRepository) as T
-        } else {
-            throw IllegalArgumentException("Unknown ViewModel class")
         }
+        throw IllegalArgumentException("Unknown ViewModel class")
+
 
 
     }

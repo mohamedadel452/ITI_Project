@@ -1,4 +1,6 @@
 package com.example.iti_project.data.models
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 
@@ -6,9 +8,10 @@ data class MealsResponse(
 
 val  meals : List<Meals> = listOf(),
 )
+@Entity(tableName = "Meals")
 data class Meals (
 
-    @SerializedName("idMeal") val idMeal: String, //id
+    @SerializedName("idMeal") @PrimaryKey val idMeal: String, //id
     @SerializedName("strMeal") val strMeal: String, //name
     @SerializedName("strMealThumb") val strMealThumb: String, //thumbnail
     @SerializedName("ingredient") val ingredient: Ingredient? = null,
