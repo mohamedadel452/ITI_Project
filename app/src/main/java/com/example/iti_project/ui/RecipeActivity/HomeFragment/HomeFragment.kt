@@ -33,6 +33,11 @@ class HomeFragment : Fragment() {
         ProductViewModelFactory(MealsRepoImpl())
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getMeals()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,8 +83,5 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
-        // Trigger data loading
-        viewModel.getMeals()
     }
 }
