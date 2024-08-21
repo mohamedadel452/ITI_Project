@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FavoriteRecipeRepoImp(
@@ -19,36 +20,50 @@ class FavoriteRecipeRepoImp(
     ) : FavoriteRecipeRepo {
 
 
-    private var _favoriteRecipe : MutableList<Meals> = mutableListOf()
+    private var _favoriteRecipe: MutableList<Meals> = mutableListOf()
     override val favoriteRecipe: List<Meals>
         get() = _favoriteRecipe
+
+    private var _favoriteRecipeIDs: MutableList<String> = mutableListOf()
+    override val favoriteRecipeIDs: List<String>
+        get() = _favoriteRecipeIDs
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
             val favoriteList = async { localdata.getFavouriteListByEmail() }
-            val favoriteRecipesList = favoriteList.await()
-
-            for (favoriteRecipe in favoriteRecipesList) {
-
-                val favoriteRecipeResult: Meals = async {  localdata.getFavouriteRecipe(favoriteRecipe)}.await()
-
-                if (favoriteRecipeResult != null) {
-                    _favoriteRecipe.add(favoriteRecipeResult)
-//                    Log.i("favo", _favoriteRecipe?.first()?.strArea ?: " sfdsdf ")
-                }
-
-            }
-
-
+            _favoriteRecipeIDs = favoriteList.await()
+//            Log.i("email", " " + favoriteRecipeIDs?.first())
         }
     }
+    override suspend fun getRecipes() {
 
-    fun updateFavoriteRecipe(meal : Meals){
+//            for (favoriteRecipeID in _favoriteRecipeIDs) {
+
+                Log.i("email", " " + "52765")
+                val favoriteRecipeResult: Meals =localdata.getFavouriteRecipe("52765")
+//
+                if (favoriteRecipeResult != null) {
+                    Log.i("emailsa", " " + _favoriteRecipe.size)
+                    _favoriteRecipe.add(favoriteRecipeResult)
+                    Log.i("favo", _favoriteRecipe?.first()?.strArea ?: " sfdsdf ")
+                }
+
+
+//            }
+
+
+    }
+
+
+    fun updateFavoriteRecipe(meal: Meals) {
         _favoriteRecipe.add(meal)
     }
+
     override suspend fun addFavouriteRecipe(meal: Meals): Long {
         updateFavoriteRecipe(meal)
-        return localdata.addFavouriteRecipe(meal) ?: -1L
+        var isSuccess: Long = 0
+        GlobalScope.launch(Dispatchers.IO) { isSuccess = localdata.addFavouriteRecipe(meal) }
+        return isSuccess
     }
 
     override suspend fun deleteFavouriteRecipeList(id: String): Int {
@@ -58,7 +73,8 @@ class FavoriteRecipeRepoImp(
         localdata.addFavouriteRecipeList(mutableList)
         return localdata.deleteFavouriteRecipeList(id)
     }
-    fun deleteFromFavoriteRecipe(id : String){
+
+    private fun deleteFromFavoriteRecipe(id: String) {
         for (i in favoriteRecipe) {
             if (i.idMeal == id) {
                 _favoriteRecipe.remove(i)

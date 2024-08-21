@@ -1,4 +1,4 @@
-package com.example.iti_project.ui.RecipeActivity.HomeFragment
+package com.example.iti_project.ui.RecipeActivity.homeFragment
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.iti_project.R
@@ -19,6 +18,7 @@ import com.example.iti_project.data.repo.Meals.MealsRepoImpl
 import com.google.android.material.search.SearchBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeFragmentViewModel by viewModels(){
         ProductViewModelFactory(MealsRepoImpl())
     }
-
+    private lateinit var adapter : AdapterForListRecipe
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,11 +41,14 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getMeals()
         searchBar = view.findViewById(R.id.search_bar)
         recyclerView = view.findViewById(R.id.list_recipe)
         mProgressDialog = ProgressDialog(requireContext())
-
+        adapter = AdapterForListRecipe ({
+            val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment(it)
+            findNavController().navigate(action)
+        }, requireContext())
         searchBar.setOnClickListener{
           findNavController().navigate(R.id.search)
         }
@@ -54,7 +57,6 @@ class HomeFragment : Fragment() {
             true
         }
 
-        val adapter = AdapterForListRecipe()
 
         GlobalScope.launch(Dispatchers.Main) {
             recyclerView.adapter = adapter
@@ -62,9 +64,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
-
-        viewModel.getMeals()
         viewModel.meals.observe(viewLifecycleOwner) { meals ->
             when(meals){
                 is UiState.Error ->
@@ -80,6 +79,7 @@ class HomeFragment : Fragment() {
                 is UiState.Success -> {
                     GlobalScope.launch(Dispatchers.Main) {
                         adapter.setData(meals.data)
+                        delay(2000)
                     }
                     mProgressDialog.cancel()
                 }

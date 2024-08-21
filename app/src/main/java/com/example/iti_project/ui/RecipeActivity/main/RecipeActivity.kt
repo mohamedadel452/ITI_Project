@@ -19,6 +19,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDatabaseInterface
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 import com.example.iti_project.ui.actitvity1.mainActitvity.MainActivity
@@ -32,7 +34,7 @@ class RecipeActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
 
     private val viewModel: RecipeActivityVIewModel by viewModels(){
-        RecipeActivityVIewModelFactory(UserRepoImp(LocalDataSourceImp(this)))
+        RecipeActivityVIewModelFactory(UserRepoImp(LocalDataSourceImp(this , RoomDataBaseImp.getInstance(this) , null)))
     }
 
 
@@ -42,7 +44,7 @@ class RecipeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recipe)
 
         bottomNavView=findViewById(R.id.nav_view)
-        navController=(supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHost).navController
+        navController=(supportFragmentManager.findFragmentById(R.id.nhf_recipe) as NavHost).navController
         toolbar=findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         bottomNavView.setupWithNavController(navController)
@@ -62,12 +64,12 @@ class RecipeActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.logout -> {
                 logout()
-                return true
+                true
             }
 
             R.id.about -> {
                 val navHostFragment =
-                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                    supportFragmentManager.findFragmentById(R.id.nhf_recipe) as NavHostFragment
                 val navController = navHostFragment.navController
                 navController.navigate(R.id.about)
                 true
@@ -81,13 +83,11 @@ class RecipeActivity : AppCompatActivity() {
 
     private fun logout() {
 
-        viewModel.setLoggedIn(false)
-        viewModel.LoginState.observe(this){
-            if (it){
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-        }
+        viewModel.setLoggedIn()
+
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+
 
     }
 

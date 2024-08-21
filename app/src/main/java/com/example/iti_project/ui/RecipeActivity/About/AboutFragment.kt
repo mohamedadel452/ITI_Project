@@ -1,4 +1,4 @@
-package com.example.iti_project.ui.RecipeActivity
+package com.example.iti_project.ui.RecipeActivity.About
 
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +24,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment() {
+class AboutFragment : Fragment() {
 
 
     override fun onCreateView(

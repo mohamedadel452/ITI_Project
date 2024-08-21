@@ -1,4 +1,4 @@
-package com.example.iti_project.ui.RecipeActivity.HomeFragment
+package com.example.iti_project.ui.RecipeActivity.homeFragment
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -7,13 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.iti_project.data.models.Meals
-import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.ResultState
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 

@@ -3,12 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.RecipeActivity.Favourit.FavouritFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.RecipeActivity.Favourit.FavoriteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_list_favorite_recipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="favourit" />
+        android:layout_marginTop="108dp"
+        app:layout_behavior="@string/fab_transformation_sheet_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_bar">
+        <!-- Screen content goes here. -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_favorite_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

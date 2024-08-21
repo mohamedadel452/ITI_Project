@@ -15,7 +15,7 @@ class SplashViewModel(private val userRepo: UserRepo) : ViewModel()
     fun checkLoginStatus(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val isLoggedIn = withContext(Dispatchers.IO) {
-                userRepo.isLoggedIn()
+                userRepo.getLoggedIn() != "" && userRepo.getLoggedIn() !="Not Found"
             }
             if (isLoggedIn != null)
                 onResult(isLoggedIn)

@@ -28,7 +28,7 @@ class LoginFragment : Fragment() {
     private lateinit var loginButton: Button
     private lateinit var signUpTextView: TextView
     val loginViewModel:LoginViewModel by viewModels(){
-        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),
+        LoginViewModelFactory(UserRepoImp(LocalDataSourceImp(requireContext(),RoomDataBaseImp.getInstance(requireContext()),
             SharedPreferenceImp.getInstance(requireContext())
         )))
 

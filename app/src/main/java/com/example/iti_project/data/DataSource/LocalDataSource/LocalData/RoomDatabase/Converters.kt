@@ -18,15 +18,35 @@ class Converters {
         return Gson().fromJson(value, type)
     }
     @TypeConverter
-    fun fromListOfStringsToString(list: List<String?>): String {
-        return Gson().toJson(list)
+    fun fromListOfStringsToString(list: List<String?>?): String? {
+        return if (list == null) {
+            "null"
+        } else {
+            Gson().toJson(list)
+        }
     }
 
     @TypeConverter
-    fun fromStringToListOfStrings(value: String): List<String?> {
-        val type = object : TypeToken<List<String?>>() {}.type
-        return Gson().fromJson(value, type)
+    fun fromStringToListOfStrings(value: String?): List<String?>? {
+        return if (value == null) {
+            listOf()
+        } else {
+            val type = object : TypeToken<List<String?>>() {}.type
+            Gson().fromJson(value, type)
+        }
     }
+
+//    @TypeConverter
+//    fun fromListOfStringsOrNullToString(list: List<String>): String {
+//        return Gson().toJson(list)
+//    }
+//
+//
+//    @TypeConverter
+//    fun fromStringToListOfStringsOrNull(value: String): List<String> {
+//        val type = object : TypeToken<List<String>>() {}.type
+//        return Gson().fromJson(value, type)
+//    }
 
     @TypeConverter
     fun fromIngredientOfStringsToString(list:Ingredient): String {
