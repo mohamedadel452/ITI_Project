@@ -79,7 +79,7 @@ class LocalDataSourceImp(
         return roomDataSource.addFavouriteRecipe(meal) ?: -1L
     }
 
-    override suspend fun getFavouriteRecipe(id: List<String>): List<Meals> {
+    override fun getFavouriteRecipe(id: List<String>): List<Meals> {
         return roomDataSource.getFavouriteRecipe(id)
     }
 

@@ -40,7 +40,7 @@ class FavoriteFragment : Fragment() {
     }
     override fun onStart() {
         super.onStart()
-//        viewModel.getFavoriteList()
+        viewModel.getFavoriteList()
     }
 
     override fun onCreateView(
@@ -54,10 +54,18 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
-        instantiateProductsRecyclerView()
-        listenToProductsResponse()
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        GlobalScope.launch (Dispatchers.Main){
+            delay(2000)
+            instantiateProductsRecyclerView()
+
+            favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+        }
+    }
     private fun instantiateProductsRecyclerView() {
         favoriteRecipesAdapter = FavoriteRecipesAdapter{ favoriteRecipeID  ->
             val action =
@@ -71,10 +79,26 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    private fun listenToProductsResponse() {
 
-        favoriteRecipesAdapter.setData(viewModel.favoriteRecipes)
-
-    }
+//    private fun listenToProductsResponse() {
+//        viewModel.products.observe(viewLifecycleOwner) { response ->
+//            when (response) {
+//                is UiState.Error -> {
+//                    Toast.makeText(requireContext(), response.errorMessage, Toast.LENGTH_SHORT)
+//                        .show()
+//                }
+//
+//                UiState.Loading -> {
+//                    //loading indicator
+//                }
+//
+//                is UiState.Success -> {
+//                    GlobalScope.launch(Dispatchers.Main) {
+//                        productAdapter.submitList(response.data )
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }
