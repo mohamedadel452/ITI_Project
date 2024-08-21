@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
     private lateinit var cb_acceptance: CheckBox
     private var fcv_welcome : FragmentContainerView? = null
     val registerFragmentViewModel: RegisterViewModel by viewModels {
-         RegisterViewModelFactory(UserRepoImp(LocalDataSourceImp(requireContext())))
+         RegisterViewModelFactory(UserRepoImp(LocalDataSourceImp(RoomDataBaseImp.getInstance(requireContext()),null)))
     }
 
     override fun onCreateView(

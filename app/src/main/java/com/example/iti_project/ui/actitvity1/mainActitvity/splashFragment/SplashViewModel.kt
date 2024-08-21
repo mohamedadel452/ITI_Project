@@ -4,30 +4,32 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
+import com.example.iti_project.data.repo.UserRepo.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SplashViewModel(private val sharedPreferences: SharedPreferenceInterface) : ViewModel()
+class SplashViewModel(private val userRepo: UserRepo) : ViewModel()
 {
 
     fun checkLoginStatus(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val isLoggedIn = withContext(Dispatchers.IO) {
-                val email = sharedPreferences.getLoggedIn()
-                ( email != "Not Found" && email?.isNotEmpty() ?: false)
+                userRepo.getLoggedIn() != "" && userRepo.getLoggedIn() !="Not Found"
             }
-            onResult(isLoggedIn)
+            if (isLoggedIn != null)
+                onResult(isLoggedIn)
         }
     }
 
 }
-class SplashViewModelFactory(private val sharedPreferences: SharedPreferenceInterface) : ViewModelProvider.Factory {
+class SplashViewModelFactory(private val userRepo: UserRepo) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SplashViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SplashViewModel(sharedPreferences) as T
+            return SplashViewModel(userRepo) as T
+        } else {
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

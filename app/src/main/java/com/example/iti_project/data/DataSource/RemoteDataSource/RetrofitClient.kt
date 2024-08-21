@@ -1,5 +1,7 @@
 package com.example.iti_project.data.DataSource.RemoteDataSource
 
+import android.util.Log
+import android.widget.Toast
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.ResultState
@@ -10,8 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient : RemoteDataSource {
     private val gson
-        get() = GsonBuilder().setLenient().
-        serializeNulls().create()
+        get() =  GsonBuilder().setLenient().serializeNulls().create()
 
     private val retrofit
         get() = Retrofit.Builder()
@@ -26,6 +27,7 @@ object RetrofitClient : RemoteDataSource {
         return try {
             val response = apiService.getMeals()
             if (response.isSuccessful) {
+              Log.e( "getMealsCode:",response.code().toString())
                 response.body()?.let {
                     ResultState.Success(it)
                 } ?: ResultState.Error(Exception("Empty response body").toString())
@@ -34,9 +36,10 @@ object RetrofitClient : RemoteDataSource {
             }
         } catch (e: Exception) {
             ResultState.Error(e.toString())
+
+
         }
     }
-
 
 
     override suspend fun getMealsDetails(MealId: String): Meals {

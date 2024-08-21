@@ -12,14 +12,12 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.example.iti_project.R
-import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
-import com.example.iti_project.data.repo.UserRepo.UserRepoImp
 
 
 class SplashFragment : Fragment() {
     private val splashViewModel: SplashViewModel by viewModels {
-        SplashViewModelFactory(UserRepoImp(LocalDataSourceImp(requireContext())))
+        SplashViewModelFactory(SharedPreferenceImp.getInstance(requireContext()))
     }
 
     override fun onCreateView(
@@ -45,8 +43,8 @@ class SplashFragment : Fragment() {
             if (isAdded) {
                 splashViewModel.checkLoginStatus { isLoggedIn ->
                     if (isLoggedIn) {
-                       // findNavController().navigate(R.id.action_splashFragment_to_homeFragment, null,
-                            NavOptions.Builder().setPopUpTo(R.id.splashFragment, true).build()
+                        findNavController().navigate(R.id.action_splashFragment_to_homeFragment, null,
+                            NavOptions.Builder().setPopUpTo(R.id.splashFragment, true).build())
 
                     } else {
                         findNavController().navigate(R.id.action_splashFragment_to_loginFragment, null,
