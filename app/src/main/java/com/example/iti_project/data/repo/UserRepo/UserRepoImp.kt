@@ -20,7 +20,7 @@ class  UserRepoImp(
     }
 
     //returns true if changes were successfully written to persistent storage
-    override suspend fun setLoggedIn(email : String):Boolean {
+    override fun setLoggedIn(email : String):Boolean {
         return localdata?.setLoggedIn(email)?:false
 
     }

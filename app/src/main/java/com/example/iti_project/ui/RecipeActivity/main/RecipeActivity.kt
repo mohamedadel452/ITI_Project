@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.fragment.NavHostFragment
@@ -82,9 +84,7 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-
         viewModel.setLoggedIn()
-
         startActivity(Intent(this, MainActivity::class.java))
         finish()
 

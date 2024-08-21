@@ -31,7 +31,7 @@ class LocalDataSourceImp(
     }
 
     //returns true if changes were successfully written to persistent storage
-    override suspend fun setLoggedIn(email: String): Boolean {
+    override fun setLoggedIn(email: String): Boolean {
         return sharedPreferencesDataSource?.setLoggedIn(email) ?: false
     }
 
@@ -79,7 +79,7 @@ class LocalDataSourceImp(
         return roomDataSource.addFavouriteRecipe(meal) ?: -1L
     }
 
-    override suspend fun getFavouriteRecipe(id: String): Meals {
+    override suspend fun getFavouriteRecipe(id: List<String>): List<Meals> {
         return roomDataSource.getFavouriteRecipe(id)
     }
 

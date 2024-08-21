@@ -19,14 +19,15 @@ import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit , context: Context) :
+class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
     RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()
 
-    private lateinit var favoriteRecipeViewModel: FavoriteFragmentViewModel
+//    private lateinit var favoriteRecipeViewModel: FavoriteFragmentViewModel
 
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -42,17 +43,8 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit , conte
 
         }
     }
-    init {
-        favoriteRecipeViewModel = FavoriteFragmentViewModel(
-            FavoriteRecipeRepoImp(
-                LocalDataSourceImp(
-                    context,
-                    RoomDataBaseImp.getInstance(context),
-                    SharedPreferenceImp.getInstance(context)
-                )
-            )
-        )
-    }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
@@ -71,7 +63,7 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit , conte
             if (holder.isFavorite) {
                 holder.isFavorite = false
                 holder.favoriteImage.clearColorFilter()
-                favoriteRecipeViewModel.deleteFavoriteRecipe(meal.idMeal)
+//                favoriteRecipeViewModel.deleteFavoriteRecipe(meal.idMeal)
                 meals.removeAt(position)
             }
         }
@@ -89,14 +81,12 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit , conte
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData() {
-
-        GlobalScope.launch(Dispatchers.Unconfined) {
-            meals = favoriteRecipeViewModel.getFavoriteList().toMutableList()
-            Log.i("favoriteRecipeViewModel", "   " + favoriteRecipeViewModel.getFavoriteList().size)
-
-        }
+    fun setData(meals: MutableList<Meals>) {
+        this.meals = meals
+        Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
+
+
     }
 
 

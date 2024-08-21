@@ -15,5 +15,5 @@ interface FavoriteRecipeRepo {
 //    suspend fun getFavouriteRecipe(id : String) : Meals
 
     suspend fun deleteFavouriteRecipeList(id : String) : Int
-    suspend fun getRecipes()
+    suspend fun getRecipes() : List<Meals>
 }

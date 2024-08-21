@@ -34,6 +34,15 @@ class FavoriteFragment : Fragment() {
 
 
     private lateinit var favoriteRecipesAdapter: FavoriteRecipesAdapter
+
+    private val viewModel: FavoriteFragmentViewModel by viewModels(){
+        FavoriteFragmentViewModelFactory(FavoriteRecipeRepoImp(LocalDataSourceImp( requireContext(), RoomDataBaseImp.getInstance(requireContext()) , SharedPreferenceImp.getInstance(requireContext()))))
+    }
+    override fun onStart() {
+        super.onStart()
+//        viewModel.getFavoriteList()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,17 +54,16 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
-        GlobalScope.launch(Dispatchers.Main){   instantiateProductsRecyclerView()}
+        instantiateProductsRecyclerView()
         listenToProductsResponse()
     }
 
     private fun instantiateProductsRecyclerView() {
-        val context = requireContext()
-        favoriteRecipesAdapter = FavoriteRecipesAdapter( { favoriteRecipeID  ->
+        favoriteRecipesAdapter = FavoriteRecipesAdapter{ favoriteRecipeID  ->
             val action =
                 FavoriteFragmentDirections.actionFavouritToRecipeDetailsFragment(favoriteRecipeID)
             findNavController().navigate(action)
-        } , context)
+        }
         rv_favoriteRecipes.apply {
             layoutManager =
                 GridLayoutManager(requireContext(),2)
@@ -64,14 +72,9 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun listenToProductsResponse() {
-        GlobalScope.launch(Dispatchers.Main) {
-             async {
-                 delay(2000)
 
-                 favoriteRecipesAdapter.setData()
-            }
+        favoriteRecipesAdapter.setData(viewModel.favoriteRecipes)
 
-        }
     }
 
 }
