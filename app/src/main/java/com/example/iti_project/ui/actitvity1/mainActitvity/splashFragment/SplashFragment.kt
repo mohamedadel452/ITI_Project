@@ -45,8 +45,8 @@ class SplashFragment : Fragment() {
             if (isAdded) {
                 splashViewModel.checkLoginStatus { isLoggedIn ->
                     if (isLoggedIn) {
-                        findNavController().navigate(R.id.recipeActivity, null,
-                            NavOptions.Builder().setPopUpTo(R.id.splashFragment, true).build())
+                       // findNavController().navigate(R.id.action_splashFragment_to_homeFragment, null,
+                            NavOptions.Builder().setPopUpTo(R.id.splashFragment, true).build()
 
                     } else {
                         findNavController().navigate(R.id.action_splashFragment_to_loginFragment, null,

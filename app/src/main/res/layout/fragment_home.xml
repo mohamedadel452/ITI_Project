@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_bar">
+        app:layout_constraintTop_toBottomOf="@id/search_view">
         <!-- Screen content goes here. -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_recipe"
@@ -30,20 +30,22 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.search.SearchBar
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+
+        android:layout_width="392dp"
+        android:layout_height="59dp"
+        android:focusableInTouchMode="true"
+
+        android:text="Type the meal you want..."
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_textbox"
+        android:queryHint="Type the meal you want..."
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/serach_bar_item"
-        android:paddingEnd="10dp"
-        >
-
-    </com.google.android.material.search.SearchBar>
-
+        app:menu="@menu/serach_bar_item" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

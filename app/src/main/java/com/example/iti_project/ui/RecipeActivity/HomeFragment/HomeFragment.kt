@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +26,12 @@ import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
-    private lateinit var searchBar: SearchBar
+    //private lateinit var searchBar: SearchBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var mProgressDialog : ProgressDialog
+   // private lateinit var searchInput: EditText
+   private lateinit var searchView: SearchView
+
     private val viewModel: HomeFragmentViewModel by viewModels(){
         ProductViewModelFactory(MealsRepoImpl())
     }
@@ -42,17 +47,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchBar = view.findViewById(R.id.search_bar)
+        searchView = view.findViewById(R.id.search_view)
         recyclerView = view.findViewById(R.id.list_recipe)
         mProgressDialog = ProgressDialog(requireContext())
 
-        searchBar.setOnClickListener{
+        searchView.setOnClickListener{
           findNavController().navigate(R.id.search)
         }
-        searchBar.menu.getItem(0).setOnMenuItemClickListener {
-            findNavController().navigate(R.id.search)
-            true
-        }
+
+
 
         val adapter = AdapterForListRecipe()
 
