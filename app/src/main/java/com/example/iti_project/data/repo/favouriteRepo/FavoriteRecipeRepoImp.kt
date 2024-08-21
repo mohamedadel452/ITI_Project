@@ -40,7 +40,7 @@ class FavoriteRecipeRepoImp(
 //            for (favoriteRecipeID in _favoriteRecipeIDs) {
 
                 Log.i("email", " " + "52765")
-                val favoriteRecipeResult: Meals =localdata.getFavouriteRecipe("52765")
+                val favoriteRecipeResult: Meals =localdata.getFavouriteRecipe("52770")
 //
                 if (favoriteRecipeResult != null) {
                     Log.i("emailsa", " " + _favoriteRecipe.size)
