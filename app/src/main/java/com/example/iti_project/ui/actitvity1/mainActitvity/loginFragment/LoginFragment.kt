@@ -79,7 +79,7 @@ class LoginFragment : Fragment() {
                     Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(R.id.loginFragment, true)
-                  // findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    // findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     findNavController().navigate(R.id.recipeActivity, null,
                         NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build())
 
@@ -88,13 +88,12 @@ class LoginFragment : Fragment() {
 
                 }
 
-                    is UiState.Error -> {
+                is UiState.Error -> {
 
-                        Toast.makeText(requireContext(), uiState.errorMessage, Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    Toast.makeText(requireContext(), uiState.errorMessage, Toast.LENGTH_SHORT)
+                        .show()
                 }
+            }
         })
     }
 }
-

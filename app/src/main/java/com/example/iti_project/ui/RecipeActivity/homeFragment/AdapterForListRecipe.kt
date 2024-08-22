@@ -25,6 +25,7 @@ import com.example.iti_project.ui.RecipeActivity.Favourit.FavoriteFragmentViewMo
 
 class AdapterForListRecipe(
     private val onItemClicked: (String) -> Unit ,
+    context : Context
 ) : RecyclerView.Adapter<AdapterForListRecipe.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()

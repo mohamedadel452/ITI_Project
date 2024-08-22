@@ -18,6 +18,6 @@ interface ApiService {
     //search by name
     @GET("search.php")
     suspend fun getMealbyname(@Query("s") mealName: String): Response<MealsResponse>
-      //return list of meals
+    //return list of meals
 
 }

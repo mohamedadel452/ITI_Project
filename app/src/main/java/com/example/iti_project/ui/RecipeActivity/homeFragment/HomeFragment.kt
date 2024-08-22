@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,8 +29,8 @@ import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
-
-    private lateinit var searchBar: SearchBar
+    private lateinit var sr4btn :ImageButton
+    //private lateinit var searchBar: SearchBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var mProgressDialog: ProgressDialog
     private val viewModel: HomeFragmentViewModel by viewModels() {
@@ -54,28 +55,29 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchBar = view.findViewById(R.id.search_bar)
+        //searchBar = view.findViewById(R.id.search_bar)
         recyclerView = view.findViewById(R.id.list_recipe)
         mProgressDialog = ProgressDialog(requireContext())
-        adapter = AdapterForListRecipe{
+        sr4btn=view.findViewById(R.id.imageButton)
+        adapter = AdapterForListRecipe({
             val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment(it)
             findNavController().navigate(action)
-        }
-        searchBar.setOnClickListener {
+        }, requireContext())
+        sr4btn.setOnClickListener {
             findNavController().navigate(R.id.search)
         }
-        searchBar.menu.getItem(0).setOnMenuItemClickListener {
+        /*
+        sr4btn.menu.getItem(0).setOnMenuItemClickListener {
             findNavController().navigate(R.id.search)
             true
         }
-
+*/
 
         GlobalScope.launch(Dispatchers.Main) {
             recyclerView.adapter = adapter

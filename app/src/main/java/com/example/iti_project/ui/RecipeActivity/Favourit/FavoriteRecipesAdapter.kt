@@ -21,7 +21,7 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
     var meals = mutableListOf<Meals>()
     var favoriteUserIds = mutableListOf<String>()
     var favoriteUserRemovedIds = MediatorLiveData<String?>()
-//    private var favoriteUserRemovedIdsList : MutableList<String> = mutableListOf()
+    //    private var favoriteUserRemovedIdsList : MutableList<String> = mutableListOf()
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val mealName: TextView = view.findViewById(R.id.title_product)
         val mealImage: ImageView = view.findViewById(R.id.image_product)
