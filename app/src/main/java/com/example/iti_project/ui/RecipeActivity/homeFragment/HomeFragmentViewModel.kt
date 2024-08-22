@@ -1,4 +1,4 @@
-package com.example.iti_project.ui.RecipeActivity.homeFragment
+package com.example.iti_project.ui.RecipeActivity.HomeFragment
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.iti_project.data.models.Meals
+import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.ResultState
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -37,14 +39,14 @@ class HomeFragmentViewModel(private val repository: MealsRepo) : ViewModel() {
                 val response = async {  repository.getMeals()}.await()
 
                 // Switch to Main thread for UI updates
-                when (response) {
-                    is ResultState.Success -> {
-                        _meals.postValue(UiState.Success(response.data.meals))
+                    when (response) {
+                        is ResultState.Success -> {
+                            _meals.postValue(UiState.Success(response.data.meals))
+                        }
+                        is ResultState.Error -> {
+                            _meals.postValue(UiState.Error(response.errorMessage))
+                        }
                     }
-                    is ResultState.Error -> {
-                        _meals.postValue(UiState.Error(response.errorMessage))
-                    }
-                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Log.e("HomeFragmentViewModel", "Error fetching meals", e)
