@@ -2,6 +2,7 @@ package com.example.iti_project.ui.RecipeActivity.homeFragment
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,8 +24,6 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
     private val _meals: MutableLiveData<UiState<List<Meals>>> = MutableLiveData(UiState.Loading)
     val meals: LiveData<UiState<List<Meals>>> = _meals
 
-
-    private val _isSaved = MutableLiveData<Boolean>(false)
 
 
     fun getMeals() {
@@ -51,7 +50,7 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
         }
     }
 
-    var favoriteRecipes : MutableList<Meals> = mutableListOf()
+    var favoriteRecipes : MediatorLiveData<List<Meals>> = MediatorLiveData<List<Meals>>()
     var favoriteUserIds:  MutableList<String> = mutableListOf()
     init {
 
@@ -90,9 +89,9 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
 
             favoriteRecipeRepo.getRecipes()
             delay(200)
-            favoriteRecipes = favoriteRecipeRepo.favoriteRecipe.toMutableList()
+            favoriteRecipes.postValue( favoriteRecipeRepo.favoriteRecipe.value )
             favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
-            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
+//            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
         }
     }
 

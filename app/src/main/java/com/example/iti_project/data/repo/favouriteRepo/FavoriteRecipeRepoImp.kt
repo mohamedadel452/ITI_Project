@@ -20,8 +20,9 @@ class FavoriteRecipeRepoImp(
     ) : FavoriteRecipeRepo {
 
 
-    private var _favoriteRecipe: MutableList<Meals> = mutableListOf()
-    override val favoriteRecipe: List<Meals>
+    private var _favoriteRecipe: MediatorLiveData<List<Meals>> = MediatorLiveData<List<Meals>>(
+        listOf())
+    override val favoriteRecipe: LiveData<List<Meals>>
         get() = _favoriteRecipe
 
     private var _favoriteRecipeIDs: MutableList<String> = mutableListOf()
@@ -30,7 +31,13 @@ class FavoriteRecipeRepoImp(
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
-            getRecipes()
+            val favoriteList = async { localdata.getFavouriteListByEmail() }
+            _favoriteRecipeIDs = favoriteList.await()
+            Log.i("favoriteRecipes", ""+ favoriteRecipeIDs.size)
+            Log.i("favoriteRecipes", ""+localdata.getFavouriteRecipe(favoriteRecipeIDs).value?.size)
+//            _favoriteRecipe.addSource(localdata.getFavouriteRecipe(favoriteRecipeIDs)) { favoriteRecipe ->
+//                if (favoriteRecipe.isNotEmpty()) _favoriteRecipe.postValue( favoriteRecipe)
+//            }
         }
     }
     override suspend fun getRecipes()  {
@@ -38,14 +45,22 @@ class FavoriteRecipeRepoImp(
         GlobalScope.launch(Dispatchers.IO) {
             val favoriteList = async { localdata.getFavouriteListByEmail() }
             _favoriteRecipeIDs = favoriteList.await()
-            _favoriteRecipe =localdata.getFavouriteRecipe(favoriteRecipeIDs) as MutableList<Meals>
-            Log.i("_favoriteRecipe", "  "+ _favoriteRecipe.size)
+            _favoriteRecipe.postValue( localdata.getFavouriteRecipe(favoriteRecipeIDs).value )
+            Log.i("_favoriteRecipe", "  "+ _favoriteRecipe.value?.size)
         }
     }
 
 
     fun updateFavoriteRecipe(meal: Meals) {
-        _favoriteRecipe.add(meal)
+        val list: MutableList<Meals>
+        if (_favoriteRecipe.value  != null) {
+            list = _favoriteRecipe.value as MutableList<Meals>
+            list.add(meal)
+            _favoriteRecipe.postValue(list)
+        }else{
+            list =  mutableListOf(meal)
+            _favoriteRecipe.postValue(list)
+        }
     }
 
     override suspend fun addFavouriteRecipe(meal: Meals): Long {
@@ -65,12 +80,19 @@ class FavoriteRecipeRepoImp(
     }
 
     private fun deleteFromFavoriteRecipe(id: String) {
-        for (i in favoriteRecipe) {
-            if (i.idMeal == id) {
-                _favoriteRecipe.remove(i)
-                break
+
+        val list: MutableList<Meals>
+        if (_favoriteRecipe.value  != null) {
+            list = _favoriteRecipe.value as MutableList<Meals>
+            for (i in list) {
+                if (i.idMeal == id) {
+                    list.remove(i)
+                    break
+                }
             }
+            _favoriteRecipe.postValue(list)
         }
+
     }
 
 }

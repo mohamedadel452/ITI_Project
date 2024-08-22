@@ -8,7 +8,7 @@ import com.example.iti_project.data.models.UserModel
 
 interface FavoriteRecipeRepo {
 
-    val favoriteRecipe: List<Meals>
+    val favoriteRecipe: LiveData<List<Meals>>
     val favoriteRecipeIDs: List<String>
     suspend fun addFavouriteRecipe(meal: Meals): Long
 
