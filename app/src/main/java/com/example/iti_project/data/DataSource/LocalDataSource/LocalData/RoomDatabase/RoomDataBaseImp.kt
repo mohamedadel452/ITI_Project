@@ -9,7 +9,6 @@ import androidx.room.TypeConverters
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.favoriteDao.FavoriteDao
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.userdao.UserDao
 import com.example.iti_project.data.models.Meals
-import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.UserModel
 
 
@@ -57,7 +56,7 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
         return getFavoriteDao().addFavouriteRecipe(meal)
     }
 
-    override fun getFavouriteRecipe(id : List<String>) : List<Meals> {
+    override fun getFavouriteRecipe(id : List<String>) : LiveData<List<Meals>> {
         return getFavoriteDao().getFavouriteRecipe(id)
     }
 

@@ -13,7 +13,7 @@ interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addFavouriteRecipe(meal: Meals): Long
     @Query("SELECT * FROM meals WHERE idMeal in (:id)")
-    fun getFavouriteRecipe(id : List<String>) : List<Meals>
+    fun getFavouriteRecipe(id : List<String>) : LiveData<List<Meals>>
 
     @Query("DELETE FROM meals WHERE idMeal=:id")
     suspend fun deleteFavouriteRecipeList(id : String) : Int

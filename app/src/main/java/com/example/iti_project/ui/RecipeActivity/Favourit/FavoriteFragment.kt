@@ -17,6 +17,7 @@ import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
+import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import com.example.iti_project.ui.RecipeActivity.homeFragment.HomeFragmentViewModel
@@ -30,13 +31,21 @@ import kotlinx.coroutines.launch
 
 class FavoriteFragment : Fragment() {
 
-    private lateinit var rv_favoriteRecipes : RecyclerView
+    private lateinit var rv_favoriteRecipes: RecyclerView
 
 
     private lateinit var favoriteRecipesAdapter: FavoriteRecipesAdapter
 
-    private val viewModel: FavoriteFragmentViewModel by viewModels(){
-        FavoriteFragmentViewModelFactory(FavoriteRecipeRepoImp(LocalDataSourceImp( requireContext(), RoomDataBaseImp.getInstance(requireContext()) , SharedPreferenceImp.getInstance(requireContext()))))
+    private val viewModel: FavoriteFragmentViewModel by viewModels() {
+        FavoriteFragmentViewModelFactory(
+            FavoriteRecipeRepoImp(
+                LocalDataSourceImp(
+                    requireContext(),
+                    RoomDataBaseImp.getInstance(requireContext()),
+                    SharedPreferenceImp.getInstance(requireContext())
+                )
+            )
+        )
     }
 
     override fun onCreateView(
@@ -56,24 +65,29 @@ class FavoriteFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        GlobalScope.launch (Dispatchers.Main){
-            delay(2000)
+        GlobalScope.launch(Dispatchers.Main) {
+            delay(20000)
             instantiateProductsRecyclerView()
 
-            favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            favoriteRecipesAdapter.setData(
+                viewModel.favoriteRecipes.value as MutableList<Meals>,
+                viewModel.favoriteUserIds
+            )
             listenToDeleteFavouriteItems()
         }
+//        listenToUpdateFavouriteItems()
 
     }
+
     private fun instantiateProductsRecyclerView() {
-        favoriteRecipesAdapter = FavoriteRecipesAdapter{ favoriteRecipeID  ->
+        favoriteRecipesAdapter = FavoriteRecipesAdapter { favoriteRecipeID ->
             val action =
                 FavoriteFragmentDirections.actionFavouritToRecipeDetailsFragment(favoriteRecipeID)
             findNavController().navigate(action)
         }
         rv_favoriteRecipes.apply {
-            layoutManager=
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = favoriteRecipesAdapter
         }
     }
@@ -81,7 +95,7 @@ class FavoriteFragment : Fragment() {
 
     private fun listenToDeleteFavouriteItems() {
         favoriteRecipesAdapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
-            if (!response.isNullOrEmpty() ) {
+            if (!response.isNullOrEmpty()) {
                 viewModel.deleteFavoriteRecipe(response)
                 viewModel.getFavoriteList()
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
@@ -89,4 +103,15 @@ class FavoriteFragment : Fragment() {
         }
     }
 
+    private fun listenToUpdateFavouriteItems() {
+        viewModel.favoriteRecipes.observe(viewLifecycleOwner) { response ->
+            if (!response.isNullOrEmpty()) {
+                favoriteRecipesAdapter.setData(
+                    response as MutableList<Meals>,
+                    viewModel.favoriteUserIds
+                )
+//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            }
+        }
+    }
 }
