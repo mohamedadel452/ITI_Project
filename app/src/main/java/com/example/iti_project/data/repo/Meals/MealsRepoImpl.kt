@@ -15,7 +15,7 @@ class MealsRepoImpl (
         return  remoteDataSource.getMeals()
     }
 
-    override suspend fun getMealsDetails(MealId: String): Meals {
+    override suspend fun getMealsDetails(MealId: String): ResultState<MealsResponse> {
         return  remoteDataSource.getMealsDetails(MealId)
     }
 

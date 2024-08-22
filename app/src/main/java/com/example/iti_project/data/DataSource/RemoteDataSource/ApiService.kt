@@ -15,7 +15,7 @@ interface ApiService {
 
 
     @GET("lookup.php")   //use in details fragment
-    suspend fun getMealsDetails(@Query("i") mealId: String): Meals
+    suspend fun getMealsDetails(@Query("i") mealId: String): Response<MealsResponse>
 
     //search by name
     @GET("search.php")

@@ -4,51 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
     tools:context=".ui.RecipeActivity.DetailsFragment.DetailsFragment">
-
-    <!-- Top Bar with Back and Expand buttons -->
-    <LinearLayout
-        android:id="@+id/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp"
-       >
-
-        <!-- Back button -->
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="back_button"
-            android:src="@drawable/back" />
-
-        <!-- Spacer -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <!-- Expand button -->
-        <ImageButton
-            android:id="@+id/btn_expand"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="expand_button"
-            android:src="@drawable/expand" />
-    </LinearLayout>
 
     <!-- Image with play button -->
     <RelativeLayout
         android:id="@+id/image_container"
         android:layout_width="match_parent"
-        android:layout_height="316dp"
+        android:layout_height="280dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -65,205 +28,207 @@
 
         <!-- Play button -->
         <ImageButton
-            android:id="@+id/btn_play"
+            android:id="@+id/play_video"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
             android:contentDescription="play_video"
             android:src="@drawable/play" />
+
+
     </RelativeLayout>
+    <!-- Recipe Title -->
 
     <!-- Recipe details -->
-    <ScrollView
+
+    <TextView
+        android:id="@+id/recipe_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp"
+        android:text="Yangnyeom Chicken"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_container" />
+
+    <!-- Author details -->
+    <LinearLayout
+        android:id="@+id/author_details"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_title"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/author_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/img" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:weightSum="2"
+            >
+
+            <TextView
+                android:id="@+id/recipy_catagory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="3dp"
+                android:text="Andrew Jun"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_margin="3dp"
+                android:textAppearance="?attr/textAppearanceBody1" />
+            <TextView
+                android:id="@+id/area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="strArea"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_margin="3dp"
+                android:textAppearance="?attr/textAppearanceBody1" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+
+        </View>
+
+        <Button
+            android:id="@+id/add_to_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorPrimary"
+            android:gravity="center"
+            android:layout_marginStart="16dp"
+            android:text="Add to favorites"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+    <!-- Overview, Ingredients, Directions buttons -->
+    <LinearLayout
+        android:id="@+id/tab_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/author_details">
+
+        <Button
+            android:id="@+id/show_instruction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorPrimary"
+            android:text="@string/hide_instructions"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/show_Ingredients"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorSwitchThumbNormal"
+            android:text="@string/show_ingredients"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/scroll_view_Instructions"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_container"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/tab_buttons">
+
+
+        <LinearLayout
+            android:id="@+id/recipe_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+            <!-- Recipe description -->
+            <TextView
+                android:id="@+id/recipe_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yangnyeom is crispy fried chicken coated in sweet and spicy sauce. It's accompanied by pickled radishes, sliced scallions, and a side of rice. Cold beer or soft drinks are popular pairings. Enjoy!Yangnyeom is crispy fried chicken coated in sweet and spicy sauce. It's accompanied by pickled radishes, sliced scallions, and a side of rice. Cold beer or soft drinks are popular pairings. Enjoy!"
+                android:textAppearance="?attr/textAppearanceBody1" />
+
+
+        </LinearLayout>
+    </ScrollView>
+    <ScrollView
+        android:id="@+id/scroll_view_Ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/tab_buttons"
+        android:visibility="gone"
         >
 
 
-
-    <LinearLayout
-        android:id="@+id/recipe_details"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:padding="16dp"
-        android:orientation="vertical">
-
-        <!-- Recipe Title -->
-        <TextView
-            android:id="@+id/recipe_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yangnyeom Chicken"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
-
-        <!-- Author details -->
         <LinearLayout
-            android:id="@+id/author_details"
+            android:id="@+id/recipe_Ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/author_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:contentDescription="author_image"
-                android:src="@drawable/img_1" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:orientation="vertical">
+            <!-- Recipe_Ingredients -->
 
-                <TextView
-                    android:id="@+id/author_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Andrew Jun"
-                    android:textAppearance="?attr/textAppearanceBody1" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_Ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-                <TextView
-                    android:id="@+id/author_handle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="andrewjun"
-                    android:textAppearance="?attr/textAppearanceCaption" />
-            </LinearLayout>
 
-            <!-- Likes -->
-            <TextView
-                android:id="@+id/like_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:drawableLeft="@drawable/heart"
-                android:drawablePadding="8dp"
-                android:text="273 Likes"
-                android:textAppearance="?attr/textAppearanceBody1" />
+
+
         </LinearLayout>
-
-        <!-- Overview, Ingredients, Directions buttons -->
-        <LinearLayout
-            android:id="@+id/tab_buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <Button
-                android:id="@+id/btn_overview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="?attr/colorPrimary"
-                android:text="Overview"
-                android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/btn_ingredients"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Ingredients" />
-
-            <Button
-                android:id="@+id/btn_directions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Directions" />
-        </LinearLayout>
-
-        <!-- Recipe description -->
-        <TextView
-            android:id="@+id/recipe_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Yangnyeom is crispy fried chicken coated in sweet and spicy sauce. It's accompanied by pickled radishes, sliced scallions, and a side of rice. Cold beer or soft drinks are popular pairings. Enjoy!"
-            android:textAppearance="?attr/textAppearanceBody1" />
-
-        <!-- Cooking time, Calories, Origin -->
-        <LinearLayout
-            android:id="@+id/recipe_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/cook_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/time"
-                    android:drawablePadding="4dp"
-                    android:gravity="center"
-                    android:text="12 mins"
-                    android:textAppearance="?attr/textAppearanceCaption" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/calories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/calories"
-                    android:drawablePadding="4dp"
-                    android:gravity="center"
-                    android:text="245"
-                    android:textAppearance="?attr/textAppearanceCaption" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/origin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/regoin"
-                    android:drawablePadding="4dp"
-                    android:gravity="center"
-                    android:text="Korea"
-                    android:textAppearance="?attr/textAppearanceCaption" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Reviews Section -->
-        <TextView
-            android:id="@+id/review_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Reviews (209)"
-            android:textAppearance="?attr/textAppearanceSubtitle1" />
-    </LinearLayout>
     </ScrollView>
+
+    <!-- Likes -->
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,10 +40,10 @@ class AdapterForListRecipe() : RecyclerView.Adapter<AdapterForListRecipe.MyViewH
         holder.bind(meals[position])
 
 
-     /*   holder.itemView.rootView.setOnClickListener {
+        holder.itemView.rootView.setOnClickListener {
             val id = meals[position].idMeal
-            if (id != null) listener(id)
-        }*/
+            listener(id)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -57,7 +57,7 @@ class AdapterForListRecipe() : RecyclerView.Adapter<AdapterForListRecipe.MyViewH
         notifyDataSetChanged()
     }
 
-  /*  fun setListener( listener:(String)->Unit){
+    fun setListener( listener:(String)->Unit){
         this.listener = listener
-    }*/
+    }
 }

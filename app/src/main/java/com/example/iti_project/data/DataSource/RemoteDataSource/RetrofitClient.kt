@@ -42,8 +42,24 @@ object RetrofitClient : RemoteDataSource {
     }
 
 
-    override suspend fun getMealsDetails(MealId: String): Meals {
-       return apiService.getMealsDetails(MealId)
+    override suspend fun getMealsDetails(MealId: String): ResultState<MealsResponse> {
+        return try {
+            Log.e( "id:",MealId.toString())
+        val response = apiService.getMealsDetails(MealId)
+
+        if (response.isSuccessful) {
+            Log.e( "getMealsByIdBodey:",response.body().toString())
+            Log.e( "getMealsByIdCode:",response.code().toString())
+            response.body()?.let {
+                 ResultState.Success(it)
+            }?: ResultState.Error(Exception("Empty response body").toString())
+        }
+        else {
+            ResultState.Error(Exception("Network call failed: ${response.code()} ${response.message()}").toString())
+        }}
+        catch (e: Exception) {
+            ResultState.Error(e.toString())
+        }
     }
 
     override suspend fun getMealbyname(MealName: String): ResultState<MealsResponse> {

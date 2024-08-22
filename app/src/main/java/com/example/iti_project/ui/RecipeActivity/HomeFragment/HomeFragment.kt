@@ -56,6 +56,13 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
+
+        val listner :(String) -> Unit = {it ->
+            val action = HomeFragmentDirections.actionHomeToDetailsFragment(it)
+            findNavController().navigate(action)
+        }
+        adapter.setListener(listner)
+
         searchBar.setOnClickListener {
             findNavController().navigate(R.id.search)
         }

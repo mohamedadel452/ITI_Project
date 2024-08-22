@@ -7,6 +7,6 @@ import org.intellij.lang.annotations.Pattern
 
 interface RemoteDataSource {
     suspend fun getMeals(): ResultState<MealsResponse>
-    suspend fun getMealsDetails(MealId:String): Meals
+    suspend fun getMealsDetails(MealId:String): ResultState<MealsResponse>
     suspend fun  getMealbyname(MealName:String): ResultState<MealsResponse>
 }
