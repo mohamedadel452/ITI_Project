@@ -40,7 +40,7 @@ class FavoriteFragment : Fragment() {
     }
     override fun onStart() {
         super.onStart()
-        viewModel.getFavoriteList()
+
     }
 
     override fun onCreateView(
@@ -48,6 +48,7 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        viewModel.getFavoriteList()
         return inflater.inflate(R.layout.fragment_favourit, container, false)
     }
 
@@ -64,7 +65,9 @@ class FavoriteFragment : Fragment() {
             instantiateProductsRecyclerView()
 
             favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            listenToDeleteFavouriteItems()
         }
+
     }
     private fun instantiateProductsRecyclerView() {
         favoriteRecipesAdapter = FavoriteRecipesAdapter{ favoriteRecipeID  ->
@@ -73,32 +76,21 @@ class FavoriteFragment : Fragment() {
             findNavController().navigate(action)
         }
         rv_favoriteRecipes.apply {
-            layoutManager =
-                GridLayoutManager(requireContext(),2)
+            layoutManager=
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = favoriteRecipesAdapter
         }
     }
 
 
-//    private fun listenToProductsResponse() {
-//        viewModel.products.observe(viewLifecycleOwner) { response ->
-//            when (response) {
-//                is UiState.Error -> {
-//                    Toast.makeText(requireContext(), response.errorMessage, Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//
-//                UiState.Loading -> {
-//                    //loading indicator
-//                }
-//
-//                is UiState.Success -> {
-//                    GlobalScope.launch(Dispatchers.Main) {
-//                        productAdapter.submitList(response.data )
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private fun listenToDeleteFavouriteItems() {
+        favoriteRecipesAdapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
+            if (!response.isNullOrEmpty() ) {
+                viewModel.deleteFavoriteRecipe(response)
+                viewModel.getFavoriteList()
+//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            }
+        }
+    }
 
 }
