@@ -59,22 +59,25 @@ class AdapterForListRecipe(
             Log.i("ids", meal.idMeal)
             holder.isFavorite = true
             holder.favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
+        }else{
+            holder.favoriteImage.clearColorFilter()
+            holder.isFavorite = false
         }
 
         holder.favoriteImage.setOnClickListener {
 
-//            Glide.with(holder.favoriteImage.context).load(R.drawable.add).into(holder.favoriteImage)
+
             if (holder.isFavorite){
                 holder.isFavorite = false
                 holder.favoriteImage.clearColorFilter()
                 favoriteUserRemovedIds.postValue(meal.idMeal)
-//                favoriteRecipeViewModel.deleteFavoriteRecipe(meal.idMeal)
+                favoriteUserIds.remove(meal.idMeal)
             }else {
                 holder.isFavorite = true
                 holder.favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
                 favoriteUserAddMeal.postValue(meal)
                 Log.i("RED ids", meal.idMeal)
-//                favoriteRecipeViewModel.addFavoriteRecipe(meal)
+                favoriteUserIds.add( meal.idMeal)
             }
 
         }
@@ -100,7 +103,7 @@ class AdapterForListRecipe(
     }
 
     fun updateIDs(recipeIDs : MutableList<String>) {
-        favoriteUserIds = recipeIDs
+
         Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
     }
