@@ -14,13 +14,13 @@
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
 
-        android:layout_width="373dp"
-        android:layout_height="69dp"
-        android:text="Type the meal you want..."
-        android:focusable="true"
+        android:layout_width="382dp"
+        android:layout_height="65dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_textbox"
+        android:focusable="true"
         android:queryHint="Type the meal you want..."
+        android:text="Type the meal you want..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
