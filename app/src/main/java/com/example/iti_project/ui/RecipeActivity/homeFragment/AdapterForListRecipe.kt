@@ -73,6 +73,7 @@ class AdapterForListRecipe(
                 holder.isFavorite = true
                 holder.favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
                 favoriteUserAddMeal.postValue(meal)
+                Log.i("RED ids", meal.idMeal)
 //                favoriteRecipeViewModel.addFavoriteRecipe(meal)
             }
 
