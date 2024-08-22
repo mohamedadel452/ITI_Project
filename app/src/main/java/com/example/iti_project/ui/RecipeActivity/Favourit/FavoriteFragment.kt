@@ -34,43 +34,62 @@ class FavoriteFragment : Fragment() {
 
 
     private lateinit var favoriteRecipesAdapter: FavoriteRecipesAdapter
+
+    private val viewModel: FavoriteFragmentViewModel by viewModels(){
+        FavoriteFragmentViewModelFactory(FavoriteRecipeRepoImp(LocalDataSourceImp( requireContext(), RoomDataBaseImp.getInstance(requireContext()) , SharedPreferenceImp.getInstance(requireContext()))))
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
+
+    }
+    override fun onStart() {
+        super.onStart()
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        viewModel.getFavoriteList()
         return inflater.inflate(R.layout.fragment_favourit, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
-        GlobalScope.launch(Dispatchers.Main){   instantiateProductsRecyclerView()}
-        listenToProductsResponse()
-    }
 
+
+    override fun onResume() {
+        super.onResume()
+        GlobalScope.launch (Dispatchers.Main){
+            delay(2000)
+            instantiateProductsRecyclerView()
+
+            favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            listenToDeleteFavouriteItems()
+        }
+
+    }
     private fun instantiateProductsRecyclerView() {
-        val context = requireContext()
-        favoriteRecipesAdapter = FavoriteRecipesAdapter( { favoriteRecipeID  ->
+        favoriteRecipesAdapter = FavoriteRecipesAdapter{ favoriteRecipeID  ->
             val action =
                 FavoriteFragmentDirections.actionFavouritToRecipeDetailsFragment(favoriteRecipeID)
             findNavController().navigate(action)
-        } , context)
+        }
         rv_favoriteRecipes.apply {
-            layoutManager =
-                GridLayoutManager(requireContext(),2)
+            layoutManager=
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = favoriteRecipesAdapter
         }
     }
 
-    private fun listenToProductsResponse() {
-        GlobalScope.launch(Dispatchers.Main) {
-             async {
-                 delay(2000)
 
-                 favoriteRecipesAdapter.setData()
+    private fun listenToDeleteFavouriteItems() {
+        favoriteRecipesAdapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
+            if (!response.isNullOrEmpty() ) {
+                viewModel.deleteFavoriteRecipe(response)
+//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
-
         }
     }
 

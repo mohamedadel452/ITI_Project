@@ -10,20 +10,5 @@ import com.example.iti_project.R
 
 class RecipeDetails : Fragment() {
 
-    companion object {
-        fun newInstance() = RecipeDetails()
-    }
+}
 
-    private val viewModel: RecipeDetailsViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_recipe_detail

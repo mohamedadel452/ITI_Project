@@ -16,7 +16,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"/>
+
+
+    <ImageView
+        android:id="@+id/iv_save_to_favorit"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:src="@drawable/save"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:scaleType="fitXY"
+        tools:ignore="MissingConstraints"></ImageView>
 
     <TextView
         android:id="@+id/meal_name_text_view"

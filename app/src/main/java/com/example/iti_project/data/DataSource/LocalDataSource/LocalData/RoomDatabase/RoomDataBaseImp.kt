@@ -13,7 +13,7 @@ import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.UserModel
 
 
-@Database(entities = [UserModel::class , Meals::class], version = 7)
+@Database(entities = [UserModel::class , Meals::class], version = 3 , exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
 
@@ -57,7 +57,7 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
         return getFavoriteDao().addFavouriteRecipe(meal)
     }
 
-    override suspend fun getFavouriteRecipe(id : String) : Meals{
+    override fun getFavouriteRecipe(id : List<String>) : List<Meals> {
         return getFavoriteDao().getFavouriteRecipe(id)
     }
 
@@ -65,7 +65,7 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
         return getFavoriteDao().deleteFavouriteRecipeList(id)
     }
 
-//    override suspend fun getAllRecipes(): LiveData<List<RecipesModel>> {
+    //    override suspend fun getAllRecipes(): LiveData<List<RecipesModel>> {
 //
 //    }
 //

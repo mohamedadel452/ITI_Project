@@ -1,5 +1,6 @@
 package com.example.iti_project.ui.RecipeActivity.SearchFragment
 
+import MealsAdapter
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -20,16 +21,23 @@ import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
 import com.google.android.material.search.SearchBar
 import androidx.appcompat.widget.SearchView
+import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDatabaseInterface
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
+import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 
 class SearchFragment : Fragment() {
 
+    private lateinit var favoriteRepo: FavoriteRecipeRepoImp
     private lateinit var searchRecyclerView: RecyclerView
     private lateinit var mealsAdapter: MealsAdapter
     private lateinit var searchView: SearchView
 
     private val searchViewModel: SearchViewModel by viewModels {
-        SearchViewModel.SearchViewModelFactory(MealsRepoImpl(RetrofitClient))
-    }
+
+        SearchViewModel.SearchViewModelFactory(MealsRepoImpl(RetrofitClient),favoriteRepo)    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,11 +46,26 @@ class SearchFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
+        // Initialize RoomDataSource (example using Room)
+        val roomDataSource: RoomDatabaseInterface = RoomDataBaseImp.getInstance(requireContext())
+
+        // Initialize SharedPreferencesDataSource using your SharedPreferenceImp class
+        val sharedPreferencesDataSource: SharedPreferenceInterface = SharedPreferenceImp.getInstance(requireContext())
+
+        // Initialize LocalDataSourceImp
+        val localDataSource = LocalDataSourceImp(requireContext(), roomDataSource, sharedPreferencesDataSource)
+
+        // Initialize favoriteRepo
+        favoriteRepo = FavoriteRecipeRepoImp(localDataSource)
+
         searchView = view.findViewById(R.id.search_view)
         searchRecyclerView = view.findViewById(R.id.search_list_view)
 
         // Initialize RecyclerView
-        mealsAdapter = MealsAdapter(requireContext(), emptyList())
+        mealsAdapter = MealsAdapter(requireContext(), emptyList()) { meal ->
+            searchViewModel.addMealToFavorites(meal)
+            Toast.makeText(requireContext(), "${meal.strMeal} added to favorites", Toast.LENGTH_SHORT).show()
+        }
         searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         searchRecyclerView.adapter = mealsAdapter
 
@@ -55,9 +78,11 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    mealsAdapter.updateMeals(emptyList()) // Clear the list when input is cleared
+                } else {
 
-                newText?.let {
-                    searchViewModel.searchMeals(it)
+                    searchViewModel.searchMeals(newText)
                 }
                 return true
             }

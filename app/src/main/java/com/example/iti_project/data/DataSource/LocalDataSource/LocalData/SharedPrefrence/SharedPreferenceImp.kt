@@ -3,6 +3,7 @@ package com.example.iti_project.data.DataSource.LocalDataSource.LocalData.Shared
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.concurrent.Volatile
@@ -29,19 +30,28 @@ class SharedPreferenceImp private constructor(val context: Context) : SharedPref
     }
 
 
-    override suspend fun setLoggedIn(email : String): Boolean {
-
-        return withContext(Dispatchers.IO) {
+    override fun setLoggedIn(email: String): Boolean {
+        Log.i("shared", email)
+        return if (!email.contains("Not Found") && email != "") {
             sharedPreference.edit()
                 .putString("login", email)
                 .commit() // commit returns true if changes were successfully written to persistent storage
+        } else {
 
+            sharedPreference.edit().remove("login")
+                .commit()
         }
+
     }
 
     override suspend fun getLoggedIn(): String? {
         return withContext(Dispatchers.IO) {
-            sharedPreference.getString("login" , "Not Found")
+            val loginValue = sharedPreference.all["login"]
+            when (loginValue) {
+                is String -> loginValue
+                is Boolean -> loginValue.toString() // Handle if the value is a Boolean
+                else -> "Not Found"
+            }
         }
     }
 }

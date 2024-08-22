@@ -15,7 +15,7 @@ interface LocalDataSource {
     suspend fun getLoggedIn(): String
 
     //it will return true if it set the value successfully
-    suspend fun setLoggedIn(email : String): Boolean
+    fun setLoggedIn(email : String): Boolean
 
     suspend fun addFavouriteRecipe(favoriteID : String):Boolean
 
@@ -24,7 +24,7 @@ interface LocalDataSource {
 
     suspend fun addFavouriteRecipe(meal: Meals): Long
 
-    suspend fun getFavouriteRecipe(id : String) :Meals
+    fun getFavouriteRecipe(id : List<String>): List<Meals>
 
     suspend fun deleteFavouriteRecipeList(id : String) : Int
 }

@@ -1,5 +1,6 @@
 package com.example.iti_project.ui.actitvity1.mainActitvity.splashFragment
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,14 +9,18 @@ import com.example.iti_project.data.repo.UserRepo.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.log
 
 class SplashViewModel(private val userRepo: UserRepo) : ViewModel()
 {
 
     fun checkLoginStatus(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
+
             val isLoggedIn = withContext(Dispatchers.IO) {
-                userRepo.getLoggedIn() != "" && userRepo.getLoggedIn() !="Not Found"
+                val response = userRepo.getLoggedIn()
+                Log.i("response", response)
+                response != "" && response !="Not Found"
             }
             if (isLoggedIn != null)
                 onResult(isLoggedIn)

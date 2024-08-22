@@ -6,31 +6,28 @@ import com.google.gson.annotations.SerializedName
 
 data class MealsResponse(
 
-val  meals : List<Meals> = listOf(),
+    var  meals : List<Meals> = listOf(),
 )
-
-
-
 
 @Entity(tableName = "Meals")
 data class Meals (
 
-    @SerializedName("idMeal") @PrimaryKey val idMeal: String, //id
-    @SerializedName("strMeal") val strMeal: String, //name
-    @SerializedName("strMealThumb") val strMealThumb: String, //thumbnail
-    @SerializedName("ingredient") val ingredient: Ingredient? = null,
-    @SerializedName("strCategory") val strCategory : String,
-    @SerializedName("strArea") val strArea : String,  //country
-    @SerializedName("strInstructions") val strInstructions: String,
-    @SerializedName("strYoutube") val strYoutube: String,  //youtube link
-    @SerializedName("strTags") val strTags: String,
-    @SerializedName("measurements") val measurements: List<String?> = listOf()
-    )
+    @SerializedName("idMeal") @PrimaryKey var idMeal: String, //id
+    @SerializedName("strMeal") var strMeal: String, //name
+    @SerializedName("strMealThumb") var strMealThumb: String, //thumbnail
+    @SerializedName("ingredient") var ingredient: Ingredient? = null,
+    @SerializedName("strCategory") var strCategory : String? = null,
+    @SerializedName("strArea") var strArea : String? = null,  //country
+    @SerializedName("strInstructions") var strInstructions: String? = null,
+    @SerializedName("strYoutube") var strYoutube: String? = null,  //youtube link
+    @SerializedName("strTags") var strTags: String? = null,
+    @SerializedName("measurements") var measurements: List<String?>? = emptyList()
+)
 
 
 data class Ingredient(
-    @SerializedName("idIngredient") val idIngredient: String?,
-    @SerializedName("strIngredient") val strIngredient: String?,
-    @SerializedName("strDescription") val strDescription: String?,
-    @SerializedName("strType") val strType: String?
+    @SerializedName("idIngredient") var idIngredient: String? = null ,
+    @SerializedName("strIngredient") var strIngredient: String?= null ,
+    @SerializedName("strDescription") var strDescription: String?= null ,
+    @SerializedName("strType") var strType: String?= null
 )

@@ -30,28 +30,17 @@ class FavoriteRecipeRepoImp(
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
-            val favoriteList = async { localdata.getFavouriteListByEmail() }
-            _favoriteRecipeIDs = favoriteList.await()
-//            Log.i("email", " " + favoriteRecipeIDs?.first())
+            getRecipes()
         }
     }
-    override suspend fun getRecipes() {
+    override suspend fun getRecipes()  {
 
-//            for (favoriteRecipeID in _favoriteRecipeIDs) {
-
-                Log.i("email", " " + "52765")
-                val favoriteRecipeResult: Meals =localdata.getFavouriteRecipe("52770")
-//
-                if (favoriteRecipeResult != null) {
-                    Log.i("emailsa", " " + _favoriteRecipe.size)
-                    _favoriteRecipe.add(favoriteRecipeResult)
-                    Log.i("favo", _favoriteRecipe?.first()?.strArea ?: " sfdsdf ")
-                }
-
-
-//            }
-
-
+        GlobalScope.launch(Dispatchers.IO) {
+            val favoriteList = async { localdata.getFavouriteListByEmail() }
+            _favoriteRecipeIDs = favoriteList.await()
+            _favoriteRecipe =localdata.getFavouriteRecipe(favoriteRecipeIDs) as MutableList<Meals>
+            Log.i("_favoriteRecipe", "  "+ _favoriteRecipe.size)
+        }
     }
 
 
@@ -71,6 +60,7 @@ class FavoriteRecipeRepoImp(
         mutableList.remove(id)
         deleteFromFavoriteRecipe(id)
         localdata.addFavouriteRecipeList(mutableList)
+
         return localdata.deleteFavouriteRecipeList(id)
     }
 

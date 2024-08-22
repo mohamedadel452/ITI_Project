@@ -17,9 +17,8 @@
         android:layout_width="373dp"
         android:layout_height="69dp"
         android:text="Type the meal you want..."
-        android:focusableInTouchMode="true"
+        android:focusable="true"
         android:layout_marginTop="16dp"
-
         android:background="@drawable/rounded_textbox"
         android:queryHint="Type the meal you want..."
         app:layout_constraintEnd_toEndOf="parent"

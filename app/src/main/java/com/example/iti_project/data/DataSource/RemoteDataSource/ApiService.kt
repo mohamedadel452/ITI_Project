@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("search.php")
 
-    suspend fun getMeals(@Query("f") pattern: String = "%"):Response<MealsResponse>
+    suspend fun getMeals(@Query("s") pattern: String = "a"):Response<MealsResponse>
 
     @GET("lookup.php")   //use in details fragment
     suspend fun getMealsDetails(@Query("i") mealId: String): Meals
@@ -18,6 +18,6 @@ interface ApiService {
     //search by name
     @GET("search.php")
     suspend fun getMealbyname(@Query("s") mealName: String): Response<MealsResponse>
-      //return list of meals
+    //return list of meals
 
 }
