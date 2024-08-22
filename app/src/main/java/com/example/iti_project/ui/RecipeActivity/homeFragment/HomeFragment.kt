@@ -44,15 +44,17 @@ class HomeFragment : Fragment() {
         )
     }
     private lateinit var adapter: AdapterForListRecipe
-    override fun onStart() {
-        super.onStart()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.getMeals()
+        viewModel.getFavoriteList()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -121,7 +123,6 @@ class HomeFragment : Fragment() {
         adapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
             if (!response.isNullOrEmpty() ) {
                 viewModel.deleteFavoriteRecipe(response)
-                viewModel.getFavoriteList()
                 viewModel.removeFavorite(response)
                 adapter.updateIDs(viewModel.favoriteUserIds)
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
@@ -133,7 +134,6 @@ class HomeFragment : Fragment() {
         adapter.favoriteUserAddMeal.observe(viewLifecycleOwner) { response ->
             if (response != null ) {
                 viewModel.addFavoriteRecipe(response)
-                viewModel.getFavoriteList()
                 viewModel.addFavorite(response.idMeal)
                 adapter.updateIDs(viewModel.favoriteUserIds)
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
@@ -141,4 +141,8 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.getFavoriteList()
+    }
 }

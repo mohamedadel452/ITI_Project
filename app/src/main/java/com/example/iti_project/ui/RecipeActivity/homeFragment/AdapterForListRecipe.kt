@@ -59,6 +59,8 @@ class AdapterForListRecipe(
             Log.i("ids", meal.idMeal)
             holder.isFavorite = true
             holder.favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
+        }else{
+            holder.favoriteImage.clearColorFilter()
         }
 
         holder.favoriteImage.setOnClickListener {

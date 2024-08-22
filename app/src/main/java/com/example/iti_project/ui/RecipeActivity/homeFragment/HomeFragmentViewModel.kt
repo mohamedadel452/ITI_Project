@@ -71,6 +71,7 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
 
             GlobalScope.launch(Dispatchers.IO) {
                 favoriteRecipeRepo.addFavouriteRecipe(meal)
+//                getFavoriteList()
             }
         }
     }
@@ -80,12 +81,12 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
 
             GlobalScope.launch(Dispatchers.IO) {
                 favoriteRecipeRepo.deleteFavouriteRecipeList(id)
-
+//                getFavoriteList()
             }
         }
     }
 
-    fun  getFavoriteList(){
+    fun getFavoriteList(){
         GlobalScope.launch(Dispatchers.IO) {
 
             favoriteRecipeRepo.getRecipes()
