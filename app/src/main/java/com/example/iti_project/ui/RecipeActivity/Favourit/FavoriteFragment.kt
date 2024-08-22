@@ -38,10 +38,6 @@ class FavoriteFragment : Fragment() {
     private val viewModel: FavoriteFragmentViewModel by viewModels(){
         FavoriteFragmentViewModelFactory(FavoriteRecipeRepoImp(LocalDataSourceImp( requireContext(), RoomDataBaseImp.getInstance(requireContext()) , SharedPreferenceImp.getInstance(requireContext()))))
     }
-    override fun onStart() {
-        super.onStart()
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

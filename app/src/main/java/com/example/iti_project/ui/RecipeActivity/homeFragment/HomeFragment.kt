@@ -13,8 +13,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.iti_project.R
+import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
+import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
+import com.example.iti_project.ui.RecipeActivity.Favourit.FavoriteFragmentViewModel
 import com.google.android.material.search.SearchBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -28,10 +33,17 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var mProgressDialog: ProgressDialog
     private val viewModel: HomeFragmentViewModel by viewModels() {
-        ProductViewModelFactory(MealsRepoImpl())
+        ProductViewModelFactory(
+            MealsRepoImpl(), FavoriteRecipeRepoImp(
+                LocalDataSourceImp(
+                    requireContext(),
+                    RoomDataBaseImp.getInstance(requireContext()),
+                    SharedPreferenceImp.getInstance(requireContext())
+                )
+            )
+        )
     }
     private lateinit var adapter: AdapterForListRecipe
-
     override fun onStart() {
         super.onStart()
         viewModel.getMeals()
@@ -50,10 +62,10 @@ class HomeFragment : Fragment() {
         searchBar = view.findViewById(R.id.search_bar)
         recyclerView = view.findViewById(R.id.list_recipe)
         mProgressDialog = ProgressDialog(requireContext())
-        adapter = AdapterForListRecipe({
+        adapter = AdapterForListRecipe{
             val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment(it)
             findNavController().navigate(action)
-        }, requireContext())
+        }
         searchBar.setOnClickListener {
             findNavController().navigate(R.id.search)
         }
@@ -91,16 +103,42 @@ class HomeFragment : Fragment() {
 
                 is UiState.Success -> {
                     GlobalScope.launch(Dispatchers.Main) {
-                        adapter.setData(meals.data)
+                        adapter.setData(meals.data , viewModel.favoriteUserIds)
                         delay(2000)
                     }
+
                     mProgressDialog.cancel()
                 }
 
             }
         }
 
+        listenToDeleteFavouriteItems()
+        listenToAddFavouriteItems()
+    }
 
+    private fun listenToDeleteFavouriteItems() {
+        adapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
+            if (!response.isNullOrEmpty() ) {
+                viewModel.deleteFavoriteRecipe(response)
+                viewModel.getFavoriteList()
+                viewModel.removeFavorite(response)
+                adapter.updateIDs(viewModel.favoriteUserIds)
+//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            }
+        }
+    }
+
+    private fun listenToAddFavouriteItems() {
+        adapter.favoriteUserAddMeal.observe(viewLifecycleOwner) { response ->
+            if (response != null ) {
+                viewModel.addFavoriteRecipe(response)
+                viewModel.getFavoriteList()
+                viewModel.addFavorite(response.idMeal)
+                adapter.updateIDs(viewModel.favoriteUserIds)
+//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            }
+        }
     }
 
 }
