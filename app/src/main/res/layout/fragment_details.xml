@@ -15,7 +15,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteY="16dp">
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+       >
 
         <!-- Back button -->
         <ImageButton
@@ -50,6 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         >
 
         <ImageView
