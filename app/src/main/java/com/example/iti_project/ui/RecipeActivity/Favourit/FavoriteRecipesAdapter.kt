@@ -1,7 +1,6 @@
 package com.example.iti_project.ui.RecipeActivity.Favourit
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,38 +8,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.iti_project.R
-import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
-import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
-import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.models.Meals
-import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+
 
 class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
     RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()
-
-//    private lateinit var favoriteRecipeViewModel: FavoriteFragmentViewModel
-
-
+    var favoriteUserIds = mutableListOf<String>()
+    var favoriteUserRemovedIds = MediatorLiveData<String?>()
+//    private var favoriteUserRemovedIdsList : MutableList<String> = mutableListOf()
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val mealName: TextView = view.findViewById(R.id.title_product)
         val mealImage: ImageView = view.findViewById(R.id.image_product)
         private val mealCategory: TextView = view.findViewById(R.id.catagory_of_meal)
         val favoriteImage: ImageView = view.findViewById(R.id.iv_save_to_favorit)
-        var isFavorite: Boolean = false
         fun bind(meal: Meals) {
             mealName.text = meal.strMeal
             mealCategory.text = meal.strCategory
             Glide.with(mealImage.context).load(meal.strMealThumb).into(mealImage)
-
+            favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
         }
     }
 
@@ -55,22 +46,22 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val meal = meals[position]
-        holder.bind(meal)
+        if (favoriteUserIds.contains(meal.idMeal)) {
+            holder.bind(meal)
 
-        holder.favoriteImage.setOnClickListener {
-
+            holder.favoriteImage.setOnClickListener {
+//            favoriteUserRemovedIdsList.add(meal.idMeal)
 //            Glide.with(holder.favoriteImage.context).load(R.drawable.add).into(holder.favoriteImage)
-            if (holder.isFavorite) {
-                holder.isFavorite = false
-                holder.favoriteImage.clearColorFilter()
-//                favoriteRecipeViewModel.deleteFavoriteRecipe(meal.idMeal)
+                favoriteUserRemovedIds.postValue(meal.idMeal)
                 meals.removeAt(position)
+                notifyDataSetChanged()
+//            favoriteUserRemovedIds.postValue(null)
             }
-        }
 
-        holder.mealImage.setOnClickListener {
-            val id = meals[position].idMeal
-            if (id != null) onItemClicked(id)
+            holder.mealImage.setOnClickListener {
+                val id = meals[position].idMeal
+                if (id != null) onItemClicked(id)
+            }
         }
 
     }
@@ -81,11 +72,11 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(meals: MutableList<Meals>) {
+    fun setData(meals: MutableList<Meals> , recipeIDs : MutableList<String>) {
         this.meals = meals
+        favoriteUserIds = recipeIDs
         Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
-
 
     }
 

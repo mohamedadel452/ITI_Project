@@ -24,7 +24,7 @@ interface LocalDataSource {
 
     suspend fun addFavouriteRecipe(meal: Meals): Long
 
-    suspend fun getFavouriteRecipe(id : List<String>): List<Meals>
+    fun getFavouriteRecipe(id : List<String>): List<Meals>
 
     suspend fun deleteFavouriteRecipeList(id : String) : Int
 }

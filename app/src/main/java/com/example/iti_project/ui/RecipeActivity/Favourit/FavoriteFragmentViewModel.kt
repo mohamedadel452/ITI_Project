@@ -12,6 +12,7 @@ import com.example.iti_project.ui.RecipeActivity.homeFragment.HomeFragmentViewMo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FavoriteFragmentViewModel (
@@ -19,13 +20,18 @@ class FavoriteFragmentViewModel (
 ): ViewModel(){
 
     var favoriteRecipes : MutableList<Meals> = mutableListOf()
-
+    var favoriteUserIds:  MutableList<String> = mutableListOf()
     init {
         GlobalScope.launch(Dispatchers.IO) {
 
+            repository.getRecipes()
+            delay(200)
             favoriteRecipes = repository.favoriteRecipe.toMutableList()
-
+            favoriteUserIds = repository.favoriteRecipeIDs.toMutableList()
+            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
         }
+
+
     }
     fun isFavorite(id: String):Boolean{
 
@@ -46,15 +52,16 @@ class FavoriteFragmentViewModel (
 
             GlobalScope.launch(Dispatchers.IO) {
                 repository.deleteFavouriteRecipeList(id)
+
             }
         }
     }
 
-//    fun  getFavoriteList(){
-//
-//            favoriteRecipes = repository.favoriteRecipe.toMutableList()
-//
-//    }
+    fun  getFavoriteList(){
+        favoriteRecipes = repository.favoriteRecipe.toMutableList()
+        favoriteUserIds = repository.favoriteRecipeIDs.toMutableList()
+    }
+
 }
 
 class FavoriteFragmentViewModelFactory(private val repository: FavoriteRecipeRepo) : ViewModelProvider.Factory {

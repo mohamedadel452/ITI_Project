@@ -40,7 +40,7 @@ class FavoriteFragment : Fragment() {
     }
     override fun onStart() {
         super.onStart()
-//        viewModel.getFavoriteList()
+
     }
 
     override fun onCreateView(
@@ -48,16 +48,27 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        viewModel.getFavoriteList()
         return inflater.inflate(R.layout.fragment_favourit, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
-        instantiateProductsRecyclerView()
-        listenToProductsResponse()
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        GlobalScope.launch (Dispatchers.Main){
+            delay(2000)
+            instantiateProductsRecyclerView()
+
+            favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            listenToDeleteFavouriteItems()
+        }
+
+    }
     private fun instantiateProductsRecyclerView() {
         favoriteRecipesAdapter = FavoriteRecipesAdapter{ favoriteRecipeID  ->
             val action =
@@ -65,16 +76,20 @@ class FavoriteFragment : Fragment() {
             findNavController().navigate(action)
         }
         rv_favoriteRecipes.apply {
-            layoutManager =
-                GridLayoutManager(requireContext(),2)
+            layoutManager=
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = favoriteRecipesAdapter
         }
     }
 
-    private fun listenToProductsResponse() {
 
-        favoriteRecipesAdapter.setData(viewModel.favoriteRecipes)
-
+    private fun listenToDeleteFavouriteItems() {
+        favoriteRecipesAdapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
+            if (!response.isNullOrEmpty() ) {
+                viewModel.deleteFavoriteRecipe(response)
+//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            }
+        }
     }
 
 }
