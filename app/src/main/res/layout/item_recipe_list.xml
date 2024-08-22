@@ -51,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Titel"
+            android:background="#6D656565"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="13sp"
@@ -68,6 +69,7 @@
             android:gravity="start"
             android:textColor="@color/white"
             android:textStyle="bold"
+            android:background="#6D656565"
             android:src="@drawable/ic_launcher_background"
             >
 

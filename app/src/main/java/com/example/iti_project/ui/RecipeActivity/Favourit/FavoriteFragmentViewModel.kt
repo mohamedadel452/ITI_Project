@@ -20,7 +20,7 @@ class FavoriteFragmentViewModel (
 ): ViewModel(){
 
     var favoriteRecipes : MutableList<Meals> = mutableListOf()
-    var favoriteUserIds: MutableList<String> = mutableListOf()
+    var favoriteUserIds:  MutableList<String> = mutableListOf()
     init {
         GlobalScope.launch(Dispatchers.IO) {
 
@@ -52,6 +52,7 @@ class FavoriteFragmentViewModel (
 
             GlobalScope.launch(Dispatchers.IO) {
                 repository.deleteFavouriteRecipeList(id)
+
             }
         }
     }
@@ -60,6 +61,7 @@ class FavoriteFragmentViewModel (
         favoriteRecipes = repository.favoriteRecipe.toMutableList()
         favoriteUserIds = repository.favoriteRecipeIDs.toMutableList()
     }
+
 }
 
 class FavoriteFragmentViewModelFactory(private val repository: FavoriteRecipeRepo) : ViewModelProvider.Factory {
