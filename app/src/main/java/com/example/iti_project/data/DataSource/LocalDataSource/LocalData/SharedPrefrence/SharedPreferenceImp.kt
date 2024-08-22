@@ -30,23 +30,28 @@ class SharedPreferenceImp private constructor(val context: Context) : SharedPref
     }
 
 
-    override fun setLoggedIn(email : String): Boolean {
+    override fun setLoggedIn(email: String): Boolean {
         Log.i("shared", email)
-        return if (!email.contains("Not Found" )&& email != "") {
-                sharedPreference.edit()
-                    .putString("login", email)
-                    .commit() // commit returns true if changes were successfully written to persistent storage
-            }else{
+        return if (!email.contains("Not Found") && email != "") {
+            sharedPreference.edit()
+                .putString("login", email)
+                .commit() // commit returns true if changes were successfully written to persistent storage
+        } else {
 
-                sharedPreference.edit().remove("login")
-                    .commit()
-            }
+            sharedPreference.edit().remove("login")
+                .commit()
+        }
 
     }
 
     override suspend fun getLoggedIn(): String? {
         return withContext(Dispatchers.IO) {
-            sharedPreference.getString("login" , "Not Found")
+            val loginValue = sharedPreference.all["login"]
+            when (loginValue) {
+                is String -> loginValue
+                is Boolean -> loginValue.toString() // Handle if the value is a Boolean
+                else -> "Not Found"
+            }
         }
     }
 }

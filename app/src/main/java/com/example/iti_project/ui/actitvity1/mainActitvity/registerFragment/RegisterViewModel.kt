@@ -22,7 +22,7 @@ class RegisterViewModel(
 
     private val _isSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isSuccess: LiveData<Boolean> get() = _isSuccess
-     fun checkedPassword(password : String): Boolean{
+    fun checkedPassword(password : String): Boolean{
         if (password.length < 8) return false
         if (password.firstOrNull { it.isDigit() } == null) return false
         if (password.filter { it.isLetter() }.firstOrNull { it.isUpperCase() } == null) return false
@@ -41,7 +41,7 @@ class RegisterViewModel(
         var isInserted : Long
 
         viewModelScope.launch(Dispatchers.IO) {
-           val response =  async {userRepository.insertUser(user)}
+            val response =  async {userRepository.insertUser(user)}
 
             isInserted =  response.await()
             _isSuccess.postValue( isInserted != -1L)

@@ -39,6 +39,7 @@ class FavoriteFragment : Fragment() {
         FavoriteFragmentViewModelFactory(FavoriteRecipeRepoImp(LocalDataSourceImp( requireContext(), RoomDataBaseImp.getInstance(requireContext()) , SharedPreferenceImp.getInstance(requireContext()))))
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,7 +74,7 @@ class FavoriteFragment : Fragment() {
         }
         rv_favoriteRecipes.apply {
             layoutManager=
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = favoriteRecipesAdapter
         }
     }

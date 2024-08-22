@@ -1,7 +1,6 @@
 package com.example.iti_project.ui.RecipeActivity.homeFragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,22 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.iti_project.R
-import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
-import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
-import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.models.Meals
-import com.example.iti_project.data.repo.Meals.MealsRepoImpl
-import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
-import com.example.iti_project.ui.RecipeActivity.Favourit.FavoriteFragmentViewModel
 
 class AdapterForListRecipe(
-    private val onItemClicked: (String) -> Unit ,
+    private val onItemClicked: (String) -> Unit
 ) : RecyclerView.Adapter<AdapterForListRecipe.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()

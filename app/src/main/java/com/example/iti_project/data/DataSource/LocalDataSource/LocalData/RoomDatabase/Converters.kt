@@ -45,8 +45,8 @@ class Converters {
             Ingredient(null,null,null,null)
         }else {
             try {
-            val type = object : TypeToken<Ingredient>() {}.type
-            Gson().fromJson(value, type)
+                val type = object : TypeToken<Ingredient>() {}.type
+                Gson().fromJson(value, type)
             } catch (e: Exception) {
                 // If parsing fails, handle the case (e.g., log and return empty list or a list with a single string)
                 e.printStackTrace()

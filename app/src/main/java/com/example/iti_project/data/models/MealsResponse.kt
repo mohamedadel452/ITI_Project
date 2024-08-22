@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class MealsResponse(
 
-var  meals : List<Meals> = listOf(),
+    var  meals : List<Meals> = listOf(),
 )
 
 @Entity(tableName = "Meals")
@@ -22,7 +22,7 @@ data class Meals (
     @SerializedName("strYoutube") var strYoutube: String? = null,  //youtube link
     @SerializedName("strTags") var strTags: String? = null,
     @SerializedName("measurements") var measurements: List<String?>? = emptyList()
-    )
+)
 
 
 data class Ingredient(
