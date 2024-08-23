@@ -34,14 +34,14 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
                 val response = async {  repository.getMeals()}.await()
 
                 // Switch to Main thread for UI updates
-                    when (response) {
-                        is ResultState.Success -> {
-                            _meals.postValue(UiState.Success(response.data.meals))
-                        }
-                        is ResultState.Error -> {
-                            _meals.postValue(UiState.Error(response.errorMessage))
-                        }
+                when (response) {
+                    is ResultState.Success -> {
+                        _meals.postValue(UiState.Success(response.data.meals))
                     }
+                    is ResultState.Error -> {
+                        _meals.postValue(UiState.Error(response.errorMessage))
+                    }
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Log.e("HomeFragmentViewModel", "Error fetching meals", e)
@@ -64,6 +64,7 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
 
     fun removeFavorite(id: String){
         favoriteUserIds.remove(id)
+
     }
 
     fun addFavoriteRecipe(meal: Meals){
@@ -72,6 +73,7 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
             GlobalScope.launch(Dispatchers.IO) {
                 favoriteRecipeRepo.addFavouriteRecipe(meal)
             }
+            addFavorite(meal.idMeal)
         }
     }
 
@@ -82,6 +84,7 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
                 favoriteRecipeRepo.deleteFavouriteRecipeList(id)
 
             }
+            removeFavorite(id)
         }
     }
 

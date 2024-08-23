@@ -9,19 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.iti_project.R
-import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
-import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
-import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.models.Meals
-import com.example.iti_project.data.repo.Meals.MealsRepoImpl
-import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
-import com.example.iti_project.ui.RecipeActivity.Favourit.FavoriteFragmentViewModel
 
 class AdapterForListRecipe(
     private val onItemClicked: (String) -> Unit ,
@@ -43,7 +35,6 @@ class AdapterForListRecipe(
             mealName.text = meal.strMeal
             mealCategory.text = meal.strCategory
             Glide.with(mealImage.context).load(meal.strMealThumb).into(mealImage)
-            favoriteImage.clearColorFilter()
         }
     }
 
@@ -98,12 +89,11 @@ class AdapterForListRecipe(
     fun setData(meals: List<Meals> , recipeIDs : MutableList<String>) {
         this.meals = meals as MutableList<Meals>
         favoriteUserIds = recipeIDs
-        Log.i("favoriteRecipeViewModel", "   " + meals.size)
+        Log.i("favoriteRecipeViewModel", "   " + favoriteUserIds.size)
         notifyDataSetChanged()
     }
 
-    fun updateIDs(recipeIDs : MutableList<String>) {
-//        favoriteUserIds = recipeIDs
+    fun updateIDs() {
         Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
     }

@@ -105,7 +105,6 @@ class HomeFragment : Fragment() {
                 is UiState.Success -> {
                     GlobalScope.launch(Dispatchers.Main) {
                         adapter.setData(meals.data , viewModel.favoriteUserIds)
-                        delay(2000)
                     }
 
                     mProgressDialog.cancel()
@@ -122,8 +121,7 @@ class HomeFragment : Fragment() {
         adapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
             if (!response.isNullOrEmpty() ) {
                 viewModel.deleteFavoriteRecipe(response)
-                viewModel.removeFavorite(response)
-                adapter.updateIDs(viewModel.favoriteUserIds)
+                adapter.updateIDs()
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
         }
@@ -133,8 +131,7 @@ class HomeFragment : Fragment() {
         adapter.favoriteUserAddMeal.observe(viewLifecycleOwner) { response ->
             if (response != null ) {
                 viewModel.addFavoriteRecipe(response)
-                viewModel.addFavorite(response.idMeal)
-                adapter.updateIDs(viewModel.favoriteUserIds)
+                adapter.updateIDs()
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
         }
