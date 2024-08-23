@@ -3,15 +3,11 @@ package com.example.iti_project.ui.RecipeActivity.Favourit
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.example.iti_project.data.models.Meals
-import com.example.iti_project.data.repo.Meals.MealsRepo
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepo
-import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
-import com.example.iti_project.ui.RecipeActivity.homeFragment.HomeFragmentViewModel
+import com.example.iti_project.ui.RecipeActivity.home.HomeFragmentViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

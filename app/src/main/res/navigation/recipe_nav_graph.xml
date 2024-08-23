@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="com.example.iti_project.ui.RecipeActivity.homeFragment.HomeFragment"
+        android:name="com.example.iti_project.ui.RecipeActivity.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action

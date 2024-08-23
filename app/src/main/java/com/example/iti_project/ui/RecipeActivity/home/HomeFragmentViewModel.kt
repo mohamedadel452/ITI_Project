@@ -1,4 +1,4 @@
-package com.example.iti_project.ui.RecipeActivity.homeFragment
+package com.example.iti_project.ui.RecipeActivity.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
