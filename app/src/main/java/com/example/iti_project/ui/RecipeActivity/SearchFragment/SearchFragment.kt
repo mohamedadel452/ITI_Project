@@ -62,10 +62,13 @@ class SearchFragment : Fragment() {
         searchRecyclerView = view.findViewById(R.id.search_list_view)
 
         // Initialize RecyclerView
-        mealsAdapter = MealsAdapter(requireContext(), emptyList()) { meal ->
+        mealsAdapter = MealsAdapter(searchViewModel.favoriteUserIds , emptyList(),{ meal ->
             searchViewModel.addMealToFavorites(meal)
             Toast.makeText(requireContext(), "${meal.strMeal} added to favorites", Toast.LENGTH_SHORT).show()
-        }
+        }, { id ->
+            searchViewModel.deleteFavoriteRecipe(id)
+            Toast.makeText(requireContext(), "${id} added to favorites", Toast.LENGTH_SHORT).show()
+        })
         searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         searchRecyclerView.adapter = mealsAdapter
 
@@ -79,7 +82,7 @@ class SearchFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
-                    mealsAdapter.updateMeals(emptyList()) // Clear the list when input is cleared
+                    mealsAdapter.updateMeals(emptyList(), searchViewModel.favoriteUserIds) // Clear the list when input is cleared
                 } else {
 
                     searchViewModel.searchMeals(newText)
@@ -106,7 +109,7 @@ class SearchFragment : Fragment() {
 
                 is UiState.Success -> {
                     val mealsList = response.data
-                    mealsAdapter.updateMeals(mealsList)  // recyclerview with new data
+                    mealsAdapter.updateMeals(mealsList, searchViewModel.favoriteUserIds )  // recyclerview with new data
                 }
             }
         }
