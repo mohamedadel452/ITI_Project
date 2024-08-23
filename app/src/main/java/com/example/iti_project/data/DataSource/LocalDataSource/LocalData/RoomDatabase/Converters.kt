@@ -33,6 +33,7 @@ class Converters {
         }
     }
 
+    // we committed it because  we will not use it never in the project
     @TypeConverter
     fun fromIngredientToString(list:Ingredient): String {
         return Gson().toJson(list)
@@ -54,6 +55,5 @@ class Converters {
             }
         }
     }
-
 
 }

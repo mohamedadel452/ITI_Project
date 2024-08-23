@@ -1,33 +1,60 @@
 package com.example.iti_project.ui.RecipeActivity.recipeDetails
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.iti_project.R
+import com.example.iti_project.data.models.Meals
+import com.example.iti_project.data.models.MealsDetails
+import com.example.iti_project.data.models.UiState
+import com.example.iti_project.data.repo.Meals.MealsRepoImpl
+import com.example.iti_project.ui.RecipeActivity.DetailsFragment.AdapterForDetailsFragment
+import com.example.iti_project.ui.RecipeActivity.DetailsFragment.DetailsViewModel
+import com.example.iti_project.ui.RecipeActivity.DetailsFragment.DetailsViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RecipeDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RecipeDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private val args:RecipeDetailsFragmentArgs by navArgs()
+
+    private val viewModel: DetailsViewModel by viewModels(){
+
+        DetailsViewModelFactory(MealsRepoImpl())
+    }
+
+    private lateinit var recipeImage : ImageView
+    private lateinit var play_video : ImageView
+    private lateinit var recipeTitle : TextView
+    private lateinit var author_image : ImageView
+    private lateinit var recipyCatagory : TextView
+    private lateinit var recipyArea : TextView
+    private lateinit var add_to_fav : Button
+    private lateinit var showIngredient : Button
+    private lateinit var showInstructions : Button
+    private lateinit var recipeDescription : TextView
+    private lateinit var rcv_ingredients : RecyclerView
+    private lateinit var allInstructions: ScrollView
+    private lateinit var allIngredients: ScrollView
+
+    private lateinit var ingredientsAdapter: AdapterForDetailsFragment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -35,26 +62,154 @@ class RecipeDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+
+
+
         return inflater.inflate(R.layout.fragment_recipe_details, container, false)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RecipeDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RecipeDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        recipeImage=view.findViewById(R.id.recipe_image)
+        play_video=view.findViewById(R.id.play_video)
+        recipeTitle=view.findViewById(R.id.recipe_title)
+        recipyCatagory=view.findViewById(R.id.recipy_catagory)
+        author_image=view.findViewById(R.id.author_image)
+        recipyArea=view.findViewById(R.id.area)
+        add_to_fav=view.findViewById(R.id.add_to_fav)
+        showIngredient=view.findViewById(R.id.show_Ingredients)
+        showInstructions=view.findViewById(R.id.show_instruction)
+        recipeDescription=view.findViewById(R.id.recipe_description)
+        rcv_ingredients=view.findViewById(R.id.recyclerView_Ingredients)
+        allInstructions=view.findViewById(R.id.scroll_view_Instructions)
+        allIngredients=view.findViewById(R.id.scroll_view_Ingredients)
+
+
+        viewModel.getDetails(args.idMeal)
+
+        val colorVisible = "#FFED6E3A" // Color when button is visible
+        val colorNotVisible = "#FFB6BAB6" // Color when button is not visible
+
+        showInstructions.setOnClickListener {
+            if (allInstructions.visibility == View.GONE) {
+                allInstructions.visibility = View.VISIBLE
+                showInstructions.text = "Hide instructions"
+                allIngredients.visibility = View.GONE
+                showIngredient.text = "Show ingredients"
+
+                // Set background colors
+                showIngredient.setBackgroundColor(Color.parseColor(colorNotVisible))
+                showInstructions.setBackgroundColor(Color.parseColor(colorVisible))
+            } else {
+                allInstructions.visibility = View.GONE
+                showInstructions.text = "Show instructions"
+                allIngredients.visibility = View.VISIBLE
+                showIngredient.text = "Hide ingredients"
+
+                // Set background colors
+                showIngredient.setBackgroundColor(Color.parseColor(colorVisible))
+                showInstructions.setBackgroundColor(Color.parseColor(colorNotVisible))
+            }
+        }
+
+        showIngredient.setOnClickListener {
+            if (allIngredients.visibility == View.GONE) {
+                allIngredients.visibility = View.VISIBLE
+                showIngredient.text = "Hide ingredients"
+                allInstructions.visibility = View.GONE
+                showInstructions.text = "Show instructions"
+
+                // Set background colors
+                showIngredient.setBackgroundColor(Color.parseColor(colorVisible))
+                showInstructions.setBackgroundColor(Color.parseColor(colorNotVisible))
+            } else {
+                allIngredients.visibility = View.GONE
+                showIngredient.text = "Show ingredients"
+                allInstructions.visibility = View.VISIBLE
+                showInstructions.text = "Hide instructions"
+
+                // Set background colors
+                showIngredient.setBackgroundColor(Color.parseColor(colorNotVisible))
+                showInstructions.setBackgroundColor(Color.parseColor(colorVisible))
+            }
+        }
+
+        add_to_fav.setOnClickListener {
+            if (add_to_fav.text == "Add to favorites") {
+                // Change the button text to "Added"
+                add_to_fav.setBackgroundColor(Color.parseColor(colorNotVisible))
+
+                add_to_fav.text = "Added"
+            } else {
+                // Change the button text back to "Add"
+                add_to_fav.setBackgroundColor(Color.parseColor(colorVisible))
+                add_to_fav.text = "Add to favorites"
+            }
+        }
+
+
+
+        var meal : Meals
+        viewModel.mealDetails.observe(viewLifecycleOwner){
+
+            when(it){
+                is UiState.Error -> Toast.makeText(requireContext(), "error ", Toast.LENGTH_SHORT).show()
+                UiState.Loading -> Toast.makeText(requireContext(), "loading ", Toast.LENGTH_SHORT).show()
+                is UiState.Success -> {
+                    setData(it.data)
+
                 }
             }
+
+
+        }
+
+
+        ingredientsAdapter= AdapterForDetailsFragment()
+        rcv_ingredients.adapter=ingredientsAdapter
+        rcv_ingredients.layoutManager=
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+
     }
+
+    private fun setData(meal: MealsDetails){
+
+        Glide.with(requireContext())
+            .load(meal.strMealThumb)
+            .into(recipeImage)
+        recipeTitle.text=meal.strMeal
+        recipyCatagory.text=meal.strCategory
+        Glide.with(requireContext())
+            .load(meal.strMealThumb)
+            .into(author_image)
+        recipyArea.text=meal.strArea
+        recipeDescription.text=meal.strInstructions
+
+        val ingredients = listOfNotNull(
+            meal.strIngredient1, meal.strIngredient2, meal.strIngredient3, meal.strIngredient4, meal.strIngredient5,
+            meal.strIngredient6, meal.strIngredient7, meal.strIngredient8, meal.strIngredient9, meal.strIngredient10,
+            meal.strIngredient11, meal.strIngredient12, meal.strIngredient13, meal.strIngredient14, meal.strIngredient15,
+            meal.strIngredient16, meal.strIngredient17, meal.strIngredient18, meal.strIngredient19, meal.strIngredient20
+        )
+
+        val measures = listOfNotNull(
+            meal.strMeasure1, meal.strMeasure2, meal.strMeasure3, meal.strMeasure4, meal.strMeasure5, meal.strMeasure6,
+            meal.strMeasure7, meal.strMeasure8, meal.strMeasure9, meal.strMeasure10, meal.strMeasure11, meal.strMeasure12,
+            meal.strMeasure13, meal.strMeasure14, meal.strMeasure15, meal.strMeasure16, meal.strMeasure17, meal.strMeasure18,
+            meal.strMeasure19, meal.strMeasure20
+        )
+
+        ingredientsAdapter.setData(ingredients,measures)
+
+
+
+
+
+
+
+
+
+    }
+
 }

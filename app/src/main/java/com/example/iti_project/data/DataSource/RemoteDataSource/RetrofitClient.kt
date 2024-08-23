@@ -1,12 +1,12 @@
 package com.example.iti_project.data.DataSource.RemoteDataSource
 
 import android.util.Log
-import android.widget.Toast
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.MealsResponse
+import com.example.iti_project.data.models.MealsResponseDetails
 import com.example.iti_project.data.models.ResultState
 import com.google.gson.GsonBuilder
-import org.intellij.lang.annotations.Pattern
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -42,8 +42,24 @@ object RetrofitClient : RemoteDataSource {
     }
 
 
-    override suspend fun getMealsDetails(MealId: String): Meals {
-       return apiService.getMealsDetails(MealId)
+    override suspend fun getMealsDetails(MealId: String): ResultState<MealsResponseDetails> {
+        return try {
+            Log.e( "MealId:",MealId.toString())
+            val response = apiService.getMealsDetails(MealId)
+
+            if (response.isSuccessful) {
+                Log.e( "getMealsByIdBodey:",response.body().toString())
+                Log.e( "getMealsByIdCode:",response.code().toString())
+                response.body()?.let {
+                    ResultState.Success(it)
+                }?: ResultState.Error(Exception("Empty response body").toString())
+            }
+            else {
+                ResultState.Error(Exception("Network call failed: ${response.code()} ${response.message()}").toString())
+            }}
+        catch (e: Exception) {
+            ResultState.Error(e.toString())
+        }
     }
 
     override suspend fun getMealbyname(MealName: String): ResultState<MealsResponse> {

@@ -4,8 +4,10 @@ import com.example.iti_project.data.DataSource.RemoteDataSource.RemoteDataSource
 import com.example.iti_project.data.DataSource.RemoteDataSource.RetrofitClient
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.MealsResponse
+import com.example.iti_project.data.models.MealsResponseDetails
 import com.example.iti_project.data.models.ResultState
 import org.intellij.lang.annotations.Pattern
+import retrofit2.Response
 
 class MealsRepoImpl (
     private val remoteDataSource: RemoteDataSource = RetrofitClient
@@ -15,7 +17,7 @@ class MealsRepoImpl (
         return  remoteDataSource.getMeals()
     }
 
-    override suspend fun getMealsDetails(MealId: String): Meals {
+    override suspend fun getMealsDetails(MealId: String): ResultState<MealsResponseDetails> {
         return  remoteDataSource.getMealsDetails(MealId)
     }
 
