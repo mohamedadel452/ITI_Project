@@ -23,7 +23,7 @@ class FavoriteFragmentViewModel (
     var favoriteUserIds:  MutableList<String> = mutableListOf()
     init {
 
-getFavoriteList()
+        getFavoriteList()
 
     }
     fun isFavorite(id: String):Boolean{

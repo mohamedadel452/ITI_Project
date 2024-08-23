@@ -39,7 +39,6 @@ class FavoriteFragment : Fragment() {
         FavoriteFragmentViewModelFactory(FavoriteRecipeRepoImp(LocalDataSourceImp( requireContext(), RoomDataBaseImp.getInstance(requireContext()) , SharedPreferenceImp.getInstance(requireContext()))))
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
