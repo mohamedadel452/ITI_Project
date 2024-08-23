@@ -11,13 +11,14 @@ import com.example.iti_project.R
 import com.example.iti_project.data.models.Meals
 
 class MealsAdapter(
-    private val context: Context,
+    private var favoriteMealsIds: Set<String>,
     private var mealsList: List<Meals>,
-    private val onFavoriteClick: (Meals) -> Unit
+    private val onFavoriteClick: (Meals) -> Unit,
+    private val onFavoriteClickToDelete: (String) -> Unit
 ) : RecyclerView.Adapter<MealsAdapter.MealViewHolder>() {
 
     // Maintain a set of favorite meals IDs
-    private val favoriteMeals = mutableSetOf<String>()
+    private var _favoriteMeals = mutableSetOf<String>()
 
     class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val mealNameTextView: TextView = view.findViewById(R.id.meal_name_text_view)
@@ -26,7 +27,8 @@ class MealsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.mealitem, parent, false)
+        _favoriteMeals = favoriteMealsIds as MutableSet<String>
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.mealitem, parent, false)
         return MealViewHolder(view)
     }
 
@@ -34,34 +36,37 @@ class MealsAdapter(
         val meal = mealsList[position]
         holder.mealNameTextView.text = meal.strMeal
 
-        Glide.with(context)
+        Glide.with(holder.mealNameTextView.context)
             .load(meal.strMealThumb)
             .into(holder.mealthumb)
 
         // Update favorite button color based on whether the meal is in the favorites list
-        if (favoriteMeals.contains(meal.idMeal)) {
+        if (_favoriteMeals.contains(meal.idMeal)) {
             holder.favoriteButton.setColorFilter(Color.argb(100, 255, 0, 0))
-        } else {
-            holder.favoriteButton
+        }else{
+            holder.favoriteButton.clearColorFilter()
         }
 
         holder.favoriteButton.setOnClickListener {
-            if (favoriteMeals.contains(meal.idMeal)) {
-                favoriteMeals.remove(meal.idMeal)
-
+            if (_favoriteMeals.contains(meal.idMeal)) {
+                _favoriteMeals.remove(meal.idMeal)
+                holder.favoriteButton.clearColorFilter()
+                onFavoriteClickToDelete(meal.idMeal)
 
             } else {
-                favoriteMeals.add(meal.idMeal)
+                _favoriteMeals.add(meal.idMeal)
                 holder.favoriteButton.setColorFilter(Color.argb(100, 255, 0, 0))
+                onFavoriteClick(meal)
             }
 
-            onFavoriteClick(meal)
+
         }
     }
 
     override fun getItemCount(): Int = mealsList.size
 
-    fun updateMeals(newMealsList: List<Meals>) {
+    fun updateMeals(newMealsList: List<Meals> , favoriteMealsIds  : Set<String>) {
+        _favoriteMeals = favoriteMealsIds as MutableSet<String>
         mealsList = newMealsList
         notifyDataSetChanged()  // Notifies RecyclerView
     }

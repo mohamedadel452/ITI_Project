@@ -1,5 +1,6 @@
 package com.example.iti_project.ui.RecipeActivity.SearchFragment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,9 @@ import com.example.iti_project.data.models.ResultState
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepo
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchViewModel (private val mealsRepo: MealsRepo,
@@ -20,7 +24,12 @@ class SearchViewModel (private val mealsRepo: MealsRepo,
     // LiveData to hold the UI state of the search results
     private val _search = MutableLiveData<UiState<List<Meals>>>()
     val search: LiveData<UiState<List<Meals>>> get() = _search
+    var favoriteUserIds:  MutableSet<String> = mutableSetOf()
+    init {
 
+        getFavoriteList()
+
+    }
     fun searchMeals(query: String) {
         viewModelScope.launch {
             val result = mealsRepo.getMealbyname(query)
@@ -43,6 +52,27 @@ class SearchViewModel (private val mealsRepo: MealsRepo,
 
 
             favoriteRepo.addFavouriteRecipe(meal)
+            favoriteUserIds.add(meal.idMeal)
+        }
+    }
+
+
+    fun deleteFavoriteRecipe(id: String){
+        if (id != null) {
+
+            GlobalScope.launch(Dispatchers.IO) {
+                favoriteRepo.deleteFavouriteRecipeList(id)
+                favoriteUserIds.remove(id)
+            }
+
+        }
+    }
+    fun  getFavoriteList(){
+        GlobalScope.launch(Dispatchers.IO) {
+
+            favoriteRepo.getRecipes()
+            delay(200)
+            favoriteUserIds = favoriteRepo.favoriteRecipeIDs.toMutableSet()
         }
     }
 
