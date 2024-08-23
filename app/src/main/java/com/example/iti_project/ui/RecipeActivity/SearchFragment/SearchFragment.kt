@@ -3,14 +3,12 @@ package com.example.iti_project.ui.RecipeActivity.SearchFragment
 import MealsAdapter
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,8 +17,8 @@ import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.RemoteDataSource.RetrofitClient
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
-import com.google.android.material.search.SearchBar
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDatabaseInterface
@@ -39,6 +37,11 @@ class SearchFragment : Fragment() {
 
         SearchViewModel.SearchViewModelFactory(MealsRepoImpl(RetrofitClient),favoriteRepo)    }
 
+    override fun onStart() {
+        super.onStart()
+        searchViewModel.getFavoriteList()
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,10 +65,13 @@ class SearchFragment : Fragment() {
         searchRecyclerView = view.findViewById(R.id.search_list_view)
 
         // Initialize RecyclerView
-        mealsAdapter = MealsAdapter(requireContext(), emptyList()) { meal ->
+        mealsAdapter = MealsAdapter(searchViewModel.favoriteUserIds , emptyList(),{ meal ->
             searchViewModel.addMealToFavorites(meal)
             Toast.makeText(requireContext(), "${meal.strMeal} added to favorites", Toast.LENGTH_SHORT).show()
-        }
+        }, { id ->
+            searchViewModel.deleteFavoriteRecipe(id)
+            Toast.makeText(requireContext(), "${id} added to favorites", Toast.LENGTH_SHORT).show()
+        })
         searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         searchRecyclerView.adapter = mealsAdapter
 
@@ -79,7 +85,7 @@ class SearchFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
-                    mealsAdapter.updateMeals(emptyList()) // Clear the list when input is cleared
+                    mealsAdapter.updateMeals(emptyList(), searchViewModel.favoriteUserIds) // Clear the list when input is cleared
                 } else {
 
                     searchViewModel.searchMeals(newText)
@@ -87,7 +93,11 @@ class SearchFragment : Fragment() {
                 return true
             }
         })
-
+        if(savedInstanceState?.getBoolean("restart") == true){
+            savedInstanceState.putBoolean("restart" , false)
+            Log.i("restart", "false")
+//            mealsAdapter.updateMeals(emptyList(), searchViewModel.favoriteUserIds)
+        }
         showKeyboard()
         return view
     }
@@ -106,7 +116,7 @@ class SearchFragment : Fragment() {
 
                 is UiState.Success -> {
                     val mealsList = response.data
-                    mealsAdapter.updateMeals(mealsList)  // recyclerview with new data
+                    mealsAdapter.updateMeals(mealsList, searchViewModel.favoriteUserIds )  // recyclerview with new data
                 }
             }
         }
@@ -115,5 +125,13 @@ class SearchFragment : Fragment() {
         searchView.requestFocus()  // Request focus on the SearchView
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
+    }
+    override fun onPause() {
+        super.onPause()
+        searchViewModel.getFavoriteList()
+        mealsAdapter.updateMeals(emptyList(), searchViewModel.favoriteUserIds)
+        bundleOf().putBoolean("restart" , true)
+
+        Log.i("restart", "false")
     }
 }
