@@ -2,6 +2,7 @@ package com.example.iti_project.ui.RecipeActivity.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -66,7 +67,6 @@ class RecipeActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.logout -> {
                 logout()
-                true
             }
 
             R.id.about -> {
@@ -83,12 +83,15 @@ class RecipeActivity : AppCompatActivity() {
 
     }
 
-    private fun logout() {
-        viewModel.setLoggedIn()
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+    private fun logout(): Boolean {
+        val isLogout =  viewModel.setLoggedIn()
+        Log.i("response", ""+isLogout)
+        if(isLogout) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
 
-
+        return isLogout
     }
 
 

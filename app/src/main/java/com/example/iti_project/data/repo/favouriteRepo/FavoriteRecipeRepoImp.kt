@@ -34,7 +34,8 @@ class FavoriteRecipeRepoImp(
             val favoriteList = async { localdata.getFavouriteListByEmail() }
             _favoriteRecipeIDs = favoriteList.await()
             Log.i("favoriteRecipes", ""+ favoriteRecipeIDs.size)
-            Log.i("favoriteRecipes", ""+localdata.getFavouriteRecipe(favoriteRecipeIDs).value?.size)
+            val x = localdata.getFavouriteRecipe(favoriteRecipeIDs)
+            Log.i("favoriteRecipes", "")
 //            _favoriteRecipe.addSource(localdata.getFavouriteRecipe(favoriteRecipeIDs)) { favoriteRecipe ->
 //                if (favoriteRecipe.isNotEmpty()) _favoriteRecipe.postValue( favoriteRecipe)
 //            }
