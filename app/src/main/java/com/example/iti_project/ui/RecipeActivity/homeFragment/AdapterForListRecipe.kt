@@ -1,7 +1,6 @@
 package com.example.iti_project.ui.RecipeActivity.homeFragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
