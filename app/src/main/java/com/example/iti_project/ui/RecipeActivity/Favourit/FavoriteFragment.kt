@@ -19,7 +19,8 @@ import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDat
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
-
+import com.example.iti_project.ui.RecipeActivity.homeFragment.HomeFragmentViewModel
+import com.example.iti_project.ui.RecipeActivity.homeFragment.ProductViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -37,15 +38,6 @@ class FavoriteFragment : Fragment() {
     private val viewModel: FavoriteFragmentViewModel by viewModels(){
         FavoriteFragmentViewModelFactory(FavoriteRecipeRepoImp(LocalDataSourceImp( requireContext(), RoomDataBaseImp.getInstance(requireContext()) , SharedPreferenceImp.getInstance(requireContext()))))
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
-
-    }
-    override fun onStart() {
-        super.onStart()
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +48,11 @@ class FavoriteFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_favourit, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
 
+    }
 
     override fun onResume() {
         super.onResume()
@@ -87,6 +83,7 @@ class FavoriteFragment : Fragment() {
         favoriteRecipesAdapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
             if (!response.isNullOrEmpty() ) {
                 viewModel.deleteFavoriteRecipe(response)
+                viewModel.getFavoriteList()
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
         }
