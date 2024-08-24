@@ -6,11 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +32,7 @@ import com.example.iti_project.data.repo.Meals.MealsRepoImpl
 import com.example.iti_project.ui.RecipeActivity.DetailsFragment.AdapterForDetailsFragment
 import com.example.iti_project.ui.RecipeActivity.DetailsFragment.DetailsViewModel
 import com.example.iti_project.ui.RecipeActivity.DetailsFragment.DetailsViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 
 class RecipeDetailsFragment : Fragment() {
@@ -48,8 +57,14 @@ class RecipeDetailsFragment : Fragment() {
     private lateinit var rcv_ingredients : RecyclerView
     private lateinit var allInstructions: ScrollView
     private lateinit var allIngredients: ScrollView
-
     private lateinit var ingredientsAdapter: AdapterForDetailsFragment
+    private  var strYoutube : String? = null
+
+    private lateinit var imageContainer: RelativeLayout
+    private lateinit var videoContainer: LinearLayout
+    private lateinit var closeTheVideo : ImageView
+
+    private lateinit var webView : WebView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +85,7 @@ class RecipeDetailsFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getDetails(args.idMeal)
 
         recipeImage=view.findViewById(R.id.recipe_image)
         play_video=view.findViewById(R.id.play_video)
@@ -85,8 +101,15 @@ class RecipeDetailsFragment : Fragment() {
         allInstructions=view.findViewById(R.id.scroll_view_Instructions)
         allIngredients=view.findViewById(R.id.scroll_view_Ingredients)
 
+        imageContainer = view.findViewById(R.id.image_container)
+        videoContainer = view.findViewById(R.id.video_container)
+        closeTheVideo=view.findViewById(R.id.close_video)
+        webView = view.findViewById(R.id.webView)
 
-        viewModel.getDetails(args.idMeal)
+
+
+
+
 
         val colorVisible = "#FFED6E3A" // Color when button is visible
         val colorNotVisible = "#FFB6BAB6" // Color when button is not visible
@@ -94,19 +117,15 @@ class RecipeDetailsFragment : Fragment() {
         showInstructions.setOnClickListener {
             if (allInstructions.visibility == View.GONE) {
                 allInstructions.visibility = View.VISIBLE
-                showInstructions.text = "Hide instructions"
+
                 allIngredients.visibility = View.GONE
-                showIngredient.text = "Show ingredients"
 
                 // Set background colors
                 showIngredient.setBackgroundColor(Color.parseColor(colorNotVisible))
                 showInstructions.setBackgroundColor(Color.parseColor(colorVisible))
             } else {
                 allInstructions.visibility = View.GONE
-                showInstructions.text = "Show instructions"
                 allIngredients.visibility = View.VISIBLE
-                showIngredient.text = "Hide ingredients"
-
                 // Set background colors
                 showIngredient.setBackgroundColor(Color.parseColor(colorVisible))
                 showInstructions.setBackgroundColor(Color.parseColor(colorNotVisible))
@@ -116,19 +135,14 @@ class RecipeDetailsFragment : Fragment() {
         showIngredient.setOnClickListener {
             if (allIngredients.visibility == View.GONE) {
                 allIngredients.visibility = View.VISIBLE
-                showIngredient.text = "Hide ingredients"
                 allInstructions.visibility = View.GONE
-                showInstructions.text = "Show instructions"
 
                 // Set background colors
                 showIngredient.setBackgroundColor(Color.parseColor(colorVisible))
                 showInstructions.setBackgroundColor(Color.parseColor(colorNotVisible))
             } else {
                 allIngredients.visibility = View.GONE
-                showIngredient.text = "Show ingredients"
                 allInstructions.visibility = View.VISIBLE
-                showInstructions.text = "Hide instructions"
-
                 // Set background colors
                 showIngredient.setBackgroundColor(Color.parseColor(colorNotVisible))
                 showInstructions.setBackgroundColor(Color.parseColor(colorVisible))
@@ -148,9 +162,47 @@ class RecipeDetailsFragment : Fragment() {
             }
         }
 
+        play_video.setOnClickListener {
+            if (imageContainer.visibility == View.VISIBLE&& strYoutube!=null) {
+
+                Toast.makeText(requireContext(), "hi am here", Toast.LENGTH_SHORT).show()
+                imageContainer.visibility=View.INVISIBLE
+                videoContainer.visibility=View.VISIBLE
+                webView?.apply {
+                    webViewClient = WebViewClient() // Keeps navigation within the WebView
+                    webChromeClient = WebChromeClient() // For full-screen support and other features
+                    // Enable JavaScript and other settings
+                    settings.javaScriptEnabled = true
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+                    settings.pluginState = WebSettings.PluginState.ON
+
+                    strYoutube?.let { thelink -> loadUrl(thelink)}
+
+                }
+
+            }
+            else{
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.error_message_video_link),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
+        closeTheVideo.setOnClickListener {
+            if (videoContainer.visibility == View.VISIBLE) {
+
+                Toast.makeText(requireContext(), "hi am here", Toast.LENGTH_SHORT).show()
+                imageContainer.visibility=View.VISIBLE
+                videoContainer.visibility=View.INVISIBLE
+                webView.loadUrl("about:blank")
 
 
-        var meal : Meals
+            }
+        }
+
+
         viewModel.mealDetails.observe(viewLifecycleOwner){
 
             when(it){
@@ -164,7 +216,6 @@ class RecipeDetailsFragment : Fragment() {
 
 
         }
-
 
         ingredientsAdapter= AdapterForDetailsFragment()
         rcv_ingredients.adapter=ingredientsAdapter
@@ -185,6 +236,7 @@ class RecipeDetailsFragment : Fragment() {
             .into(author_image)
         recipyArea.text=meal.strArea
         recipeDescription.text=meal.strInstructions
+        strYoutube=meal.strYoutube
 
         val ingredients = listOfNotNull(
             meal.strIngredient1, meal.strIngredient2, meal.strIngredient3, meal.strIngredient4, meal.strIngredient5,
