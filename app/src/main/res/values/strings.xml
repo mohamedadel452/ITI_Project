@@ -11,6 +11,7 @@
     <string name="create_account">Create Account</string>
     <string name="error_message"><![CDATA[Your password should be greater than 8 and have A-z letters, number and special characters like _ , &]]></string>
     <string name="error_message_email">you already have an account with this email</string>
+    <string name="error_message_video_link">Error in play the Video </string>
     <string name="error_message_invalid_email">Invalid email</string>
     <string name="error_message_password_equality">password and confirm password doesn\'t match</string>
     <string name="sign_up">Sign up</string>
@@ -62,6 +63,6 @@
     </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hide_instructions">Hide Instruction</string>
-    <string name="show_ingredients">Show Ingredients</string>
+    <string name="instructions"> Instruction</string>
+    <string name="ingredients">Ingredients</string>
 </resources>
