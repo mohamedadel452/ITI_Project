@@ -32,6 +32,7 @@ class LocalDataSourceImp(
 
     //returns true if changes were successfully written to persistent storage
     override fun setLoggedIn(email: String): Boolean {
+        Log.i("set log", email)
         return sharedPreferencesDataSource?.setLoggedIn(email) ?: false
     }
 

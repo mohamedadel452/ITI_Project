@@ -2,9 +2,12 @@ package com.example.iti_project.ui.RecipeActivity.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -16,10 +19,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavHost
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.airbnb.lottie.LottieAnimationView
 import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
@@ -36,29 +42,40 @@ class RecipeActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var toolbar: Toolbar
 
-    private val viewModel: RecipeActivityVIewModel by viewModels(){
-        RecipeActivityVIewModelFactory(UserRepoImp(LocalDataSourceImp(this , RoomDataBaseImp.getInstance(this) , null)))
+    private val viewModel: RecipeActivityVIewModel by viewModels() {
+        RecipeActivityVIewModelFactory(
+            UserRepoImp(
+                LocalDataSourceImp(
+                    this,
+                    RoomDataBaseImp.getInstance(this),
+                    SharedPreferenceImp.getInstance(this)
+                )
+            )
+        )
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
 
-        bottomNavView=findViewById(R.id.nav_view)
-        navController=(supportFragmentManager.findFragmentById(R.id.nhf_recipe) as NavHost).navController
-        toolbar=findViewById(R.id.toolbar)
+        bottomNavView = findViewById(R.id.nav_view)
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.nhf_recipe) as NavHost).navController
+        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         bottomNavView.setupWithNavController(navController)
-        setupActionBarWithNavController(navController, AppBarConfiguration(navGraph = navController.graph))
+        setupActionBarWithNavController(
+            navController,
+            AppBarConfiguration(navGraph = navController.graph)
+        )
 
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        menuInflater.inflate(R.menu.recipe_menu,menu)
+        menuInflater.inflate(R.menu.recipe_menu, menu)
         return true
     }
 
@@ -84,12 +101,25 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     private fun logout(): Boolean {
-        val isLogout =  viewModel.setLoggedIn()
-        Log.i("response", ""+isLogout)
-        if(isLogout) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
+        val isLogout = viewModel.setLoggedIn()
+        Log.i("response", "" + isLogout)
+        val lottieAnimationView: LottieAnimationView = findViewById(R.id.lottieAnimationView)
+        lottieAnimationView.visibility = View.VISIBLE
+
+        lottieAnimationView.setAnimation(R.raw.animee)
+
+        lottieAnimationView.playAnimation()
+
+
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            if (isLogout) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+
+        }, 5000) //  5 secs
+
 
         return isLogout
     }
