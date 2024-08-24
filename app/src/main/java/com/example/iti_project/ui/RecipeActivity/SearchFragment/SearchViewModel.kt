@@ -21,7 +21,6 @@ class SearchViewModel (private val mealsRepo: MealsRepo,
                        private val favoriteRepo: FavoriteRecipeRepoImp
 ) : ViewModel() {
 
-    // LiveData to hold the UI state of the search results
     private val _search = MutableLiveData<UiState<List<Meals>>>()
     val search: LiveData<UiState<List<Meals>>> get() = _search
     var favoriteUserIds:  MutableSet<String> = mutableSetOf()

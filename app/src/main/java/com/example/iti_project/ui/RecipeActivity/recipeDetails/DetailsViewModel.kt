@@ -40,11 +40,18 @@ class DetailsViewModel(private val repository: MealsRepo) : ViewModel() {
                         }
 
                         is ResultState.Success -> {
-
-                            Log.d("mealDetails", result.data.meals.first().toString())
-                            _mealDetails.postValue(UiState.Success(result.data.meals.first()))
-
+                            val meals = result.data?.meals
+                            if (!meals.isNullOrEmpty()) {
+                                Log.d("mealDetails", meals.first().toString())
+                                _mealDetails.postValue(UiState.Success(meals.first()))
+                            } else {
+                                _mealDetails.postValue(UiState.Error("No meal details found"))
+                                Log.d("mealDetails", "No meals found for id: $id or data is null")
+                            }
                         }
+
+
+
                     }
                 }
             }
