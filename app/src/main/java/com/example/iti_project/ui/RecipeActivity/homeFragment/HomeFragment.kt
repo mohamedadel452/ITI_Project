@@ -44,8 +44,8 @@ class HomeFragment : Fragment() {
         )
     }
     private lateinit var adapter: AdapterForListRecipe
-    override fun onStart() {
-        super.onStart()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.getMeals()
     }
 
