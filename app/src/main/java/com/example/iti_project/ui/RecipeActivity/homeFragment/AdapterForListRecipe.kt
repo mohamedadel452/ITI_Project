@@ -97,13 +97,13 @@ class AdapterForListRecipe(
     fun setData(meals: List<Meals> , recipeIDs : MutableList<String>) {
         this.meals = meals as MutableList<Meals>
         favoriteUserIds = recipeIDs
-        Log.i("favoriteRecipeViewModel", "   " + meals.size)
+//        Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
     }
 
     fun updateIDs(recipeIDs : MutableList<String>) {
         favoriteUserIds = recipeIDs
-        Log.i("favoriteRecipeViewModel", "   " + meals.size)
+//        Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
     }
 }

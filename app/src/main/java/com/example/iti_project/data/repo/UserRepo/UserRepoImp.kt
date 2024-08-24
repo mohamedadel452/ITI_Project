@@ -11,7 +11,7 @@ class  UserRepoImp(
         return localdata.insertUser(user)?:-1L
     }
 
-    override suspend fun getUserByEmail(email: String): UserModel? {
+    override fun getUserByEmail(email: String): UserModel? {
         return localdata.getUserByEmail(email)
     }
 

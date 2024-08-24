@@ -43,9 +43,7 @@ class SharedPreferenceImp private constructor(val context: Context) : SharedPref
 
     }
 
-    override suspend fun getLoggedIn(): String? {
-        return withContext(Dispatchers.IO) {
-            sharedPreference.getString("login" , "Not Found")
-        }
+    override fun getLoggedIn(): String? {
+        return sharedPreference.getString("login" , "Not Found")
     }
 }

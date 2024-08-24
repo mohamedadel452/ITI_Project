@@ -50,11 +50,17 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
         }
     }
 
-    var favoriteRecipes : MediatorLiveData<List<Meals>> = MediatorLiveData<List<Meals>>()
+//    var favoriteRecipes : MediatorLiveData<List<Meals>> = MediatorLiveData<List<Meals>>()
     var favoriteUserIds:  MutableList<String> = mutableListOf()
     init {
 
-        getFavoriteList()
+        viewModelScope.launch {
+//
+//            favoriteRecipeRepo.getRecipes()
+            delay(300)
+            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs as MutableList<String>
+
+        }
 
     }
     fun addFavorite(id: String){
@@ -84,16 +90,16 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
         }
     }
 
-    fun  getFavoriteList(){
-        GlobalScope.launch(Dispatchers.IO) {
-
-            favoriteRecipeRepo.getRecipes()
-            delay(200)
-            favoriteRecipes.postValue( favoriteRecipeRepo.favoriteRecipe.value )
-            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
-//            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
-        }
-    }
+//    fun getFavoriteList(){
+//        GlobalScope.launch(Dispatchers.IO) {
+//
+//            favoriteRecipeRepo.getRecipes()
+//            delay(200)
+////            favoriteRecipes.postValue( favoriteRecipeRepo.favoriteRecipe.value )
+//            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
+////            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
+//        }
+//    }
 
 }
 

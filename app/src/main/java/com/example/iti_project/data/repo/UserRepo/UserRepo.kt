@@ -10,7 +10,7 @@ interface UserRepo {
 
 
     //it will return null if the user is not found
-    suspend fun getUserByEmail(email: String): UserModel?
+    fun getUserByEmail(email: String): UserModel?
 
 
     suspend fun getLoggedIn(): String

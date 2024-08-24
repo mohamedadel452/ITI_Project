@@ -10,9 +10,9 @@ interface LocalDataSource {
     suspend fun insertUser(user: UserModel): Long
 
     //it will return null if the user is not found
-    suspend fun getUserByEmail(email: String): UserModel?
+    fun getUserByEmail(email: String): UserModel?
 
-    suspend fun getLoggedIn(): String
+    fun getLoggedIn(): String
 
     //it will return true if it set the value successfully
     fun setLoggedIn(email : String): Boolean
@@ -20,7 +20,7 @@ interface LocalDataSource {
     suspend fun addFavouriteRecipe(favoriteID : String):Boolean
 
     suspend fun addFavouriteRecipeList(favorite : List<String>): Boolean
-    suspend fun getFavouriteListByEmail(): MutableList<String>
+    fun getFavouriteListByEmail(): MutableList<String>
 
     suspend fun addFavouriteRecipe(meal: Meals): Long
 

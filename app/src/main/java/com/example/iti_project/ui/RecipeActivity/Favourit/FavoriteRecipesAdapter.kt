@@ -19,7 +19,6 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
     RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()
-    var favoriteUserIds = mutableListOf<String>()
     var favoriteUserRemovedIds = MediatorLiveData<String?>()
 //    private var favoriteUserRemovedIdsList : MutableList<String> = mutableListOf()
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -46,23 +45,23 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val meal = meals[position]
-        if (favoriteUserIds.contains(meal.idMeal)) {
-            holder.bind(meal)
 
-            holder.favoriteImage.setOnClickListener {
+        holder.bind(meal)
+        Log.i("show", meal.strMealThumb)
+        holder.favoriteImage.setOnClickListener {
 //            favoriteUserRemovedIdsList.add(meal.idMeal)
 //            Glide.with(holder.favoriteImage.context).load(R.drawable.add).into(holder.favoriteImage)
-                favoriteUserRemovedIds.postValue(meal.idMeal)
-                meals.removeAt(position)
-                notifyDataSetChanged()
+            favoriteUserRemovedIds.postValue(meal.idMeal)
+            meals.removeAt(position)
+            notifyDataSetChanged()
 //            favoriteUserRemovedIds.postValue(null)
-            }
-
-            holder.mealImage.setOnClickListener {
-                val id = meals[position].idMeal
-                if (id != null) onItemClicked(id)
-            }
         }
+
+        holder.mealImage.setOnClickListener {
+            val id = meals[position].idMeal
+            if (id != null) onItemClicked(id)
+        }
+
 
     }
 
@@ -72,9 +71,8 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(meals: MutableList<Meals> , recipeIDs : MutableList<String>) {
+    fun setData(meals: MutableList<Meals> ) {
         this.meals = meals
-        favoriteUserIds = recipeIDs
         Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
 

@@ -15,7 +15,7 @@ interface UserDao {
     suspend fun insertNewUser(user: UserModel): Long
 
     @Query("SELECT * FROM users WHERE email = :email")
-    suspend fun getUserByEmail(email: String): UserModel?
+    fun getUserByEmail(email: String): UserModel?
 
     @Update
     suspend fun addFavouriteItem(user:UserModel): Int

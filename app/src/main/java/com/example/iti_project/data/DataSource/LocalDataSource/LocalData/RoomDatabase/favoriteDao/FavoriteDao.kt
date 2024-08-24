@@ -11,7 +11,7 @@ import com.example.iti_project.data.models.Meals
 interface FavoriteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addFavouriteRecipe(meal: Meals): Long
+    fun addFavouriteRecipe(meal: Meals): Long
     @Query("SELECT * FROM meals WHERE idMeal in (:id)")
     fun getFavouriteRecipe(id : List<String>) : LiveData<List<Meals>>
 

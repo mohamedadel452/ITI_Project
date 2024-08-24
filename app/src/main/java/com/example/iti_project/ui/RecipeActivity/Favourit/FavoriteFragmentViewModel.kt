@@ -20,35 +20,25 @@ class FavoriteFragmentViewModel(
     private val favoriteRecipeRepo: FavoriteRecipeRepo
 ) : ViewModel() {
 
-    var favoriteRecipes : MediatorLiveData<List<Meals>> = MediatorLiveData<List<Meals>>(listOf())
+    var favoriteRecipes =  MediatorLiveData<List<Meals>>()
     var favoriteUserIds: MutableList<String> = mutableListOf()
 
     init {
 
-        GlobalScope.launch(Dispatchers.IO) {
-
-            favoriteRecipeRepo.getRecipes()
-            delay(2000)
-            favoriteRecipes.postValue(favoriteRecipeRepo.favoriteRecipe.value)
-            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
-//            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
-        }
-
-    }
-
-    fun isFavorite(id: String): Boolean {
-
-        return favoriteRecipeRepo.favoriteRecipeIDs.contains(id)
-    }
-
-    fun addFavoriteRecipe(meal: Meals) {
-        if (meal != null) {
-
-            GlobalScope.launch(Dispatchers.IO) {
-                favoriteRecipeRepo.addFavouriteRecipe(meal)
+        viewModelScope.launch {
+//
+//            favoriteRecipeRepo.getRecipes()
+            delay(300)
+            favoriteRecipes.addSource(favoriteRecipeRepo.favoriteRecipe){
+                Log.i("ya rab", ": "+it.size)
+                favoriteRecipes.postValue(it)
             }
+//            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
+////            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
         }
+
     }
+
 
     fun deleteFavoriteRecipe(id: String) {
         if (id != null) {
@@ -71,13 +61,15 @@ class FavoriteFragmentViewModel(
 //        }
 //    }
     fun getFavoriteList() {
-        GlobalScope.launch(Dispatchers.IO) {
+//        viewModelScope.launch(Dispatchers.IO) {
 
-            favoriteRecipeRepo.getRecipes()
-            delay(2000)
-            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
+//            favoriteRecipes.addSource(favoriteRecipeRepo.getRecipes()){
+//                favoriteRecipes.postValue(it)
+//            }
+//            delay(2000)
+//            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
 //            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
-        }
+//        }
     }
 }
 

@@ -21,12 +21,12 @@ class LocalDataSourceImp(
 
     }
 
-    override suspend fun getUserByEmail(email: String): UserModel? {
+    override fun getUserByEmail(email: String): UserModel? {
         roomDataSource.let { return roomDataSource.getUserByEmail(email) }
     }
 
 
-    override suspend fun getLoggedIn(): String {
+    override fun getLoggedIn(): String {
         return sharedPreferencesDataSource?.getLoggedIn() ?: "Not Found"
     }
 
@@ -64,7 +64,7 @@ class LocalDataSourceImp(
     }
 
 
-    override suspend fun getFavouriteListByEmail(): MutableList<String> {
+    override fun getFavouriteListByEmail(): MutableList<String> {
         val email = getLoggedIn()
         val user = getUserByEmail(email)
         return if (user != null) {

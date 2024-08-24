@@ -44,7 +44,7 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
     }
 
     //it will return null if the user not found
-    override suspend fun getUserByEmail(email: String): UserModel? {
+    override fun getUserByEmail(email: String): UserModel? {
         return getUserDao().getUserByEmail(email)
     }
 
@@ -52,7 +52,7 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
         return getUserDao().getFavouriteListByEmail(email)
     }
 
-    override suspend fun addFavouriteRecipe(meal: Meals): Long{
+    override fun addFavouriteRecipe(meal: Meals): Long{
         return getFavoriteDao().addFavouriteRecipe(meal)
     }
 
