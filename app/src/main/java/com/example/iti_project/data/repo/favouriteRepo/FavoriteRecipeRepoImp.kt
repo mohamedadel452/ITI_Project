@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSource
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.Converters
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.ResultState
 import kotlinx.coroutines.Dispatchers
@@ -19,58 +20,47 @@ class FavoriteRecipeRepoImp(
 
     ) : FavoriteRecipeRepo {
 
-
-    private var _favoriteRecipe: MutableList<Meals> = mutableListOf()
-    override val favoriteRecipe: List<Meals>
+    private var _favoriteRecipe = MediatorLiveData<List<Meals>>()
+    override val favoriteRecipe: LiveData<List<Meals>>
         get() = _favoriteRecipe
 
-    private var _favoriteRecipeIDs: MutableList<String> = mutableListOf()
-    override val favoriteRecipeIDs: List<String>
+    var favoriteRecipeID: Int = 0
+
+
+    private var _favoriteRecipeIDs = MediatorLiveData<List<String>>()
+    override val favoriteRecipeIDs: LiveData<List<String>>
         get() = _favoriteRecipeIDs
 
     init {
-        GlobalScope.launch(Dispatchers.IO) {
-            getRecipes()
+
+        _favoriteRecipeIDs.addSource( localdata.getFavouriteListByEmail()) { response ->
+//                Log.i("favoriteRecipesIDS viewModel", "    "  + Converters().fromStringToListOfStrings(response[0]).size )
+            if (response.isNotEmpty()) {
+                _favoriteRecipeIDs.postValue( Converters().fromStringToListOfStrings(response[0]))
+                _favoriteRecipe.addSource(localdata.getFavouriteRecipe( Converters().fromStringToListOfStrings(response[0]))) { favoriteRecipe ->
+                    if (favoriteRecipe.isNotEmpty()) _favoriteRecipe.postValue(favoriteRecipe)
+//                        Log.i("favoriteRecipe", "" + favoriteRecipe.size)
+                }
+            }
         }
-    }
-    override suspend fun getRecipes()  {
 
-        GlobalScope.launch(Dispatchers.IO) {
-            val favoriteList = async { localdata.getFavouriteListByEmail() }
-            _favoriteRecipeIDs = favoriteList.await()
-            _favoriteRecipe =localdata.getFavouriteRecipe(favoriteRecipeIDs) as MutableList<Meals>
-            Log.i("_favoriteRecipe", "  "+ _favoriteRecipe.size)
-        }
-    }
-
-
-    fun updateFavoriteRecipe(meal: Meals) {
-        _favoriteRecipe.add(meal)
     }
 
     override suspend fun addFavouriteRecipe(meal: Meals): Long {
-        updateFavoriteRecipe(meal)
-        var isSuccess: Long = 0
-        GlobalScope.launch(Dispatchers.IO) { isSuccess = localdata.addFavouriteRecipe(meal) }
-        return isSuccess
+
+        favoriteRecipeID = localdata.getFavouriteRecipeCount(meal.idMeal)
+        meal.count  = favoriteRecipeID + 1
+        return localdata.addFavouriteRecipe(meal)
     }
 
-    override suspend fun deleteFavouriteRecipeList(id: String): Int {
-        val mutableList = localdata.getFavouriteListByEmail()
-        mutableList.remove(id)
-        deleteFromFavoriteRecipe(id)
-        localdata.addFavouriteRecipeList(mutableList)
+    override suspend fun deleteFavouriteRecipeList(meal: Meals) {
+        val favoriteIDList = favoriteRecipeIDs.value as MutableList<String>
+        favoriteIDList.remove(meal.idMeal)
+        favoriteRecipeID = localdata.getFavouriteRecipeCount(meal.idMeal)
+        meal.count  = favoriteRecipeID - 1
+//        deleteFromFavoriteRecipe(id)
+        localdata.addFavouriteRecipeList(favoriteIDList )
 
-        return localdata.deleteFavouriteRecipeList(id)
+        localdata.deleteFavouriteRecipeList(meal)
     }
-
-    private fun deleteFromFavoriteRecipe(id: String) {
-        for (i in favoriteRecipe) {
-            if (i.idMeal == id) {
-                _favoriteRecipe.remove(i)
-                break
-            }
-        }
-    }
-
 }

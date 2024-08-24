@@ -20,10 +20,13 @@ import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDat
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
+import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
 
     private lateinit var emailEditText: EditText
+    private lateinit var etEmail: TextInputLayout
+    private lateinit var etPassword: TextInputLayout
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var signUpTextView: TextView
@@ -45,16 +48,20 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        etEmail = view.findViewById(R.id.et_email)
         emailEditText = view.findViewById(R.id.sign_in_email)
+        etPassword = view.findViewById(R.id.et_password)
         passwordEditText = view.findViewById(R.id.sign_in_password)
         loginButton = view.findViewById(R.id.sign_in_login_btn)
         signUpTextView = view.findViewById(R.id.tv_signUp)
+
 
         signUpTextView.setOnClickListener {
             emailEditText.text.clear()
             passwordEditText.text.clear()
             findNavController().navigate(R.id.registerFragment)
         }
+
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()

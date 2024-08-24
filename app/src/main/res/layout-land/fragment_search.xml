@@ -18,7 +18,11 @@
         android:layout_height="wrap_content"
         android:hint="Search the recipe you want..."
         app:layout_constraintBottom_toBottomOf="@+id/nestedScrollView"
-         />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
 
     <com.google.android.material.search.SearchView
@@ -28,6 +32,9 @@
         android:layout_marginEnd="16dp"
         app:layout_anchor="@+id/search_bar"
         app:layout_anchorGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.046">
 
 
@@ -35,10 +42,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="365dp"
+        android:layout_height="529dp"
         android:layout_marginTop="115dp"
         android:focusable="true"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
