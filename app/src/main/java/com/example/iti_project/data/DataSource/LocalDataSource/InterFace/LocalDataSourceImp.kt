@@ -37,25 +37,28 @@ class LocalDataSourceImp(
 
     override suspend fun addFavouriteRecipe(favoriteID: String): Boolean {
         val email = getLoggedIn()
-        Log.i("email", email)
+//        Log.i("email", email)
         val user = getUserByEmail(email)
-        Log.i("email", " "+user?.email)
+//        Log.i("email", " "+user?.email)
         return if (user != null && !user.favoriteID.contains(favoriteID)) {
-            user.favoriteID.add(favoriteID)
-            Log.i("email", favoriteID)
+            val list = user.favoriteID.toMutableList()
+            list.add(favoriteID)
+            user.favoriteID = list
+//            Log.i("email sd", user.favoriteID[0])
             roomDataSource.addFavouriteItem(user) != -1
         } else {
             false
         }
     }
 
-    override suspend fun addFavouriteRecipeList(favorite: List<String>): Boolean {
+    override suspend fun addFavouriteRecipeList(favorite: List<String> ): Boolean {
         val email = getLoggedIn()
 //        Log.i("favoriteID", email)
         val user = getUserByEmail(email)
 
         return if (user != null) {
-            user.favoriteID = favorite.toMutableList()
+            user.favoriteID = favorite
+            Log.i("add", favorite[0])
 //            listenOnChangeRecipe(favoriteRecipeID: String)
             roomDataSource.addFavouriteItem(user) != -1
         } else {
@@ -64,18 +67,14 @@ class LocalDataSourceImp(
     }
 
 
-    override fun getFavouriteListByEmail(): MutableList<String> {
+    override fun getFavouriteListByEmail(): LiveData<List<String>> {
         val email = getLoggedIn()
-        val user = getUserByEmail(email)
-        return if (user != null) {
-            user.favoriteID
-        } else {
-            mutableListOf()
-        }
+        return  roomDataSource.getFavouriteListByEmail(email)
     }
 
     override suspend fun addFavouriteRecipe(meal: Meals): Long {
         addFavouriteRecipe(meal.idMeal)
+        meal.count +=1
         return roomDataSource.addFavouriteRecipe(meal) ?: -1L
     }
 
@@ -83,8 +82,20 @@ class LocalDataSourceImp(
         return roomDataSource.getFavouriteRecipe(id)
     }
 
-    override suspend fun deleteFavouriteRecipeList(id: String): Int {
-        return roomDataSource.deleteFavouriteRecipeList(id)
+    override suspend fun deleteFavouriteRecipeList(meal: Meals , isWantToDelete: Boolean ): Int {
+        if (isWantToDelete)
+            return roomDataSource.deleteFavouriteRecipeList(meal.idMeal)
+        else
+            return deleteOnOfCount(meal)
+    }
+
+    private suspend fun deleteOnOfCount(meal: Meals) : Int {
+        return if (meal.count == 1){
+            deleteFavouriteRecipeList(meal, true)
+        }else{
+            meal.count -= 1
+            roomDataSource.addFavouriteRecipe(meal).toInt()
+        }
     }
 }
 

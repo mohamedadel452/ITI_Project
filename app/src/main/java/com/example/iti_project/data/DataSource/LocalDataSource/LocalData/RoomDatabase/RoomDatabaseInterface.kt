@@ -13,7 +13,7 @@ interface RoomDatabaseInterface {
 
      suspend fun addFavouriteItem(user:UserModel): Int
 
-     suspend fun getFavouriteListByEmail(email: String): MutableList<String>
+     fun getFavouriteListByEmail(email: String):LiveData<List<String>>
 
      fun addFavouriteRecipe(meal: Meals): Long
 

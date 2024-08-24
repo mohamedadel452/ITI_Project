@@ -1,5 +1,6 @@
 package com.example.iti_project.data.repo.UserRepo
 
+import androidx.lifecycle.LiveData
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSource
 import com.example.iti_project.data.models.UserModel
 
@@ -29,7 +30,7 @@ class  UserRepoImp(
         return  localdata.addFavouriteRecipe(favoriteID) ?: false
     }
 
-    override suspend fun getFavouriteRecipeList(): MutableList<String> {
-        return localdata.getFavouriteListByEmail() ?: mutableListOf()
+    override fun getFavouriteRecipeList(): LiveData<List<String>> {
+        return localdata.getFavouriteListByEmail()
     }
 }

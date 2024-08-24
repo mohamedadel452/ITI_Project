@@ -1,5 +1,6 @@
 package com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.userdao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -21,5 +22,5 @@ interface UserDao {
     suspend fun addFavouriteItem(user:UserModel): Int
 
     @Query("SELECT favoriteID FROM users WHERE email = :email")
-    suspend fun getFavouriteListByEmail(email: String): MutableList<String>
+    fun getFavouriteListByEmail(email: String): LiveData<List<String>>
 }

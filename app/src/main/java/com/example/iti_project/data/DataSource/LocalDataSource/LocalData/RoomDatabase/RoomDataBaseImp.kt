@@ -12,7 +12,7 @@ import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.UserModel
 
 
-@Database(entities = [UserModel::class , Meals::class], version = 3 , exportSchema = true)
+@Database(entities = [UserModel::class , Meals::class], version = 4 , exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
 
@@ -48,7 +48,7 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
         return getUserDao().getUserByEmail(email)
     }
 
-    override suspend fun getFavouriteListByEmail(email: String): MutableList<String> {
+    override fun getFavouriteListByEmail(email: String): LiveData<List<String>> {
         return getUserDao().getFavouriteListByEmail(email)
     }
 
@@ -64,17 +64,6 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
         return getFavoriteDao().deleteFavouriteRecipeList(id)
     }
 
-//    override suspend fun getAllRecipes(): LiveData<List<RecipesModel>> {
-//
-//    }
-//
-//    override suspend fun getRecipeDetails(id: String): RecipesModel? {
-//
-//    }
-//
-//    override suspend fun insertRecipesInfo(recipesModel: List<RecipesModel>) {
-//
-//    }
     override suspend fun addFavouriteItem(user:UserModel): Int {
         return getUserDao().addFavouriteItem(user)
     }

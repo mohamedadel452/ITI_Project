@@ -1,5 +1,6 @@
 package com.example.iti_project.data.repo.UserRepo
 
+import androidx.lifecycle.LiveData
 import com.example.iti_project.data.models.UserModel
 
 interface UserRepo {
@@ -21,5 +22,5 @@ interface UserRepo {
 
     suspend fun addFavouriteRecipe(favoriteID : String) : Boolean
 
-    suspend fun getFavouriteRecipeList() : MutableList<String>
+    fun getFavouriteRecipeList() : LiveData<List<String>>
 }

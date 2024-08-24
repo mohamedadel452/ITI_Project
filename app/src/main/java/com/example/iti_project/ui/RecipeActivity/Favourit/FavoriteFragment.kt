@@ -61,7 +61,6 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
-//        viewModel.getFavoriteList()
         instantiateProductsRecyclerView()
         listenToDeleteFavouriteItems()
         listenToUpdateFavouriteItems()
@@ -84,7 +83,7 @@ class FavoriteFragment : Fragment() {
     private fun listenToDeleteFavouriteItems() {
         if (favoriteRecipesAdapter.favoriteUserRemovedIds != null) {
             favoriteRecipesAdapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
-                if (!response.isNullOrEmpty()) {
+                if (response != null) {
                     viewModel.deleteFavoriteRecipe(response)
 //                    viewModel.getFavoriteList()
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
@@ -95,13 +94,22 @@ class FavoriteFragment : Fragment() {
 
     private fun listenToUpdateFavouriteItems() {
 
-        Log.i("response", "  " + "nooooooooooo")
+//        Log.i("response", "  " + "nooooooooooo")
         viewModel.favoriteRecipes.observe(viewLifecycleOwner) { response ->
-            Log.i("response", "  " + response.first().strMealThumb)
+//            Log.i("response", "  " + response.first().strMealThumb)
             if (!response.isNullOrEmpty()) {
 
                 favoriteRecipesAdapter.setData(
                     response as MutableList<Meals>
+                )
+            }
+        }
+
+        viewModel.favoriteUserIds.observe(viewLifecycleOwner){ response ->
+            if (!response.isNullOrEmpty()) {
+
+                favoriteRecipesAdapter.setIDs(
+                    response as MutableList<String>
                 )
             }
         }

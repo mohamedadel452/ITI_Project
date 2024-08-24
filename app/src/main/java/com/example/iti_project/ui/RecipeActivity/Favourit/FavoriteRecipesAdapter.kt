@@ -19,8 +19,8 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
     RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()
-    var favoriteUserRemovedIds = MediatorLiveData<String?>()
-//    private var favoriteUserRemovedIdsList : MutableList<String> = mutableListOf()
+    var favoriteUserRemovedIds = MediatorLiveData<Meals?>()
+    private var favoriteIdsList : MutableList<String> = mutableListOf()
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val mealName: TextView = view.findViewById(R.id.title_product)
         val mealImage: ImageView = view.findViewById(R.id.image_product)
@@ -51,7 +51,7 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
         holder.favoriteImage.setOnClickListener {
 //            favoriteUserRemovedIdsList.add(meal.idMeal)
 //            Glide.with(holder.favoriteImage.context).load(R.drawable.add).into(holder.favoriteImage)
-            favoriteUserRemovedIds.postValue(meal.idMeal)
+            favoriteUserRemovedIds.postValue(meal)
             meals.removeAt(position)
             notifyDataSetChanged()
 //            favoriteUserRemovedIds.postValue(null)
@@ -78,5 +78,12 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String) -> Unit ) :
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun setIDs(favoriteIdsList: MutableList<String> ) {
+        this.favoriteIdsList = favoriteIdsList
+        Log.i("favoriteRecipeViewModel", "   " + favoriteIdsList.size)
+        notifyDataSetChanged()
+
+    }
 
 }

@@ -102,28 +102,31 @@ class HomeFragment : Fragment() {
                 }
 
                 is UiState.Success -> {
-                    GlobalScope.launch(Dispatchers.Main) {
-                        adapter.setData(meals.data , viewModel.favoriteUserIds)
-                        delay(2000)
-                    }
+                    adapter.setData(meals.data)
+//                    viewModel.favoriteUserIds.observe(viewLifecycleOwner){
+//
+//
+////                        delay(2000)
+//                    }
 
                     mProgressDialog.cancel()
                 }
 
             }
         }
-
+        listenToUpdateFavouriteItems()
         listenToDeleteFavouriteItems()
         listenToAddFavouriteItems()
+
     }
 
     private fun listenToDeleteFavouriteItems() {
         adapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
-            if (!response.isNullOrEmpty() ) {
+            if (response != null ) {
                 viewModel.deleteFavoriteRecipe(response)
 //                viewModel.getFavoriteList()
-                viewModel.removeFavorite(response)
-                adapter.updateIDs(viewModel.favoriteUserIds)
+//                viewModel.removeFavorite(response)
+//                adapter.updateIDs(viewModel.favoriteUserIds)
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
         }
@@ -134,8 +137,19 @@ class HomeFragment : Fragment() {
             if (response != null ) {
                 viewModel.addFavoriteRecipe(response)
 //                viewModel.getFavoriteList()
-                viewModel.addFavorite(response.idMeal)
-                adapter.updateIDs(viewModel.favoriteUserIds)
+//                viewModel.addFavorite(response.idMeal)
+//                adapter.updateIDs(viewModel.favoriteUserIds)
+//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            }
+        }
+    }
+    private fun listenToUpdateFavouriteItems() {
+        viewModel.favoriteUserIds.observe(viewLifecycleOwner) { response ->
+            if (!response.isNullOrEmpty() ) {
+//                viewModel.deleteFavoriteRecipe(response)
+//                viewModel.getFavoriteList()
+//                viewModel.removeFavorite(response)
+                adapter.updateIDs(response as MutableList<String>)
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
         }

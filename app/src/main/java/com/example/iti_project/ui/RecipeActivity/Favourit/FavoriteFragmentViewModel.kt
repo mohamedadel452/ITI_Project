@@ -21,7 +21,7 @@ class FavoriteFragmentViewModel(
 ) : ViewModel() {
 
     var favoriteRecipes =  MediatorLiveData<List<Meals>>()
-    var favoriteUserIds: MutableList<String> = mutableListOf()
+    var favoriteUserIds =  MediatorLiveData<List<String>>()
 
     init {
 
@@ -29,9 +29,16 @@ class FavoriteFragmentViewModel(
 //
 //            favoriteRecipeRepo.getRecipes()
             delay(300)
-            favoriteRecipes.addSource(favoriteRecipeRepo.favoriteRecipe){
-                Log.i("ya rab", ": "+it.size)
-                favoriteRecipes.postValue(it)
+
+            favoriteUserIds.addSource(favoriteRecipeRepo.favoriteRecipeIDs){
+                Log.i("ya rab ids", ": "+it.size)
+                favoriteUserIds.postValue(it)
+
+            }
+
+            favoriteRecipes.addSource(favoriteRecipeRepo.favoriteRecipe){response ->
+                Log.i("ya rab", ": "+response.size)
+                favoriteRecipes.postValue(response)
             }
 //            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
 ////            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
@@ -40,37 +47,16 @@ class FavoriteFragmentViewModel(
     }
 
 
-    fun deleteFavoriteRecipe(id: String) {
-        if (id != null) {
+    fun deleteFavoriteRecipe(meals: Meals) {
+        if (meals != null) {
 
             GlobalScope.launch(Dispatchers.IO) {
-                favoriteRecipeRepo.deleteFavouriteRecipeList(id)
+                favoriteRecipeRepo.deleteFavouriteRecipeList(meals)
 
             }
         }
     }
 
-    //    fun  getFavoriteList(){
-//        GlobalScope.launch(Dispatchers.IO) {
-//
-//            repository.getRecipes()
-//            delay(200)
-////            favoriteRecipes = repository.favoriteRecipe.toMutableList()
-//            favoriteUserIds = repository.favoriteRecipeIDs.toMutableList()
-//            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
-//        }
-//    }
-    fun getFavoriteList() {
-//        viewModelScope.launch(Dispatchers.IO) {
-
-//            favoriteRecipes.addSource(favoriteRecipeRepo.getRecipes()){
-//                favoriteRecipes.postValue(it)
-//            }
-//            delay(2000)
-//            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
-//            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
-//        }
-    }
 }
 
 class FavoriteFragmentViewModelFactory(private val repository: FavoriteRecipeRepo) :

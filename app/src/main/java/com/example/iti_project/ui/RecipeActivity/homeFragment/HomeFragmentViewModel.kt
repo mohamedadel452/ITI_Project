@@ -23,8 +23,17 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
 
     private val _meals: MutableLiveData<UiState<List<Meals>>> = MutableLiveData(UiState.Loading)
     val meals: LiveData<UiState<List<Meals>>> = _meals
-
-
+    var favoriteUserIds =  MediatorLiveData<List<String>>()
+    init {
+        viewModelScope.launch {
+//
+//            favoriteRecipeRepo.getRecipes()
+            delay(300)
+            favoriteUserIds.addSource(favoriteRecipeRepo.favoriteRecipeIDs) {
+                favoriteUserIds.postValue(it)
+            }
+        }
+    }
 
     fun getMeals() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -51,25 +60,25 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
     }
 
 //    var favoriteRecipes : MediatorLiveData<List<Meals>> = MediatorLiveData<List<Meals>>()
-    var favoriteUserIds:  MutableList<String> = mutableListOf()
-    init {
-
-        viewModelScope.launch {
+//    var favoriteUserIds:  MutableList<String> = mutableListOf()
+//    init {
 //
-//            favoriteRecipeRepo.getRecipes()
-            delay(300)
-            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs as MutableList<String>
-
-        }
-
-    }
-    fun addFavorite(id: String){
-        favoriteUserIds.add(id)
-    }
-
-    fun removeFavorite(id: String){
-        favoriteUserIds.remove(id)
-    }
+//        viewModelScope.launch {
+////
+////            favoriteRecipeRepo.getRecipes()
+//            delay(300)
+//            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs as MutableList<String>
+//
+//        }
+//
+//    }
+//    fun addFavorite(id: String){
+//        favoriteUserIds.add(id)
+//    }
+//
+//    fun removeFavorite(id: String){
+//        favoriteUserIds.remove(id)
+//    }
 
     fun addFavoriteRecipe(meal: Meals){
         if (meal != null) {
@@ -80,11 +89,11 @@ class HomeFragmentViewModel(private val repository: MealsRepo , private val  fav
         }
     }
 
-    fun deleteFavoriteRecipe(id: String){
-        if (id != null) {
+    fun deleteFavoriteRecipe(meals: Meals){
+        if (meals != null) {
 
             GlobalScope.launch(Dispatchers.IO) {
-                favoriteRecipeRepo.deleteFavouriteRecipeList(id)
+                favoriteRecipeRepo.deleteFavouriteRecipeList(meals)
 
             }
         }

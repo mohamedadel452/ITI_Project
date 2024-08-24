@@ -30,7 +30,7 @@ class AdapterForListRecipe(
     var meals = mutableListOf<Meals>()
 
     var favoriteUserIds = mutableListOf<String>()
-    var favoriteUserRemovedIds = MediatorLiveData<String?>()
+    var favoriteUserRemovedIds = MediatorLiveData<Meals?>()
     var favoriteUserAddMeal = MediatorLiveData<Meals?>()
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -69,7 +69,7 @@ class AdapterForListRecipe(
             if (holder.isFavorite){
                 holder.isFavorite = false
                 holder.favoriteImage.clearColorFilter()
-                favoriteUserRemovedIds.postValue(meal.idMeal)
+                favoriteUserRemovedIds.postValue(meal)
 //                favoriteRecipeViewModel.deleteFavoriteRecipe(meal.idMeal)
             }else {
                 holder.isFavorite = true
@@ -94,16 +94,16 @@ class AdapterForListRecipe(
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(meals: List<Meals> , recipeIDs : MutableList<String>) {
+    fun setData(meals: List<Meals> ) {
         this.meals = meals as MutableList<Meals>
-        favoriteUserIds = recipeIDs
+//        favoriteUserIds = recipeIDs as MutableList<String>
 //        Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
     }
 
-    fun updateIDs(recipeIDs : MutableList<String>) {
+    fun updateIDs(recipeIDs : MutableList<String> ) {
         favoriteUserIds = recipeIDs
-//        Log.i("favoriteRecipeViewModel", "   " + meals.size)
+        Log.i("favoriteRecipeViewModel", "   " + favoriteUserIds[0])
         notifyDataSetChanged()
     }
 }

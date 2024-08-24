@@ -20,11 +20,11 @@ interface LocalDataSource {
     suspend fun addFavouriteRecipe(favoriteID : String):Boolean
 
     suspend fun addFavouriteRecipeList(favorite : List<String>): Boolean
-    fun getFavouriteListByEmail(): MutableList<String>
+    fun getFavouriteListByEmail(): LiveData<List<String>>
 
     suspend fun addFavouriteRecipe(meal: Meals): Long
 
     fun getFavouriteRecipe(id : List<String>): LiveData<List<Meals>>
 
-    suspend fun deleteFavouriteRecipeList(id : String) : Int
+    suspend fun deleteFavouriteRecipeList(meal: Meals, isWantToDelete: Boolean = false) : Int
 }
