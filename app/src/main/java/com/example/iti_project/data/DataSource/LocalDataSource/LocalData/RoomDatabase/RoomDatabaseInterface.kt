@@ -9,22 +9,19 @@ interface RoomDatabaseInterface {
 
      suspend fun insertUser(user: UserModel): Long
 
-     suspend fun getUserByEmail(email: String): UserModel?
+     fun getUserByEmail(email: String): UserModel?
 
      suspend fun addFavouriteItem(user:UserModel): Int
 
-     suspend fun getFavouriteListByEmail(email: String): MutableList<String>
+     fun getFavouriteListByEmail(email: String):LiveData<List<String>>
 
-     suspend fun addFavouriteRecipe(meal: Meals): Long
+     fun addFavouriteRecipe(meal: Meals): Long
 
-     fun getFavouriteRecipe(id : List<String>) : List <Meals>
+     fun getFavouriteRecipe(id : List<String>) : LiveData<List<Meals>>
+
+     fun getFavouriteRecipeCount(id : String) : Int
 
      suspend fun deleteFavouriteRecipeList(id : String) : Int
 
-//     suspend fun getAllRecipes(): LiveData<List<Meal>>
-//
-//     suspend fun getRecipeDetails(id :String): RecipesModel?
-//
-//     suspend fun insertRecipesInfo(recipesModel :List<RecipesModel>)
 
 }

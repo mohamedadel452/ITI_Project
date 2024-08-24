@@ -2,6 +2,7 @@ package com.example.iti_project.ui.RecipeActivity.SearchFragment
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -21,15 +22,21 @@ class SearchViewModel (private val mealsRepo: MealsRepo,
                        private val favoriteRepo: FavoriteRecipeRepoImp
 ) : ViewModel() {
 
-    // LiveData to hold the UI state of the search results
     private val _search = MutableLiveData<UiState<List<Meals>>>()
     val search: LiveData<UiState<List<Meals>>> get() = _search
-    var favoriteUserIds:  MutableSet<String> = mutableSetOf()
+    var favoriteUserIds = MediatorLiveData<List<String>>()
+
     init {
 
-        getFavoriteList()
+        viewModelScope.launch {
+            favoriteUserIds.addSource(favoriteRepo.favoriteRecipeIDs) {
+                Log.i("ya rab", ": " + it.size)
+                favoriteUserIds.postValue(it)
+            }
+        }
 
     }
+
     fun searchMeals(query: String) {
         viewModelScope.launch {
             val result = mealsRepo.getMealbyname(query)
@@ -47,32 +54,24 @@ class SearchViewModel (private val mealsRepo: MealsRepo,
             }
         }
     }
+
     fun addMealToFavorites(meal: Meals) {
-        viewModelScope.launch {
+        if (meal != null) {
 
+            viewModelScope.launch(Dispatchers.IO) {
 
-            favoriteRepo.addFavouriteRecipe(meal)
-            favoriteUserIds.add(meal.idMeal)
-        }
-    }
-
-
-    fun deleteFavoriteRecipe(id: String){
-        if (id != null) {
-
-            GlobalScope.launch(Dispatchers.IO) {
-                favoriteRepo.deleteFavouriteRecipeList(id)
-                favoriteUserIds.remove(id)
+                Log.i("addeddddd", "yes 2")
+                meal.count += 1
+                favoriteRepo.addFavouriteRecipe(meal)
             }
 
         }
     }
-    fun  getFavoriteList(){
-        GlobalScope.launch(Dispatchers.IO) {
 
-            favoriteRepo.getRecipes()
-            delay(200)
-            favoriteUserIds = favoriteRepo.favoriteRecipeIDs.toMutableSet()
+    fun deleteFavoriteRecipe(meal: Meals){
+        viewModelScope.launch(Dispatchers.IO) {
+            meal.count -= 1
+            favoriteRepo.deleteFavouriteRecipeList(meal)
         }
     }
 

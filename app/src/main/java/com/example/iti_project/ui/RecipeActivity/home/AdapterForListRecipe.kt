@@ -21,7 +21,7 @@ class AdapterForListRecipe(
     var meals = mutableListOf<Meals>()
 
     var favoriteUserIds = mutableListOf<String>()
-    var favoriteUserRemovedIds = MediatorLiveData<String?>()
+    var favoriteUserRemovedIds = MediatorLiveData<Meals?>()
     var favoriteUserAddMeal = MediatorLiveData<Meals?>()
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -50,6 +50,8 @@ class AdapterForListRecipe(
             Log.i("ids", meal.idMeal)
             holder.isFavorite = true
             holder.favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
+        }else{
+            holder.favoriteImage.clearColorFilter()
         }
 
         holder.favoriteImage.setOnClickListener {
@@ -58,14 +60,12 @@ class AdapterForListRecipe(
             if (holder.isFavorite){
                 holder.isFavorite = false
                 holder.favoriteImage.clearColorFilter()
-                favoriteUserRemovedIds.postValue(meal.idMeal)
-                favoriteUserIds.remove(meal.idMeal)
+                favoriteUserRemovedIds.postValue(meal)
 //                favoriteRecipeViewModel.deleteFavoriteRecipe(meal.idMeal)
             }else {
                 holder.isFavorite = true
                 holder.favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
                 favoriteUserAddMeal.postValue(meal)
-                favoriteUserIds.add(meal.idMeal)
                 Log.i("RED ids", meal.idMeal)
 //                favoriteRecipeViewModel.addFavoriteRecipe(meal)
             }
@@ -85,15 +85,16 @@ class AdapterForListRecipe(
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(meals: List<Meals> , recipeIDs : MutableList<String>) {
+    fun setData(meals: List<Meals> ) {
         this.meals = meals as MutableList<Meals>
-        favoriteUserIds = recipeIDs
-        Log.i("favoriteRecipeViewModel", "   " + favoriteUserIds.size)
+//        favoriteUserIds = recipeIDs as MutableList<String>
+//        Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
     }
 
-    fun updateIDs() {
-        Log.i("favoriteRecipeViewModel", "   " + meals.size)
+    fun updateIDs(recipeIDs : MutableList<String> ) {
+        favoriteUserIds = recipeIDs
+        Log.i("favoriteRecipeViewModel", "   " + favoriteUserIds[0])
         notifyDataSetChanged()
     }
 }

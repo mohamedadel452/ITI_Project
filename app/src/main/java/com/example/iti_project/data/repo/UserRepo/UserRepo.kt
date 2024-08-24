@@ -1,5 +1,6 @@
 package com.example.iti_project.data.repo.UserRepo
 
+import androidx.lifecycle.LiveData
 import com.example.iti_project.data.models.UserModel
 
 interface UserRepo {
@@ -10,7 +11,7 @@ interface UserRepo {
 
 
     //it will return null if the user is not found
-    suspend fun getUserByEmail(email: String): UserModel?
+    fun getUserByEmail(email: String): UserModel?
 
 
     suspend fun getLoggedIn(): String
@@ -21,5 +22,5 @@ interface UserRepo {
 
     suspend fun addFavouriteRecipe(favoriteID : String) : Boolean
 
-    suspend fun getFavouriteRecipeList() : MutableList<String>
+    fun getFavouriteRecipeList() : LiveData<List<String>>
 }
