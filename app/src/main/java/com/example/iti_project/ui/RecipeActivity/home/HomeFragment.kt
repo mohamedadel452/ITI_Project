@@ -20,6 +20,7 @@ import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedP
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
+import com.google.android.material.search.SearchBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ class HomeFragment : Fragment() {
         )
     }
     private lateinit var adapter: AdapterForListRecipe
-    private lateinit var searchView: ImageButton
+    private lateinit var searchBar: SearchBar
     override fun onStart() {
         super.onStart()
         viewModel.getMeals()
@@ -64,11 +65,12 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment(it)
             findNavController().navigate(action)
         }
-        searchView = view.findViewById(R.id.imageButton)
+        searchBar = view.findViewById(R.id.search_bar)
 
-        searchView.setOnClickListener{
+        searchBar.setOnClickListener {
             findNavController().navigate(R.id.search)
         }
+
 
 
 

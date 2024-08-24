@@ -21,7 +21,14 @@
         android:id="@+id/search"
         android:name="com.example.iti_project.ui.RecipeActivity.SearchFragment.SearchFragment"
         android:label="Search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_search_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
+        <action
+            android:id="@+id/action_search_to_home"
+            app:destination="@id/home" />
+    </fragment>
     <fragment
         android:id="@+id/favorite"
         android:name="com.example.iti_project.ui.RecipeActivity.Favourit.FavoriteFragment"

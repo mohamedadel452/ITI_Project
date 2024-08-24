@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.iti_project.R
@@ -14,10 +15,10 @@ class MealsAdapter(
     private var favoriteMealsIds: Set<String>,
     private var mealsList: List<Meals>,
     private val onFavoriteClick: (Meals) -> Unit,
-    private val onFavoriteClickToDelete: (String) -> Unit
+    private val onFavoriteClickToDelete: (String) -> Unit,
+    private val onItemClicked: (Meals) -> Unit
 ) : RecyclerView.Adapter<MealsAdapter.MealViewHolder>() {
 
-    // Maintain a set of favorite meals IDs
     private var _favoriteMeals = mutableSetOf<String>()
 
     class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -34,6 +35,9 @@ class MealsAdapter(
 
     override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
         val meal = mealsList[position]
+
+
+
         holder.mealNameTextView.text = meal.strMeal
 
         Glide.with(holder.mealNameTextView.context)
@@ -43,7 +47,7 @@ class MealsAdapter(
         // Update favorite button color based on whether the meal is in the favorites list
         if (_favoriteMeals.contains(meal.idMeal)) {
             holder.favoriteButton.setColorFilter(Color.argb(100, 255, 0, 0))
-        }else{
+        } else {
             holder.favoriteButton.clearColorFilter()
         }
 
@@ -61,13 +65,20 @@ class MealsAdapter(
 
 
         }
+        holder.itemView.setOnClickListener {
+            val bundle = bundleOf("idMeal" to meal.idMeal)
+            onItemClicked(meal)
+        }
     }
 
-    override fun getItemCount(): Int = mealsList.size
 
-    fun updateMeals(newMealsList: List<Meals> , favoriteMealsIds  : Set<String>) {
-        _favoriteMeals = favoriteMealsIds as MutableSet<String>
-        mealsList = newMealsList
-        notifyDataSetChanged()  // Notifies RecyclerView
+        override fun getItemCount(): Int = mealsList.size
+
+        fun updateMeals(newMealsList: List<Meals>, favoriteMealsIds: Set<String>) {
+            _favoriteMeals = favoriteMealsIds as MutableSet<String>
+            mealsList = newMealsList
+            notifyDataSetChanged()  // Notifies RecyclerView
+        }
     }
-}
+
+
