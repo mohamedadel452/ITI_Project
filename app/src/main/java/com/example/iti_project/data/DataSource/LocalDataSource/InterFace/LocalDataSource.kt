@@ -26,5 +26,7 @@ interface LocalDataSource {
 
     fun getFavouriteRecipe(id : List<String>): LiveData<List<Meals>>
 
-    suspend fun deleteFavouriteRecipeList(meal: Meals, isWantToDelete: Boolean = false) : Int
+    suspend fun deleteFavouriteRecipeList(meal: Meals) : Int
+
+    fun getFavouriteRecipeCount(id : String) : Int
 }

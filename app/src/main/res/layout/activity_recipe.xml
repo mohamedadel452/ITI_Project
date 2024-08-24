@@ -60,19 +60,20 @@
 
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimationView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/lottieAnimationView_end"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
         android:layout_centerInParent="true"
-        android:scaleType="fitXY"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_rawRes="@raw/animee"
+        app:lottie_rawRes="@raw/amin_end"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_repeatMode="restart"
+        app:lottie_repeatMode="reverse"
         android:visibility="invisible"
         />
 

@@ -18,6 +18,7 @@ interface RoomDatabaseInterface {
      fun addFavouriteRecipe(meal: Meals): Long
 
      fun getFavouriteRecipe(id : List<String>) : LiveData<List<Meals>>
+     fun getFavouriteRecipeCount(id : String) : Int
 
      suspend fun deleteFavouriteRecipeList(id : String) : Int
 

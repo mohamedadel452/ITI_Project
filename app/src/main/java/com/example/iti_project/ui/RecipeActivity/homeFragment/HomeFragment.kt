@@ -75,12 +75,11 @@ class HomeFragment : Fragment() {
         }
 
 
-        GlobalScope.launch(Dispatchers.Main) {
             recyclerView.adapter = adapter
             recyclerView.layoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-        }
+
 
         viewModel.meals.observe(viewLifecycleOwner) { meals ->
             when (meals) {
@@ -124,10 +123,6 @@ class HomeFragment : Fragment() {
         adapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
             if (response != null ) {
                 viewModel.deleteFavoriteRecipe(response)
-//                viewModel.getFavoriteList()
-//                viewModel.removeFavorite(response)
-//                adapter.updateIDs(viewModel.favoriteUserIds)
-//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
         }
     }
@@ -136,19 +131,13 @@ class HomeFragment : Fragment() {
         adapter.favoriteUserAddMeal.observe(viewLifecycleOwner) { response ->
             if (response != null ) {
                 viewModel.addFavoriteRecipe(response)
-//                viewModel.getFavoriteList()
-//                viewModel.addFavorite(response.idMeal)
-//                adapter.updateIDs(viewModel.favoriteUserIds)
-//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+
             }
         }
     }
     private fun listenToUpdateFavouriteItems() {
         viewModel.favoriteUserIds.observe(viewLifecycleOwner) { response ->
             if (!response.isNullOrEmpty() ) {
-//                viewModel.deleteFavoriteRecipe(response)
-//                viewModel.getFavoriteList()
-//                viewModel.removeFavorite(response)
                 adapter.updateIDs(response as MutableList<String>)
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }

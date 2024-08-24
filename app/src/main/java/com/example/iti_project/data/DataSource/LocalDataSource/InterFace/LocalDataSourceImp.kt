@@ -32,7 +32,7 @@ class LocalDataSourceImp(
 
     //returns true if changes were successfully written to persistent storage
     override fun setLoggedIn(email: String): Boolean {
-        Log.i("set log", email)
+//        Log.i("set log", email)
         return sharedPreferencesDataSource?.setLoggedIn(email) ?: false
     }
 
@@ -59,7 +59,7 @@ class LocalDataSourceImp(
 
         return if (user != null) {
             user.favoriteID = favorite
-            Log.i("add", favorite[0])
+//            Log.i("add", favorite[0])
 //            listenOnChangeRecipe(favoriteRecipeID: String)
             roomDataSource.addFavouriteItem(user) != -1
         } else {
@@ -75,7 +75,6 @@ class LocalDataSourceImp(
 
     override suspend fun addFavouriteRecipe(meal: Meals): Long {
         addFavouriteRecipe(meal.idMeal)
-        meal.count +=1
         return roomDataSource.addFavouriteRecipe(meal) ?: -1L
     }
 
@@ -83,20 +82,19 @@ class LocalDataSourceImp(
         return roomDataSource.getFavouriteRecipe(id)
     }
 
-    override suspend fun deleteFavouriteRecipeList(meal: Meals , isWantToDelete: Boolean ): Int {
-        if (isWantToDelete)
-            return roomDataSource.deleteFavouriteRecipeList(meal.idMeal)
-        else
-            return deleteOnOfCount(meal)
-    }
+    override suspend fun deleteFavouriteRecipeList(meal: Meals ): Int {
 
-    private suspend fun deleteOnOfCount(meal: Meals) : Int {
-        return if (meal.count == 1){
-            deleteFavouriteRecipeList(meal, true)
+        return if (meal.count < 1){
+            roomDataSource.deleteFavouriteRecipeList(meal.idMeal)
         }else{
-            meal.count -= 1
             roomDataSource.addFavouriteRecipe(meal).toInt()
         }
+
     }
+
+    override fun getFavouriteRecipeCount(id : String) : Int {
+        return roomDataSource.getFavouriteRecipeCount(id)
+    }
+
 }
 

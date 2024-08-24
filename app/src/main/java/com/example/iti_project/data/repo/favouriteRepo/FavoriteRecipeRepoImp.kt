@@ -28,20 +28,22 @@ class FavoriteRecipeRepoImp(
     override val favoriteRecipe: LiveData<List<Meals>>
         get() = _favoriteRecipe
 
+    var favoriteRecipeID: Int = 0
+
+
     private var _favoriteRecipeIDs = MediatorLiveData<List<String>>()
     override val favoriteRecipeIDs: LiveData<List<String>>
         get() = _favoriteRecipeIDs
 
     init {
-        MainScope().launch(Dispatchers.IO) {
-            _favoriteRecipeIDs.addSource( localdata.getFavouriteListByEmail()) { response ->
+
+        _favoriteRecipeIDs.addSource( localdata.getFavouriteListByEmail()) { response ->
 //                Log.i("favoriteRecipesIDS viewModel", "    "  + Converters().fromStringToListOfStrings(response[0]).size )
-                if (response.isNotEmpty()) {
-                    _favoriteRecipeIDs.postValue( Converters().fromStringToListOfStrings(response[0]))
-                    _favoriteRecipe.addSource(localdata.getFavouriteRecipe( Converters().fromStringToListOfStrings(response[0]))) { favoriteRecipe ->
-                        if (favoriteRecipe.isNotEmpty()) _favoriteRecipe.postValue(favoriteRecipe)
+            if (response.isNotEmpty()) {
+                _favoriteRecipeIDs.postValue( Converters().fromStringToListOfStrings(response[0]))
+                _favoriteRecipe.addSource(localdata.getFavouriteRecipe( Converters().fromStringToListOfStrings(response[0]))) { favoriteRecipe ->
+                    if (favoriteRecipe.isNotEmpty()) _favoriteRecipe.postValue(favoriteRecipe)
 //                        Log.i("favoriteRecipe", "" + favoriteRecipe.size)
-                    }
                 }
             }
         }
@@ -51,16 +53,20 @@ class FavoriteRecipeRepoImp(
 
     override suspend fun addFavouriteRecipe(meal: Meals): Long {
 
+        favoriteRecipeID = localdata.getFavouriteRecipeCount(meal.idMeal)
+        meal.count  = favoriteRecipeID + 1
         return localdata.addFavouriteRecipe(meal)
     }
 
-    override suspend fun deleteFavouriteRecipeList(meals: Meals) {
+    override suspend fun deleteFavouriteRecipeList(meal: Meals) {
         val favoriteIDList = favoriteRecipeIDs.value as MutableList<String>
-        favoriteIDList.remove(meals.idMeal)
+        favoriteIDList.remove(meal.idMeal)
+        favoriteRecipeID = localdata.getFavouriteRecipeCount(meal.idMeal)
+        meal.count  = favoriteRecipeID - 1
 //        deleteFromFavoriteRecipe(id)
         localdata.addFavouriteRecipeList(favoriteIDList )
 
-        localdata.deleteFavouriteRecipeList(meals , true)
+        localdata.deleteFavouriteRecipeList(meal)
     }
 
 

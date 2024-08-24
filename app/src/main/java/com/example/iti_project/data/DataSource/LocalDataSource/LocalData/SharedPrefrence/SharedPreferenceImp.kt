@@ -31,7 +31,7 @@ class SharedPreferenceImp private constructor(val context: Context) : SharedPref
 
 
     override fun setLoggedIn(email : String): Boolean {
-        Log.i("set log", email)
+//        Log.i("set log", email)
         return sharedPreference.edit()
                     .putString("login", email)
                     .commit() // commit returns true if changes were successfully written to persistent storage

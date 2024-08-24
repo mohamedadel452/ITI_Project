@@ -59,6 +59,9 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
     override fun getFavouriteRecipe(id : List<String>) : LiveData<List<Meals>> {
         return getFavoriteDao().getFavouriteRecipe(id)
     }
+    override fun getFavouriteRecipeCount(id : String) : Int {
+        return getFavoriteDao().getFavouriteRecipeCount(id)
+    }
 
     override suspend fun deleteFavouriteRecipeList(id : String) : Int{
         return getFavoriteDao().deleteFavouriteRecipeList(id)

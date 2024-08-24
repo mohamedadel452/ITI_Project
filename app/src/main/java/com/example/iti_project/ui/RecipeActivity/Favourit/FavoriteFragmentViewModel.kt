@@ -28,7 +28,6 @@ class FavoriteFragmentViewModel(
         viewModelScope.launch {
 //
 //            favoriteRecipeRepo.getRecipes()
-            delay(300)
 
             favoriteUserIds.addSource(favoriteRecipeRepo.favoriteRecipeIDs){
                 Log.i("ya rab ids", ": "+it.size)
@@ -50,9 +49,8 @@ class FavoriteFragmentViewModel(
     fun deleteFavoriteRecipe(meals: Meals) {
         if (meals != null) {
 
-            GlobalScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(Dispatchers.IO) {
                 favoriteRecipeRepo.deleteFavouriteRecipeList(meals)
-
             }
         }
     }

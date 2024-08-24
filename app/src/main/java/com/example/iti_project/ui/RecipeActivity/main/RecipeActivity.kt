@@ -103,12 +103,13 @@ class RecipeActivity : AppCompatActivity() {
     private fun logout(): Boolean {
         val isLogout = viewModel.setLoggedIn()
         Log.i("response", "" + isLogout)
-        val lottieAnimationView: LottieAnimationView = findViewById(R.id.lottieAnimationView)
+        val lottieAnimationView: LottieAnimationView = findViewById(R.id.lottieAnimationView_end)
         lottieAnimationView.visibility = View.VISIBLE
 
-        lottieAnimationView.setAnimation(R.raw.animee)
+        lottieAnimationView.setAnimation(R.raw.amin_end)
 
         lottieAnimationView.playAnimation()
+//        lottieAnimationView.speed = 0.25F
 
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -118,7 +119,7 @@ class RecipeActivity : AppCompatActivity() {
                 finish()
             }
 
-        }, 5000) //  5 secs
+        }, 2000) //  5 secs
 
 
         return isLogout
