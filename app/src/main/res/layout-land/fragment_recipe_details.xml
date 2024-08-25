@@ -64,7 +64,7 @@
         <LinearLayout
             android:id="@+id/author_details"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_marginTop="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -88,6 +88,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:weightSum="2"
+
                 >
 
                 <TextView
@@ -104,6 +105,7 @@
                     android:id="@+id/area"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     tools:text="strArea"
                     android:textStyle="bold"
                     android:textSize="14sp"
@@ -216,7 +218,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                >
 
 
                 <!-- Recipe_Ingredients -->
@@ -224,7 +227,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_Ingredients"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+
+                    />
 
 
 

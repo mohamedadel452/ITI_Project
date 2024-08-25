@@ -12,4 +12,5 @@
     <string name="sign_up_successful">Sign up successful!</string>
     <string name="congrat_message">Your account has been created. Please wait a moment, we are preparing for you...</string>
     <string name="continue_button">Continue</string>
+    <string name="cancel">cancel</string>
 </resources>
