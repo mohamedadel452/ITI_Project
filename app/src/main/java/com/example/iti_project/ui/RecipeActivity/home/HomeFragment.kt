@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,13 +20,11 @@ import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import com.google.android.material.search.SearchBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
 
+    private lateinit var searchBar: SearchBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var mProgressDialog: ProgressDialog
     private val viewModel: HomeFragmentViewModel by viewModels() {
@@ -42,11 +39,9 @@ class HomeFragment : Fragment() {
         )
     }
     private lateinit var adapter: AdapterForListRecipe
-    private lateinit var searchBar: SearchBar
-    override fun onStart() {
-        super.onStart()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.getMeals()
-        viewModel.getFavoriteList()
     }
 
     override fun onCreateView(
@@ -59,27 +54,24 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchBar = view.findViewById(R.id.search_bar)
         recyclerView = view.findViewById(R.id.list_recipe)
         mProgressDialog = ProgressDialog(requireContext())
-        adapter = AdapterForListRecipe{
-            val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment(it)
+        adapter = AdapterForListRecipe{id , count ->
+            val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment( id , count)
             findNavController().navigate(action)
         }
-        searchBar = view.findViewById(R.id.search_bar)
 
         searchBar.setOnClickListener {
             findNavController().navigate(R.id.search)
         }
 
 
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
 
-        GlobalScope.launch(Dispatchers.Main) {
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
-        }
 
         viewModel.meals.observe(viewLifecycleOwner) { meals ->
             when (meals) {
@@ -101,27 +93,28 @@ class HomeFragment : Fragment() {
                 }
 
                 is UiState.Success -> {
-                    GlobalScope.launch(Dispatchers.Main) {
-                        adapter.setData(meals.data , viewModel.favoriteUserIds)
-                    }
+                    adapter.setData(meals.data)
+//                    viewModel.favoriteUserIds.observe(viewLifecycleOwner){
+//
+//
+////                        delay(2000)
+//                    }
 
                     mProgressDialog.cancel()
                 }
 
             }
         }
-
+        listenToUpdateFavouriteItems()
         listenToDeleteFavouriteItems()
         listenToAddFavouriteItems()
-    }
 
+    }
 
     private fun listenToDeleteFavouriteItems() {
         adapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
-            if (!response.isNullOrEmpty() ) {
+            if (response != null ) {
                 viewModel.deleteFavoriteRecipe(response)
-                adapter.updateIDs()
-//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
         }
     }
@@ -130,14 +123,17 @@ class HomeFragment : Fragment() {
         adapter.favoriteUserAddMeal.observe(viewLifecycleOwner) { response ->
             if (response != null ) {
                 viewModel.addFavoriteRecipe(response)
-                adapter.updateIDs()
+
+            }
+        }
+    }
+    private fun listenToUpdateFavouriteItems() {
+        viewModel.favoriteUserIds.observe(viewLifecycleOwner) { response ->
+            if (!response.isNullOrEmpty() ) {
+                adapter.updateIDs(response as MutableList<String>)
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
             }
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.getFavoriteList()
-    }
 }

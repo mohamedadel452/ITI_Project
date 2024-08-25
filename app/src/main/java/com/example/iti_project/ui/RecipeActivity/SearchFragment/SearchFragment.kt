@@ -40,13 +40,9 @@ class SearchFragment : Fragment() {
 
     private val searchViewModel: SearchViewModel by viewModels {
 
-        SearchViewModel.SearchViewModelFactory(MealsRepoImpl(RetrofitClient),favoriteRepo)    }
-
-    override fun onStart() {
-        super.onStart()
-        searchViewModel.getFavoriteList()
-
+        SearchViewModel.SearchViewModelFactory(MealsRepoImpl(RetrofitClient), favoriteRepo)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,10 +54,12 @@ class SearchFragment : Fragment() {
         val roomDataSource: RoomDatabaseInterface = RoomDataBaseImp.getInstance(requireContext())
 
         // Initialize SharedPreferencesDataSource using your SharedPreferenceImp class
-        val sharedPreferencesDataSource: SharedPreferenceInterface = SharedPreferenceImp.getInstance(requireContext())
+        val sharedPreferencesDataSource: SharedPreferenceInterface =
+            SharedPreferenceImp.getInstance(requireContext())
 
         // Initialize LocalDataSourceImp
-        val localDataSource = LocalDataSourceImp(requireContext(), roomDataSource, sharedPreferencesDataSource)
+        val localDataSource =
+            LocalDataSourceImp(requireContext(), roomDataSource, sharedPreferencesDataSource)
 
         // Initialize favoriteRepo
         favoriteRepo = FavoriteRecipeRepoImp(localDataSource)
@@ -74,16 +72,21 @@ class SearchFragment : Fragment() {
         // Initialize RecyclerView
         searchRecyclerView = view.findViewById(R.id.search_list_view)
 
-        mealsAdapter = MealsAdapter(searchViewModel.favoriteUserIds , emptyList(),{ meal ->
+        mealsAdapter = MealsAdapter( emptyList(), { meal ->
             searchViewModel.addMealToFavorites(meal)
-            Toast.makeText(requireContext(), "${meal.strMeal} added to favorites", Toast.LENGTH_SHORT).show()
-        }, { id ->
-            searchViewModel.deleteFavoriteRecipe(id)
-            Toast.makeText(requireContext(), "${id} removed  from favorites", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "${meal.strMeal} added to favorites",
+                Toast.LENGTH_SHORT
+            ).show()
+        }, { meal ->
+            searchViewModel.deleteFavoriteRecipe(meal)
+            Toast.makeText(requireContext(), "${id} removed  from favorites", Toast.LENGTH_SHORT)
+                .show()
         }, { meal ->
             Log.d("SearchFragment", "Navigating to details for meal: ${meal.idMeal}")
             val bundle = bundleOf("idMeal" to meal.idMeal)
-            findNavController().navigate(R.id.action_search_to_recipeDetailsFragment,bundle )
+            findNavController().navigate(R.id.action_search_to_recipeDetailsFragment, bundle)
         })
         searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         searchRecyclerView.adapter = mealsAdapter
@@ -96,8 +99,9 @@ class SearchFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val newText = s.toString()
+
                 if (newText.isEmpty()) {
-                    mealsAdapter.updateMeals(emptyList(), searchViewModel.favoriteUserIds)
+                    mealsAdapter.updateMeals(emptyList())
                 } else {
                     searchViewModel.searchMeals(newText)
                 }
@@ -107,20 +111,21 @@ class SearchFragment : Fragment() {
                 // Not used
             }
         })
-        if(savedInstanceState?.getBoolean("restart") == true){
-            savedInstanceState.putBoolean("restart" , false)
+        if (savedInstanceState?.getBoolean("restart") == true) {
+            savedInstanceState.putBoolean("restart", false)
             Log.i("restart", "false")
 //            mealsAdapter.updateMeals(emptyList(), searchViewModel.favoriteUserIds)
         }
 
         return view
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         searchView.requestFocus()
-
+        listenToUpdateFavouriteItems()
         // Show keyboard
         showKeyboard()
     }
@@ -139,22 +144,36 @@ class SearchFragment : Fragment() {
 
                 is UiState.Success -> {
                     val mealsList = response.data
-                    mealsAdapter.updateMeals(mealsList, searchViewModel.favoriteUserIds )  // recyclerview with new data
+                    mealsAdapter.updateMeals(
+                        mealsList
+                    )  // recyclerview with new data
                 }
             }
         }
     }
+
     private fun showKeyboard() {
         searchView.requestFocus()  // Request focus on the SearchView
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
     }
+
     override fun onPause() {
         super.onPause()
-        searchViewModel.getFavoriteList()
-        mealsAdapter.updateMeals(emptyList(), searchViewModel.favoriteUserIds)
-        bundleOf().putBoolean("restart" , true)
-
+        mealsAdapter.updateMeals(emptyList())
+        listenToUpdateFavouriteItems()
+        bundleOf().putBoolean("restart", true)
         Log.i("restart", "false")
+    }
+
+
+    private fun listenToUpdateFavouriteItems() {
+        searchViewModel.favoriteUserIds.observe(viewLifecycleOwner) { response ->
+            if (!response.isNullOrEmpty() ) {
+                mealsAdapter.updateIDs(response as MutableList<String>)
+//                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+            }
+        }
     }
 }

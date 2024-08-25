@@ -25,10 +25,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.iti_project.R
+import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
+import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.MealsDetails
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
+import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import com.example.iti_project.ui.RecipeActivity.DetailsFragment.AdapterForDetailsFragment
 import com.example.iti_project.ui.RecipeActivity.DetailsFragment.DetailsViewModel
 import com.example.iti_project.ui.RecipeActivity.DetailsFragment.DetailsViewModelFactory
@@ -41,7 +45,15 @@ class RecipeDetailsFragment : Fragment() {
 
     private val viewModel: DetailsViewModel by viewModels(){
 
-        DetailsViewModelFactory(MealsRepoImpl())
+        DetailsViewModelFactory(MealsRepoImpl(),
+            FavoriteRecipeRepoImp(
+                LocalDataSourceImp(
+                    requireContext(),
+                    RoomDataBaseImp.getInstance(requireContext()),
+                    SharedPreferenceImp.getInstance(requireContext())
+                )
+            )
+        )
     }
 
     private lateinit var recipeImage : ImageView
@@ -66,21 +78,13 @@ class RecipeDetailsFragment : Fragment() {
 
     private lateinit var webView : WebView
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var meal : MealsDetails
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-
-
-
         return inflater.inflate(R.layout.fragment_recipe_details, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -106,14 +110,9 @@ class RecipeDetailsFragment : Fragment() {
         closeTheVideo=view.findViewById(R.id.close_video)
         webView = view.findViewById(R.id.webView)
 
-
-
-
-
-
         val colorVisible = "#FFED6E3A" // Color when button is visible
         val colorNotVisible = "#FFB6BAB6" // Color when button is not visible
-
+        listenToUpdateFavouriteItems()
         showInstructions.setOnClickListener {
             if (allInstructions.visibility == View.GONE) {
                 allInstructions.visibility = View.VISIBLE
@@ -154,10 +153,12 @@ class RecipeDetailsFragment : Fragment() {
                 // Change the button text to "Added"
                 add_to_fav.setBackgroundColor(Color.parseColor(colorNotVisible))
 
+                viewModel.addFavoriteRecipe(meal,args.count)
                 add_to_fav.text = "Added"
             } else {
                 // Change the button text back to "Add"
                 add_to_fav.setBackgroundColor(Color.parseColor(colorVisible))
+                viewModel.deleteFavoriteRecipe(meal,args.count)
                 add_to_fav.text = "Add to favorites"
             }
         }
@@ -210,7 +211,7 @@ class RecipeDetailsFragment : Fragment() {
                 UiState.Loading -> Toast.makeText(requireContext(), "loading ", Toast.LENGTH_SHORT).show()
                 is UiState.Success -> {
                     setData(it.data)
-
+                    meal = it.data
                 }
             }
 
@@ -255,13 +256,8 @@ class RecipeDetailsFragment : Fragment() {
         ingredientsAdapter.setData(ingredients,measures)
 
 
-
-
-
-
-
-
-
     }
-
+    private fun listenToUpdateFavouriteItems() {
+        viewModel.favoriteUserIds.observe(viewLifecycleOwner) {}
+    }
 }

@@ -13,22 +13,27 @@ import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
+import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 class FavoriteFragment : Fragment() {
 
-    private lateinit var rv_favoriteRecipes : RecyclerView
+    private lateinit var rv_favoriteRecipes: RecyclerView
 
 
     private lateinit var favoriteRecipesAdapter: FavoriteRecipesAdapter
 
-    private val viewModel: FavoriteFragmentViewModel by viewModels(){
-        FavoriteFragmentViewModelFactory(FavoriteRecipeRepoImp(LocalDataSourceImp( requireContext(), RoomDataBaseImp.getInstance(requireContext()) , SharedPreferenceImp.getInstance(requireContext()))))
+    private val viewModel: FavoriteFragmentViewModel by viewModels() {
+        FavoriteFragmentViewModelFactory(
+            FavoriteRecipeRepoImp(
+                LocalDataSourceImp(
+                    requireContext(),
+                    RoomDataBaseImp.getInstance(requireContext()),
+                    SharedPreferenceImp.getInstance(requireContext())
+                )
+            )
+        )
     }
 
     override fun onCreateView(
@@ -36,35 +41,26 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        viewModel.getFavoriteList()
+//        viewModel.getFavoriteList()
         return inflater.inflate(R.layout.fragment_favourit, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
-
+        instantiateProductsRecyclerView()
+        listenToDeleteFavouriteItems()
+        listenToUpdateFavouriteItems()
     }
 
-    override fun onResume() {
-        super.onResume()
-        GlobalScope.launch (Dispatchers.Main){
-            delay(2000)
-            instantiateProductsRecyclerView()
-
-            favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
-            listenToDeleteFavouriteItems()
-        }
-
-    }
     private fun instantiateProductsRecyclerView() {
-        favoriteRecipesAdapter = FavoriteRecipesAdapter{ favoriteRecipeID  ->
+        favoriteRecipesAdapter = FavoriteRecipesAdapter { favoriteRecipeID,count ->
             val action =
-                FavoriteFragmentDirections.actionFavouritToRecipeDetailsFragment(favoriteRecipeID)
+                FavoriteFragmentDirections.actionFavouritToRecipeDetailsFragment(favoriteRecipeID, count)
             findNavController().navigate(action)
         }
         rv_favoriteRecipes.apply {
-            layoutManager=
+            layoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = favoriteRecipesAdapter
         }
@@ -72,13 +68,38 @@ class FavoriteFragment : Fragment() {
 
 
     private fun listenToDeleteFavouriteItems() {
-        favoriteRecipesAdapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
-            if (!response.isNullOrEmpty() ) {
-                viewModel.deleteFavoriteRecipe(response)
-                viewModel.getFavoriteList()
+        if (favoriteRecipesAdapter.favoriteUserRemovedIds != null) {
+            favoriteRecipesAdapter.favoriteUserRemovedIds.observe(viewLifecycleOwner) { response ->
+                if (response != null) {
+                    viewModel.deleteFavoriteRecipe(response)
+//                    viewModel.getFavoriteList()
 //                favoriteRecipesAdapter.setData(viewModel.favoriteRecipes , viewModel.favoriteUserIds)
+                }
             }
         }
     }
 
+    private fun listenToUpdateFavouriteItems() {
+
+//        Log.i("response", "  " + "nooooooooooo")
+        viewModel.favoriteRecipes.observe(viewLifecycleOwner) { response ->
+//            Log.i("response", "  " + response.first().strMealThumb)
+            if (!response.isNullOrEmpty()) {
+
+                favoriteRecipesAdapter.setData(
+                    response as MutableList<Meals>
+                )
+            }
+        }
+
+        viewModel.favoriteUserIds.observe(viewLifecycleOwner){ response ->
+            if (!response.isNullOrEmpty()) {
+
+                favoriteRecipesAdapter.setIDs(
+                    response as MutableList<String>
+                )
+            }
+        }
+
+    }
 }

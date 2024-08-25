@@ -13,7 +13,7 @@ import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.UserModel
 
 
-@Database(entities = [UserModel::class , Meals::class], version = 3 , exportSchema = true)
+@Database(entities = [UserModel::class , Meals::class], version = 8 , exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
 
@@ -45,37 +45,30 @@ abstract class RoomDataBaseImp :RoomDatabaseInterface, RoomDatabase(){
     }
 
     //it will return null if the user not found
-    override suspend fun getUserByEmail(email: String): UserModel? {
+    override fun getUserByEmail(email: String): UserModel? {
         return getUserDao().getUserByEmail(email)
     }
 
-    override suspend fun getFavouriteListByEmail(email: String): MutableList<String> {
+    override fun getFavouriteListByEmail(email: String): LiveData<List<String>> {
         return getUserDao().getFavouriteListByEmail(email)
     }
 
-    override suspend fun addFavouriteRecipe(meal: Meals): Long{
+    override fun addFavouriteRecipe(meal: Meals): Long{
         return getFavoriteDao().addFavouriteRecipe(meal)
     }
 
-    override fun getFavouriteRecipe(id : List<String>) : List<Meals> {
-        return getFavoriteDao().getFavouriteRecipe(id)
-    }
 
     override suspend fun deleteFavouriteRecipeList(id : String) : Int{
         return getFavoriteDao().deleteFavouriteRecipeList(id)
     }
 
-    //    override suspend fun getAllRecipes(): LiveData<List<RecipesModel>> {
-//
-//    }
-//
-//    override suspend fun getRecipeDetails(id: String): RecipesModel? {
-//
-//    }
-//
-//    override suspend fun insertRecipesInfo(recipesModel: List<RecipesModel>) {
-//
-//    }
+    override fun getFavouriteRecipe(id : List<String>) : LiveData<List<Meals>> {
+        return getFavoriteDao().getFavouriteRecipe(id)
+    }
+    override fun getFavouriteRecipeCount(id : String) : Int {
+        return getFavoriteDao().getFavouriteRecipeCount(id)
+    }
+
     override suspend fun addFavouriteItem(user:UserModel): Int {
         return getUserDao().addFavouriteItem(user)
     }

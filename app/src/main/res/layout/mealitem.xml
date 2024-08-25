@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="8dp"
-    android:padding="8dp"
     app:cardElevation="4dp"
     app:cardCornerRadius="8dp">
 
@@ -38,8 +37,8 @@
 
         <TextView
             android:id="@+id/meal_name_text_view"
-            android:layout_width="194dp"
-            android:layout_height="62dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center_vertical"

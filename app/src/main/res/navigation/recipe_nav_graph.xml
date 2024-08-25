@@ -56,5 +56,9 @@
             android:name="idMeal"
             app:argType="string"
             android:defaultValue='""' />
+        <argument
+            android:name="count"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

@@ -21,41 +21,45 @@ class LocalDataSourceImp(
 
     }
 
-    override suspend fun getUserByEmail(email: String): UserModel? {
+    override fun getUserByEmail(email: String): UserModel? {
         roomDataSource.let { return roomDataSource.getUserByEmail(email) }
     }
 
 
-    override suspend fun getLoggedIn(): String {
+    override fun getLoggedIn(): String {
         return sharedPreferencesDataSource?.getLoggedIn() ?: "Not Found"
     }
 
     //returns true if changes were successfully written to persistent storage
     override fun setLoggedIn(email: String): Boolean {
+//        Log.i("set log", email)
         return sharedPreferencesDataSource?.setLoggedIn(email) ?: false
     }
 
     override suspend fun addFavouriteRecipe(favoriteID: String): Boolean {
         val email = getLoggedIn()
-        Log.i("email", email)
+//        Log.i("email", email)
         val user = getUserByEmail(email)
-        Log.i("email", " "+user?.email)
+//        Log.i("email", " "+user?.email)
         return if (user != null && !user.favoriteID.contains(favoriteID)) {
-            user.favoriteID.add(favoriteID)
-            Log.i("email", favoriteID)
+            val list = user.favoriteID.toMutableList()
+            list.add(favoriteID)
+            user.favoriteID = list
+//            Log.i("email sd", user.favoriteID[0])
             roomDataSource.addFavouriteItem(user) != -1
         } else {
             false
         }
     }
 
-    override suspend fun addFavouriteRecipeList(favorite: List<String>): Boolean {
+    override suspend fun addFavouriteRecipeList(favorite: List<String> ): Boolean {
         val email = getLoggedIn()
 //        Log.i("favoriteID", email)
         val user = getUserByEmail(email)
 
         return if (user != null) {
-            user.favoriteID = favorite.toMutableList()
+            user.favoriteID = favorite
+//            Log.i("add", favorite[0])
 //            listenOnChangeRecipe(favoriteRecipeID: String)
             roomDataSource.addFavouriteItem(user) != -1
         } else {
@@ -63,15 +67,9 @@ class LocalDataSourceImp(
         }
     }
 
-
-    override suspend fun getFavouriteListByEmail(): MutableList<String> {
+    override fun getFavouriteListByEmail(): LiveData<List<String>> {
         val email = getLoggedIn()
-        val user = getUserByEmail(email)
-        return if (user != null) {
-            user.favoriteID
-        } else {
-            mutableListOf()
-        }
+        return  roomDataSource.getFavouriteListByEmail(email)
     }
 
     override suspend fun addFavouriteRecipe(meal: Meals): Long {
@@ -79,11 +77,21 @@ class LocalDataSourceImp(
         return roomDataSource.addFavouriteRecipe(meal) ?: -1L
     }
 
-    override fun getFavouriteRecipe(id: List<String>): List<Meals> {
+    override fun getFavouriteRecipe(id: List<String>): LiveData<List<Meals>> {
         return roomDataSource.getFavouriteRecipe(id)
     }
 
-    override suspend fun deleteFavouriteRecipeList(id: String): Int {
-        return roomDataSource.deleteFavouriteRecipeList(id)
+    override suspend fun deleteFavouriteRecipeList(meal: Meals ): Int {
+
+        return if (meal.count < 1){
+            roomDataSource.deleteFavouriteRecipeList(meal.idMeal)
+        }else{
+            roomDataSource.addFavouriteRecipe(meal).toInt()
+        }
+
+    }
+
+    override fun getFavouriteRecipeCount(id : String) : Int {
+        return roomDataSource.getFavouriteRecipeCount(id)
     }
 }
