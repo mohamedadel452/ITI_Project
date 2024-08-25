@@ -27,7 +27,6 @@ import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDat
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
-import com.example.iti_project.ui.RecipeActivity.Favourit.FavoriteFragmentDirections
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 
@@ -86,10 +85,8 @@ class SearchFragment : Fragment() {
                 .show()
         }, { meal ->
             Log.d("SearchFragment", "Navigating to details for meal: ${meal.idMeal}")
-            val action =
-                SearchFragmentDirections.actionSearchToRecipeDetailsFragment(meal.count , meal.idMeal)
-            findNavController().navigate(action)
-
+            val bundle = bundleOf("idMeal" to meal.idMeal)
+            findNavController().navigate(R.id.action_search_to_recipeDetailsFragment, bundle)
         })
         searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         searchRecyclerView.adapter = mealsAdapter

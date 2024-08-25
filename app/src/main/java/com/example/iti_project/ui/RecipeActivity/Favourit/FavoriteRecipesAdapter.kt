@@ -15,7 +15,7 @@ import com.example.iti_project.R
 import com.example.iti_project.data.models.Meals
 
 
-class FavoriteRecipesAdapter(private val onItemClicked: ( String,Int) -> Unit ) :
+class FavoriteRecipesAdapter(private val onItemClicked: (String,Int) -> Unit ) :
     RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()
@@ -60,7 +60,7 @@ class FavoriteRecipesAdapter(private val onItemClicked: ( String,Int) -> Unit ) 
         holder.mealImage.setOnClickListener {
             val id = meals[position].idMeal
             val count = meals[position].count
-            if (id != null) onItemClicked(id , count)
+            if (id != null) onItemClicked(id,count)
         }
 
 
