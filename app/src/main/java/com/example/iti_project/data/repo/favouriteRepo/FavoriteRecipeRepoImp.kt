@@ -53,7 +53,7 @@ class FavoriteRecipeRepoImp(
         return localdata.addFavouriteRecipe(meal)
     }
 
-    override suspend fun deleteFavouriteRecipeList(meal: Meals) {
+    override suspend fun deleteFavouriteRecipeList(meal : Meals) {
         val favoriteIDList = favoriteRecipeIDs.value as MutableList<String>
         favoriteIDList.remove(meal.idMeal)
         favoriteRecipeID = localdata.getFavouriteRecipeCount(meal.idMeal)

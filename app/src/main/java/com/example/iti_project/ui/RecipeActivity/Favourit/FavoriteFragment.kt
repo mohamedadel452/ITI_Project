@@ -54,9 +54,9 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun instantiateProductsRecyclerView() {
-        favoriteRecipesAdapter = FavoriteRecipesAdapter { favoriteRecipeID , count ->
+        favoriteRecipesAdapter = FavoriteRecipesAdapter { favoriteRecipeID,count ->
             val action =
-                FavoriteFragmentDirections.actionFavouritToRecipeDetailsFragment(count , favoriteRecipeID)
+                FavoriteFragmentDirections.actionFavouritToRecipeDetailsFragment(favoriteRecipeID, count)
             findNavController().navigate(action)
         }
         rv_favoriteRecipes.apply {

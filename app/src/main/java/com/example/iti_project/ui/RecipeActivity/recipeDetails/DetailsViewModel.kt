@@ -30,6 +30,7 @@ class DetailsViewModel(
     init {
         viewModelScope.launch {
             favoriteUserIds.addSource(favoriteRecipeRepo.favoriteRecipeIDs) {
+                Log.i("teabt", ": " + it.size )
                 favoriteUserIds.postValue(it)
             }
         }

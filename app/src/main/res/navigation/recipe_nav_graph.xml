@@ -58,6 +58,7 @@
             android:defaultValue='""' />
         <argument
             android:name="count"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

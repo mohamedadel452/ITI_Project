@@ -79,20 +79,12 @@ class RecipeDetailsFragment : Fragment() {
     private lateinit var webView : WebView
 
     private lateinit var meal : MealsDetails
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-
-
-
         return inflater.inflate(R.layout.fragment_recipe_details, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -118,14 +110,9 @@ class RecipeDetailsFragment : Fragment() {
         closeTheVideo=view.findViewById(R.id.close_video)
         webView = view.findViewById(R.id.webView)
 
-
-
-
-
-
         val colorVisible = "#FFED6E3A" // Color when button is visible
         val colorNotVisible = "#FFB6BAB6" // Color when button is not visible
-
+        listenToUpdateFavouriteItems()
         showInstructions.setOnClickListener {
             if (allInstructions.visibility == View.GONE) {
                 allInstructions.visibility = View.VISIBLE
@@ -165,6 +152,7 @@ class RecipeDetailsFragment : Fragment() {
             if (add_to_fav.text == "Add to favorites") {
                 // Change the button text to "Added"
                 add_to_fav.setBackgroundColor(Color.parseColor(colorNotVisible))
+
                 viewModel.addFavoriteRecipe(meal,args.count)
                 add_to_fav.text = "Added"
             } else {
@@ -268,13 +256,8 @@ class RecipeDetailsFragment : Fragment() {
         ingredientsAdapter.setData(ingredients,measures)
 
 
-
-
-
-
-
-
-
     }
-
+    private fun listenToUpdateFavouriteItems() {
+        viewModel.favoriteUserIds.observe(viewLifecycleOwner) {}
+    }
 }
