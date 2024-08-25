@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ui.actitvity1.mainActitvity.loginFragment.LoginFragment">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+
     <TextView
         android:id="@+id/Welctxt"
         android:layout_width="wrap_content"
@@ -41,30 +38,30 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:textSize="18sp"
+        android:layout_width="398dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="109dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="56dp"
         app:boxCornerRadiusBottomEnd="20dp"
         app:boxCornerRadiusBottomStart="20dp"
         app:boxCornerRadiusTopEnd="20dp"
         app:boxCornerRadiusTopStart="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/et_password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logntxt"
-        app:layout_constraintVertical_bias="0.158"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/sign_in_email"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableStart="@drawable/email"
-            android:hint="@string/email_address"
+            android:layout_width="378dp"
+            android:layout_height="62dp"
+            android:drawableLeft="@drawable/message"
+            android:hint="  Email address"
             android:inputType="textEmailAddress"
             android:textStyle="bold"
             app:hintTextColor="@color/auth_text_color" />
@@ -83,25 +80,24 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_width="380dp"
+        android:layout_height="71dp"
         android:layout_marginTop="24dp"
-        android:layout_marginHorizontal="16dp"
-        android:ems="10"
-        android:textSize="18sp"
+        android:layout_marginEnd="16dp"
         app:boxCornerRadiusBottomEnd="20dp"
         app:boxCornerRadiusBottomStart="20dp"
         app:boxCornerRadiusTopEnd="20dp"
         app:boxCornerRadiusTopStart="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:passwordToggleEnabled="true"
-        app:layout_constraintTop_toBottomOf="@+id/tx_email_error">
+        app:layout_constraintTop_toBottomOf="@id/tx_email_error"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/sign_in_password"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_width="378dp"
+            android:layout_height="62dp"
             android:drawableStart="@drawable/lock"
             android:hint="@string/password"
             android:inputType="textPassword"
@@ -163,5 +159,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_suggestion"
         app:layout_constraintVertical_bias="0.0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

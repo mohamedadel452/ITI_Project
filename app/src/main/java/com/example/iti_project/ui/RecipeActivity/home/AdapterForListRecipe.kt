@@ -15,13 +15,13 @@ import com.example.iti_project.R
 import com.example.iti_project.data.models.Meals
 
 class AdapterForListRecipe(
-    private val onItemClicked: (String,Int) -> Unit ,
+    private val onItemClicked: (String) -> Unit ,
 ) : RecyclerView.Adapter<AdapterForListRecipe.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()
 
     var favoriteUserIds = mutableListOf<String>()
-    var favoriteUserRemovedIds = MediatorLiveData<Meals?>()
+    var favoriteUserRemovedIds = MediatorLiveData<String?>()
     var favoriteUserAddMeal = MediatorLiveData<Meals?>()
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -50,8 +50,6 @@ class AdapterForListRecipe(
             Log.i("ids", meal.idMeal)
             holder.isFavorite = true
             holder.favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
-        }else{
-            holder.favoriteImage.clearColorFilter()
         }
 
         holder.favoriteImage.setOnClickListener {
@@ -60,12 +58,14 @@ class AdapterForListRecipe(
             if (holder.isFavorite){
                 holder.isFavorite = false
                 holder.favoriteImage.clearColorFilter()
-                favoriteUserRemovedIds.postValue(meal)
+                favoriteUserRemovedIds.postValue(meal.idMeal)
+                favoriteUserIds.remove(meal.idMeal)
 //                favoriteRecipeViewModel.deleteFavoriteRecipe(meal.idMeal)
             }else {
                 holder.isFavorite = true
                 holder.favoriteImage.setColorFilter(Color.argb(100, 255, 0, 0))
                 favoriteUserAddMeal.postValue(meal)
+                favoriteUserIds.add(meal.idMeal)
                 Log.i("RED ids", meal.idMeal)
 //                favoriteRecipeViewModel.addFavoriteRecipe(meal)
             }
@@ -74,8 +74,7 @@ class AdapterForListRecipe(
 
         holder.mealImage.setOnClickListener {
             val id = meals[position].idMeal
-            val count = meals[position].count
-            if (id != null) onItemClicked(id, count )
+            if (id != null) onItemClicked(id)
         }
 
     }
@@ -86,16 +85,15 @@ class AdapterForListRecipe(
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(meals: List<Meals> ) {
+    fun setData(meals: List<Meals> , recipeIDs : MutableList<String>) {
         this.meals = meals as MutableList<Meals>
-//        favoriteUserIds = recipeIDs as MutableList<String>
-//        Log.i("favoriteRecipeViewModel", "   " + meals.size)
+        favoriteUserIds = recipeIDs
+        Log.i("favoriteRecipeViewModel", "   " + favoriteUserIds.size)
         notifyDataSetChanged()
     }
 
-    fun updateIDs(recipeIDs : MutableList<String> ) {
-        favoriteUserIds = recipeIDs
-        Log.i("favoriteRecipeViewModel", "   " + favoriteUserIds[0])
+    fun updateIDs() {
+        Log.i("favoriteRecipeViewModel", "   " + meals.size)
         notifyDataSetChanged()
     }
 }

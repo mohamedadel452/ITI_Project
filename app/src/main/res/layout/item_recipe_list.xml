@@ -36,7 +36,7 @@
             >
 
         </ImageView>
-
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,36 +46,34 @@
             android:layout_marginHorizontal="10dp"
             >
 
-            <TextView
-                android:id="@+id/title_product"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Titel"
-                android:background="#6D656565"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:gravity="start"
-                android:src="@drawable/ic_launcher_background"
-                >
+        <TextView
+            android:id="@+id/title_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Titel"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:gravity="start"
+            android:src="@drawable/ic_launcher_background"
+            >
 
-            </TextView>
-            <TextView
-                android:id="@+id/catagory_of_meal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="catagory"
-                android:textSize="11sp"
-                android:gravity="start"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:background="#6D656565"
-                android:src="@drawable/ic_launcher_background"
-                >
+        </TextView>
+        <TextView
+            android:id="@+id/catagory_of_meal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="catagory"
+            android:textSize="11sp"
+            android:gravity="start"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:src="@drawable/ic_launcher_background"
+            >
 
-            </TextView>
+        </TextView>
 
-        </LinearLayout>
+    </LinearLayout>
 
 
     </FrameLayout>
