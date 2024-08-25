@@ -5,12 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/recipe_details_scroll_view"
     tools:context=".ui.RecipeActivity.recipeDetails.RecipeDetailsFragment"
     >
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/constraint_layout"
   >
 
     <!-- Image with play button -->
@@ -44,48 +44,7 @@
             android:src="@drawable/play" />
 
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/video_container"
-        android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        tools:context=".YouTube"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-
-        >
-
-        <ImageView
-            android:id="@+id/close_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_close_24"
-            android:layout_marginStart="10dp"
-            >
-
-        </ImageView>
-
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-
-            android:background="@drawable/img"
-
-            /> <!-- Initially hidden -->
-
-    </LinearLayout>
-
-
-    <!-- Recipe Title -->
-
     <!-- Recipe details -->
-
     <TextView
         android:id="@+id/recipe_title"
         android:layout_width="wrap_content"
