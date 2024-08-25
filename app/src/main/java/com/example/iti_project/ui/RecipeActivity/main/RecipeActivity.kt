@@ -64,6 +64,16 @@ class RecipeActivity : AppCompatActivity() {
         bottomNavView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, AppBarConfiguration(navGraph = navController.graph))
 
+        navController.addOnDestinationChangedListener{_,destination,_->
+            when(destination.id){
+
+                R.id.home,R.id.search,R.id.favorite->{bottomNavView.visibility=View.VISIBLE}
+                else->{bottomNavView.visibility=View.GONE}
+            }
+
+        }
+
+
 
     }
 
