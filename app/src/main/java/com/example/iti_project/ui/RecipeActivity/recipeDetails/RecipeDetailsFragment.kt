@@ -1,8 +1,10 @@
 package com.example.iti_project.ui.RecipeActivity.recipeDetails
 
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +19,7 @@ import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +29,6 @@ import com.example.iti_project.R
 import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDataSourceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
-import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.MealsDetails
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepoImpl
@@ -55,14 +55,14 @@ class RecipeDetailsFragment : Fragment() {
             )
         )
     }
-
+    private lateinit var mProgressDialog: ProgressDialog
     private lateinit var recipeImage : ImageView
     private lateinit var play_video : ImageView
     private lateinit var recipeTitle : TextView
     private lateinit var author_image : ImageView
     private lateinit var recipyCatagory : TextView
     private lateinit var recipyArea : TextView
-    private lateinit var add_to_fav : Button
+    private lateinit var add_to_fav : ImageView
     private lateinit var showIngredient : Button
     private lateinit var showInstructions : Button
     private lateinit var recipeDescription : TextView
@@ -73,13 +73,18 @@ class RecipeDetailsFragment : Fragment() {
     private  var strYoutube : String? = null
 
     private lateinit var imageContainer: RelativeLayout
-    private lateinit var videoContainer: LinearLayout
-    private lateinit var closeTheVideo : ImageView
-
     private lateinit var webView : WebView
 
     private lateinit var meal : MealsDetails
 
+    private lateinit var webView_dialog : Dialog
+
+    private lateinit var recipeDetailsFragment : ScrollView
+
+    private var favoritelistIds : List<String> = listOf()
+
+    val colorVisible = "#FFED6E3A" // Color when button is visible
+    val colorNotVisible = "#FFB6BAB6" // Color when button is not visible
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -104,15 +109,13 @@ class RecipeDetailsFragment : Fragment() {
         rcv_ingredients=view.findViewById(R.id.recyclerView_Ingredients)
         allInstructions=view.findViewById(R.id.scroll_view_Instructions)
         allIngredients=view.findViewById(R.id.scroll_view_Ingredients)
-
+        webView_dialog = Dialog(requireContext())
         imageContainer = view.findViewById(R.id.image_container)
-        videoContainer = view.findViewById(R.id.video_container)
-        closeTheVideo=view.findViewById(R.id.close_video)
-        webView = view.findViewById(R.id.webView)
+        recipeDetailsFragment = view.findViewById(R.id.recipe_details_scroll_view)
+        mProgressDialog = ProgressDialog(requireContext())
 
-        val colorVisible = "#FFED6E3A" // Color when button is visible
-        val colorNotVisible = "#FFB6BAB6" // Color when button is not visible
         listenToUpdateFavouriteItems()
+
         showInstructions.setOnClickListener {
             if (allInstructions.visibility == View.GONE) {
                 allInstructions.visibility = View.VISIBLE
@@ -148,39 +151,25 @@ class RecipeDetailsFragment : Fragment() {
             }
         }
 
-        add_to_fav.setOnClickListener {
-            if (add_to_fav.text == "Add to favorites") {
-                // Change the button text to "Added"
-                add_to_fav.setBackgroundColor(Color.parseColor(colorNotVisible))
 
+        add_to_fav.setOnClickListener {
+            if (add_to_fav.contentDescription  == "Add to favorites") {
+                // Change the button text to "Added"
                 viewModel.addFavoriteRecipe(meal,args.count)
-                add_to_fav.text = "Added"
+                add_to_fav.contentDescription  = "Added"
+                add_to_fav.setColorFilter(Color.argb(100, 255, 0, 0))
+
             } else {
                 // Change the button text back to "Add"
-                add_to_fav.setBackgroundColor(Color.parseColor(colorVisible))
                 viewModel.deleteFavoriteRecipe(meal,args.count)
-                add_to_fav.text = "Add to favorites"
+                add_to_fav.contentDescription = "Add to favorites"
+                add_to_fav.clearColorFilter()
             }
         }
 
         play_video.setOnClickListener {
             if (imageContainer.visibility == View.VISIBLE&& strYoutube!=null) {
-
-                Toast.makeText(requireContext(), "hi am here", Toast.LENGTH_SHORT).show()
-                imageContainer.visibility=View.INVISIBLE
-                videoContainer.visibility=View.VISIBLE
-                webView?.apply {
-                    webViewClient = WebViewClient() // Keeps navigation within the WebView
-                    webChromeClient = WebChromeClient() // For full-screen support and other features
-                    // Enable JavaScript and other settings
-                    settings.javaScriptEnabled = true
-                    settings.loadWithOverviewMode = true
-                    settings.useWideViewPort = true
-                    settings.pluginState = WebSettings.PluginState.ON
-
-                    strYoutube?.let { thelink -> loadUrl(thelink)}
-
-                }
+                showWebViewDialog(strYoutube)
 
             }
             else{
@@ -191,27 +180,34 @@ class RecipeDetailsFragment : Fragment() {
                 ).show()
             }
         }
-        closeTheVideo.setOnClickListener {
-            if (videoContainer.visibility == View.VISIBLE) {
-
-                Toast.makeText(requireContext(), "hi am here", Toast.LENGTH_SHORT).show()
-                imageContainer.visibility=View.VISIBLE
-                videoContainer.visibility=View.INVISIBLE
-                webView.loadUrl("about:blank")
-
-
-            }
-        }
-
 
         viewModel.mealDetails.observe(viewLifecycleOwner){
 
             when(it){
-                is UiState.Error -> Toast.makeText(requireContext(), "error ", Toast.LENGTH_SHORT).show()
-                UiState.Loading -> Toast.makeText(requireContext(), "loading ", Toast.LENGTH_SHORT).show()
+                is UiState.Error -> {
+                    mProgressDialog.cancel()
+                    Toast.makeText(requireContext(), "error ", Toast.LENGTH_SHORT).show()
+                    Glide.with(recipeImage.context).load(R.drawable.error_image).into(recipeImage)
+                    add_to_fav.isClickable = false
+
+                }
+                is UiState.Loading ->{
+                    mProgressDialog.setTitle("Loading Data")
+                    mProgressDialog.setMessage("please wait while we are loading data")
+                    mProgressDialog.show()
+                    Toast.makeText(requireContext(), "loading ", Toast.LENGTH_SHORT).show()
+                }
                 is UiState.Success -> {
                     setData(it.data)
                     meal = it.data
+                    listenToUpdateFavouriteItems()
+                    if(favoritelistIds != null)
+                        if (favoritelistIds.contains(meal.idMeal) == true){
+                            add_to_fav.contentDescription = "Added"
+                            add_to_fav.setColorFilter(Color.argb(100, 255, 0, 0))
+                        }
+                    add_to_fav.isClickable = true
+                    mProgressDialog.cancel()
                 }
             }
 
@@ -222,6 +218,40 @@ class RecipeDetailsFragment : Fragment() {
         rcv_ingredients.adapter=ingredientsAdapter
         rcv_ingredients.layoutManager=
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+
+    }
+
+    private fun showWebViewDialog(strYoutube: String?) {
+        webView_dialog.setContentView(R.layout.web_view_dialog)
+        webView_dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        webView_dialog.setCancelable(true)
+        webView_dialog.window!!.attributes.windowAnimations = R.style.animation
+
+        webView = webView_dialog.findViewById(R.id.webView)
+        webView?.apply {
+            webViewClient = WebViewClient()
+            webChromeClient = WebChromeClient()
+            settings.javaScriptEnabled = true
+            settings.loadWithOverviewMode = true
+            settings.useWideViewPort = true
+            settings.pluginState = WebSettings.PluginState.ON
+
+            strYoutube?.let { thelink -> loadUrl(thelink) }
+            recipeDetailsFragment.alpha=0.5f
+
+        }
+        webView_dialog.show()
+
+        webView_dialog.findViewById<Button>(R.id.cancelVideo).setOnClickListener {
+            webView_dialog.dismiss()
+            webView.loadUrl("about:blank")
+            recipeDetailsFragment.alpha=1f
+        }
+
+
 
     }
 
@@ -258,6 +288,9 @@ class RecipeDetailsFragment : Fragment() {
 
     }
     private fun listenToUpdateFavouriteItems() {
-        viewModel.favoriteUserIds.observe(viewLifecycleOwner) {}
+        viewModel.favoriteUserIds.observe(viewLifecycleOwner) {
+            if(!it.isNullOrEmpty()) favoritelistIds = it
+
+        }
     }
 }
