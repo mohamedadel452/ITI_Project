@@ -1,53 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    layout_width="match_parent"
-    layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="16dp"
+
     android:background="@color/white" >
 
 
 
-    <com.google.android.material.search.SearchBar
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search the recipe you want..."
-        app:layout_constraintBottom_toBottomOf="@+id/nestedScrollView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sr4vw"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:textSize="18sp"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_between_search_views"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/search"
+            android:hint="Search"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:hintTextColor="@color/auth_text_color" />
 
 
-    <com.google.android.material.search.SearchView
-        android:id="@+id/sr4vw"
-        android:layout_width="378dp"
-        android:layout_height="58dp"
-        android:layout_marginEnd="16dp"
-        app:layout_anchor="@+id/search_bar"
-        app:layout_anchorGravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046">
-
-
-    </com.google.android.material.search.SearchView>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_list_view"
-        android:layout_width="365dp"
-        android:layout_height="529dp"
-        android:layout_marginTop="115dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/guideline_between_search_views"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_between_search_views"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="270dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

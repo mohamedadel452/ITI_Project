@@ -29,6 +29,7 @@ import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedP
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
+import com.google.android.material.textfield.TextInputLayout
 
 class SearchFragment : Fragment() {
 
@@ -37,6 +38,7 @@ class SearchFragment : Fragment() {
     private lateinit var mealsAdapter: MealsAdapter
     private lateinit var searchBar: SearchBar
     private lateinit var searchView: SearchView
+    private lateinit var et_email: TextInputLayout
 
     private val searchViewModel: SearchViewModel by viewModels {
 
@@ -65,9 +67,9 @@ class SearchFragment : Fragment() {
         favoriteRepo = FavoriteRecipeRepoImp(localDataSource)
 
         // Initialize SearchBar and SearchView
-        searchBar = view.findViewById(R.id.search_bar)
-        searchView = view.findViewById(R.id.sr4vw)
-
+//        searchBar = view.findViewById(R.id.search_bar)
+//        searchView = view.findViewById(R.id.sr4vw)
+        et_email = view.findViewById(R.id.sr4vw)
 
         // Initialize RecyclerView
         searchRecyclerView = view.findViewById(R.id.search_list_view)
@@ -90,27 +92,50 @@ class SearchFragment : Fragment() {
         })
         searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         searchRecyclerView.adapter = mealsAdapter
+        et_email.editText?.addTextChangedListener(
+            object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    // Not used
 
-        setupObservers()
-        searchView.editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Not used
-            }
+                }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val newText = s.toString()
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val newText = s.toString()
 
-                if (newText.isEmpty()) {
-                    mealsAdapter.updateMeals(emptyList())
-                } else {
-                    searchViewModel.searchMeals(newText)
+                    if (newText.isEmpty()) {
+                        mealsAdapter.updateMeals(emptyList())
+                    } else {
+                        searchViewModel.searchMeals(newText)
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    // Not used
                 }
             }
+        )
+        setupObservers()
+//        searchView.editText.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//                // Not used
+//
+//            }
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                val newText = s.toString()
+//
+//                if (newText.isEmpty()) {
+//                    mealsAdapter.updateMeals(emptyList())
+//                } else {
+//                    searchViewModel.searchMeals(newText)
+//                }
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//                // Not used
+//            }
+//        })
 
-            override fun afterTextChanged(s: Editable?) {
-                // Not used
-            }
-        })
         if (savedInstanceState?.getBoolean("restart") == true) {
             savedInstanceState.putBoolean("restart", false)
             Log.i("restart", "false")
@@ -124,7 +149,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        searchView.requestFocus()
+//        searchView.requestFocus()
         listenToUpdateFavouriteItems()
         // Show keyboard
         showKeyboard()
@@ -153,10 +178,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun showKeyboard() {
-        searchView.requestFocus()  // Request focus on the SearchView
-        val inputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
+//        searchView.requestFocus()  // Request focus on the SearchView
+//        searchBar.visibility = View.GONE
+//        val inputMethodManager =
+//            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun onPause() {
