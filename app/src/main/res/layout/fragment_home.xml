@@ -9,13 +9,13 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="108dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_behavior="@string/fab_transformation_sheet_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-       >
+        app:layout_constraintTop_toBottomOf="@id/search_bar">
         <!-- Screen content goes here. -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_recipe"
@@ -31,29 +31,14 @@
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search..."
-        app:layout_constraintBottom_toBottomOf="@+id/nestedScrollView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:hint="Search ..."
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
-
-    <com.google.android.material.search.SearchView
-        android:id="@+id/sr4vw"
-        android:layout_width="378dp"
-        android:layout_height="58dp"
-        android:layout_marginEnd="16dp"
-        app:layout_anchor="@id/search_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046">
-
-
-    </com.google.android.material.search.SearchView>
+        app:layout_constraintVertical_bias="0.023" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

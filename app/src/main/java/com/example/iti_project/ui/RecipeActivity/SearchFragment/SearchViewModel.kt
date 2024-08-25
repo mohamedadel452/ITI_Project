@@ -15,6 +15,7 @@ import com.example.iti_project.data.repo.Meals.MealsRepo
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -25,7 +26,7 @@ class SearchViewModel (private val mealsRepo: MealsRepo,
     private val _search = MutableLiveData<UiState<List<Meals>>>()
     val search: LiveData<UiState<List<Meals>>> get() = _search
     var favoriteUserIds = MediatorLiveData<List<String>>()
-
+    private var searchJob: Job? = null
     init {
 
         viewModelScope.launch {
@@ -37,24 +38,36 @@ class SearchViewModel (private val mealsRepo: MealsRepo,
 
     }
 
+
     fun searchMeals(query: String) {
-        viewModelScope.launch {
-            val result = mealsRepo.getMealbyname(query)
-            when (result) {
-                is ResultState.Success -> {
-                    val meals = result.data.meals ?: emptyList()
-                    _search.postValue(UiState.Success(meals))
-                }
-                is ResultState.Error -> {
-                    _search.postValue(UiState.Error(result.errorMessage))
-                }
-                else -> {
-                    _search.postValue(UiState.Error("Unknown error"))
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(500)
+
+            if (query.isNotBlank()) {
+                _search.postValue(UiState.Loading)
+
+                val result = mealsRepo.getMealbyname(query)
+                when (result) {
+                    is ResultState.Success -> {
+                        val meals = result.data.meals ?: emptyList()
+                        _search.postValue(UiState.Success(meals))
+                    }
+
+                    is ResultState.Error -> {
+                        _search.postValue(UiState.Error(result.errorMessage))
+
+                        val TAG = "SearchViewModel"
+                        Log.d(TAG, "Error occurred: ${result.errorMessage}")
+                    }
+
+                    else -> {
+                        _search.postValue(UiState.Error("Unknown error"))
+                    }
                 }
             }
         }
     }
-
     fun addMealToFavorites(meal: Meals) {
         if (meal != null) {
 
