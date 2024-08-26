@@ -28,9 +28,7 @@ class FavoriteFragment : Fragment() {
         FavoriteFragmentViewModelFactory(
             FavoriteRecipeRepoImp(
                 LocalDataSourceImp(
-                    requireContext(),
-                    RoomDataBaseImp.getInstance(requireContext()),
-                    SharedPreferenceImp.getInstance(requireContext())
+                    requireContext()
                 )
             )
         )

@@ -42,7 +42,7 @@ class DetailsViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            if (id.isNotBlank() && _mealDetails.value is UiState.Loading) {
+            if (id.isNotBlank() && _mealDetails.value !is UiState.Success) {
 
 
                 val result = async {

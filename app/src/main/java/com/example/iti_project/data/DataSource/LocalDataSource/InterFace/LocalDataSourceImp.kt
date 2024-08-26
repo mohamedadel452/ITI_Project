@@ -12,8 +12,8 @@ import com.example.iti_project.data.models.UserModel
 
 class LocalDataSourceImp(
     context: Context,
-    val roomDataSource: RoomDatabaseInterface,
-    val sharedPreferencesDataSource: SharedPreferenceInterface?
+    val roomDataSource: RoomDatabaseInterface= RoomDataBaseImp.getInstance(context),
+    val sharedPreferencesDataSource: SharedPreferenceInterface= SharedPreferenceImp.getInstance(context)
 ) : LocalDataSource {
 
     override suspend fun insertUser(user: UserModel): Long {

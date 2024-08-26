@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:orandroid="http://schemas.android.com/tools"
     android:layout_margin="30dp"
-    android:background="@color/white"
+    android:background="@color/primaryColor"
     app:cardCornerRadius="10dp">
 
     <FrameLayout
@@ -51,10 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Titel"
-                android:background="#6D656565"
-                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:gravity="start"
                 android:src="@drawable/ic_launcher_background"
                 >
@@ -67,9 +65,7 @@
                 android:text="catagory"
                 android:textSize="11sp"
                 android:gravity="start"
-                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:background="#6D656565"
                 android:src="@drawable/ic_launcher_background"
                 >
 
