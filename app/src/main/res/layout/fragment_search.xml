@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="16dp"
-    android:background="@color/white" >
+    android:paddingHorizontal="16dp" >
 
 
 
@@ -29,11 +28,11 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:drawableStart="@drawable/search"
+            android:drawableStart="@drawable/baseline_search_24"
             android:hint="Search"
             android:inputType="text"
             android:textStyle="bold"
-            android:textColor="@color/black"
+             android:drawablePadding="10dp"
             app:hintTextColor="@color/auth_text_color" />
 
 

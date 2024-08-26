@@ -15,6 +15,7 @@ import com.example.iti_project.data.repo.Meals.MealsRepo
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -26,7 +27,8 @@ class DetailsViewModel(
     private val _mealDetails = MutableLiveData<UiState<MealsDetails>>(UiState.Loading)
     val mealDetails: LiveData<UiState<MealsDetails>> = _mealDetails
     var favoriteUserIds = MediatorLiveData<List<String>>()
-
+    private val _isFavorite = MutableLiveData<Boolean>()
+    val isfavorite: LiveData<Boolean> = _isFavorite
     init {
         viewModelScope.launch {
             favoriteUserIds.addSource(favoriteRecipeRepo.favoriteRecipeIDs) {
@@ -90,6 +92,14 @@ class DetailsViewModel(
             }
 
         }
+    }
+
+    fun isFavorite(id: String) {
+        viewModelScope.launch {
+            val isFavorite = favoriteRecipeRepo.getStatusOfRecipe(id)
+            _isFavorite.postValue(isFavorite)
+        }
+
     }
 
     fun deleteFavoriteRecipe(mealsDetails: MealsDetails, count : Int) {

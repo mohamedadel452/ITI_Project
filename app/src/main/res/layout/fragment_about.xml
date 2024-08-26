@@ -51,7 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:text="@string/connect_with_us"
-        android:textColor="@color/black"
         android:textSize="18sp"
         android:layout_marginTop="8dp"
         android:translationZ="200dp"

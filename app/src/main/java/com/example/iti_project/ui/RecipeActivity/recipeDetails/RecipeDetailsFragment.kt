@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +73,7 @@ class RecipeDetailsFragment : Fragment() {
     private lateinit var allIngredients: ScrollView
     private lateinit var ingredientsAdapter: AdapterForDetailsFragment
     private  var strYoutube : String? = null
-
+    private var isFavorite : Boolean = false
     private lateinit var imageContainer: RelativeLayout
     private lateinit var webView : WebView
 
@@ -154,16 +155,16 @@ class RecipeDetailsFragment : Fragment() {
 
 
         add_to_fav.setOnClickListener {
-            if (add_to_fav.contentDescription  == "Add to favorites") {
+            if (!isFavorite) {
                 // Change the button text to "Added"
                 viewModel.addFavoriteRecipe(meal,args.count)
-                add_to_fav.contentDescription  = "Added"
+                isFavorite = true
                 add_to_fav.setColorFilter(Color.argb(100, 255, 0, 0))
 
             } else {
                 // Change the button text back to "Add"
                 viewModel.deleteFavoriteRecipe(meal,args.count)
-                add_to_fav.contentDescription = "Add to favorites"
+                isFavorite = false
                 add_to_fav.clearColorFilter()
             }
         }
@@ -202,14 +203,13 @@ class RecipeDetailsFragment : Fragment() {
                     setData(it.data)
                     meal = it.data
                     play_video.visibility = View.VISIBLE
-                    listenToUpdateFavouriteItems()
-                    if(favoritelistIds != null)
-                        if (favoritelistIds.contains(meal.idMeal) == true){
-                            add_to_fav.contentDescription = "Added"
-                            add_to_fav.setColorFilter(Color.argb(100, 255, 0, 0))
-                        }
+
                     add_to_fav.isClickable = true
                     mProgressDialog.cancel()
+                    if(favoritelistIds != null) {
+                        Log.i("true","true1" )
+                        isFavoriteOrNot()
+                    }
                 }
             }
 
@@ -292,6 +292,18 @@ class RecipeDetailsFragment : Fragment() {
     private fun listenToUpdateFavouriteItems() {
         viewModel.favoriteUserIds.observe(viewLifecycleOwner) {
             if(!it.isNullOrEmpty()) favoritelistIds = it
+
+        }
+    }
+
+    private fun isFavoriteOrNot() {
+
+        viewModel.isFavorite(meal.idMeal)
+        viewModel.isfavorite.observe(viewLifecycleOwner){
+            if (it){
+                isFavorite = true
+                add_to_fav.setColorFilter(Color.argb(100, 255, 0, 0))
+            }
 
         }
     }
