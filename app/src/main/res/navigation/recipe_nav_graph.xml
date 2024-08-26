@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_home_to_favourit"
             app:destination="@id/favorite" />
+        <action
+            android:id="@+id/action_home_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/search"
@@ -61,4 +64,9 @@
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.iti_project.ui.RecipeActivity.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
 </navigation>

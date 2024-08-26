@@ -1,5 +1,6 @@
 package com.example.iti_project.data.DataSource.RemoteDataSource
 
+import com.example.iti_project.data.models.CategoryResponse
 import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.MealsResponseDetails
 import retrofit2.Response
@@ -17,6 +18,11 @@ interface ApiService {
     //search by name
     @GET("search.php")
     suspend fun getMealbyname(@Query("s") mealName: String): Response<MealsResponse>
-    //return list of meals
+    //return list of categories
+
+
+    @GET("categories.php")
+    suspend fun getCategories(): Response<CategoryResponse>
+    //return list of category
 
 }

@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var weeklyRecipe_Img: ImageView
     private lateinit var weeklyRecipe_Name: TextView
     private lateinit var see_Weeklymore: ImageView
+    private lateinit var see_Categories: ImageView
     private var weekly_id: String? = null
 
     private val viewModel: HomeFragmentViewModel by viewModels() {
@@ -68,6 +69,11 @@ class HomeFragment : Fragment() {
         weeklyRecipe_Img = view.findViewById(R.id.weeklyPickImage)
         weeklyRecipe_Name = view.findViewById(R.id.weeklyPickSubtitle)
         see_Weeklymore = view.findViewById(R.id.weeklyPickPlayButton)
+        see_Categories = view.findViewById(R.id.ivDiscoverMore)
+        see_Categories.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeToCategoryFragment()
+            findNavController().navigate(action)
+        }
         see_Weeklymore.setOnClickListener {
             weekly_id?.let { nonNullWeeklyId ->
                 val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment(nonNullWeeklyId)

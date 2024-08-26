@@ -37,6 +37,7 @@ class HomeFragmentViewModel(
     fun getMeals() {
 
         if (_meals.value !is  UiState.Success ) {
+            Log.e( "getMealsCode:","error ")
         viewModelScope.launch(Dispatchers.IO) {
             try {
 

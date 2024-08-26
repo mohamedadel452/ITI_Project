@@ -1,6 +1,7 @@
 package com.example.iti_project.data.DataSource.RemoteDataSource
 
 import android.util.Log
+import com.example.iti_project.data.models.CategoryResponse
 import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.MealsResponseDetails
@@ -32,6 +33,7 @@ object RetrofitClient : RemoteDataSource {
                     ResultState.Success(it)
                 } ?: ResultState.Error(Exception("Empty response body").toString())
             } else {
+                Log.e( "getMealsCode:","Network call failed:")
                 ResultState.Error(Exception("Network call failed: ${response.code()} ${response.message()}").toString())
             }
         } catch (e: Exception) {
@@ -74,6 +76,25 @@ object RetrofitClient : RemoteDataSource {
             }
         } catch (e: Exception) {
             ResultState.Error(e.toString())
+        }
+    }
+
+    override suspend fun getCategories(): ResultState<CategoryResponse> {
+        return try {
+            val response = apiService.getCategories()
+            if (response.isSuccessful) {
+                Log.e( "getCategoriesCode:",response.code().toString())
+                response.body()?.let {
+                    ResultState.Success(it)
+                } ?: ResultState.Error(Exception("Empty response body").toString())
+            } else {
+                ResultState.Error(Exception("Network call failed: ${response.code()} ${response.message()}").toString())
+            }
+        } catch (e: Exception) {
+            Log.e( "getCategoriesCode:",(e.toString()))
+            ResultState.Error(e.toString())
+
+
         }
     }
 
