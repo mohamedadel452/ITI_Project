@@ -23,9 +23,7 @@ class SplashFragment : Fragment() {
         SplashViewModelFactory(
             UserRepoImp(
                 LocalDataSourceImp(
-                    requireContext(),
-                    RoomDataBaseImp.getInstance(requireContext()),
-                    SharedPreferenceImp.getInstance(requireContext())
+                    requireContext()
                 )
             )
         )

@@ -30,11 +30,10 @@
       <!-- Screen content goes here. -->
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/list_categories"
-          android:layout_width="match_parent"
+          android:layout_width="400dp"
           android:layout_height="0dp"
-          android:layout_margin="16dp"
+          android:layout_margin="2dp"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.0"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintBottom_toBottomOf="parent"

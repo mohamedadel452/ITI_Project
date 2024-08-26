@@ -46,9 +46,7 @@ class HomeFragment : Fragment() {
         ProductViewModelFactory(
             MealsRepoImpl(), FavoriteRecipeRepoImp(
                 LocalDataSourceImp(
-                    requireContext(),
-                    RoomDataBaseImp.getInstance(requireContext()),
-                    SharedPreferenceImp.getInstance(requireContext())
+                    requireContext()
                 )
             )
         )

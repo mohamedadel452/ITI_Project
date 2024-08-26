@@ -50,9 +50,7 @@ class RecipeDetailsFragment : Fragment() {
         DetailsViewModelFactory(MealsRepoImpl(),
             FavoriteRecipeRepoImp(
                 LocalDataSourceImp(
-                    requireContext(),
-                    RoomDataBaseImp.getInstance(requireContext()),
-                    SharedPreferenceImp.getInstance(requireContext())
+                    requireContext()
                 )
             )
         )
@@ -188,7 +186,14 @@ class RecipeDetailsFragment : Fragment() {
             when(it){
                 is UiState.Error -> {
                     mProgressDialog.cancel()
-                    Toast.makeText(requireContext(), "error ", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        requireView(),
+                        R.string.error_loading_data,
+                        Snackbar.LENGTH_INDEFINITE
+                    ).setAction(R.string.retry) {
+                        Toast.makeText(requireContext(), args.idMeal, Toast.LENGTH_SHORT).show()
+                        viewModel.getDetails(args.idMeal)
+                    }.show()
                     Glide.with(recipeImage.context).load(R.drawable.error_image).into(recipeImage)
                     add_to_fav.isClickable = false
                     play_video.visibility = View.GONE
