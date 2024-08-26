@@ -70,4 +70,7 @@
     <string name="ingredients">Ingredients</string>
     <string name="cancel">Cancel</string>
     <string name="explore_categories">Explore Categories</string>
+    <string name="search">Search</string>
+    <string name="there_is_no_meals_yet">There is no Meals yet</string>
+    <string name="there_is_no_category_yet">There is no Category yet</string>
 </resources>

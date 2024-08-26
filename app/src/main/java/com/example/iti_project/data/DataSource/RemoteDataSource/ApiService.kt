@@ -3,6 +3,7 @@ package com.example.iti_project.data.DataSource.RemoteDataSource
 import com.example.iti_project.data.models.CategoryResponse
 import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.MealsResponseDetails
+import com.example.iti_project.data.models.SearchCategoryResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -24,5 +25,9 @@ interface ApiService {
     @GET("categories.php")
     suspend fun getCategories(): Response<CategoryResponse>
     //return list of category
+
+    @GET("filter.php")
+    suspend fun getCategoryByName(@Query("c") categoryName: String): Response<SearchCategoryResponse>
+    //return list of categories
 
 }

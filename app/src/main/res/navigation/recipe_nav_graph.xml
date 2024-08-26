@@ -68,5 +68,24 @@
         android:id="@+id/categoryFragment"
         android:name="com.example.iti_project.ui.RecipeActivity.category.CategoryFragment"
         android:label="fragment_category"
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_searchCategoryFragment"
+            app:destination="@id/searchCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchCategoryFragment"
+        android:name="com.example.iti_project.ui.RecipeActivity.searchCategory.SearchCategoryFragment"
+        android:label="fragment_search_category"
+        tools:layout="@layout/fragment_search_category" >
+        <argument
+            android:name="category_name"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchCategoryFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
+        <action
+            android:id="@+id/action_searchCategoryFragment_to_search"
+            app:destination="@id/search" />
+    </fragment>
 </navigation>
