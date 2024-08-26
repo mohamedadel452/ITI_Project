@@ -24,17 +24,13 @@ class FavoriteFragmentViewModel(
 //            favoriteRecipeRepo.getRecipes()
 
             favoriteUserIds.addSource(favoriteRecipeRepo.favoriteRecipeIDs){
-                Log.i("ya rab ids", ": "+it.size)
                 favoriteUserIds.postValue(it)
 
             }
 
             favoriteRecipes.addSource(favoriteRecipeRepo.favoriteRecipe){response ->
-                Log.i("ya rab", ": "+response.size)
                 favoriteRecipes.postValue(response)
             }
-//            favoriteUserIds = favoriteRecipeRepo.favoriteRecipeIDs.toMutableList()
-////            Log.i("favoriteRecipes", ""+favoriteRecipes.size)
         }
 
     }

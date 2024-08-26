@@ -72,7 +72,7 @@
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.example.iti_project.ui.RecipeActivity.category.CategoryFragment"
-        android:label="fragment_category"
+        android:label="Explore Categories"
         tools:layout="@layout/fragment_category" >
         <action
             android:id="@+id/action_categoryFragment_to_searchCategoryFragment"
@@ -81,7 +81,7 @@
     <fragment
         android:id="@+id/searchCategoryFragment"
         android:name="com.example.iti_project.ui.RecipeActivity.searchCategory.SearchCategoryFragment"
-        android:label="fragment_search_category"
+        android:label="{category_name}"
         tools:layout="@layout/fragment_search_category" >
         <argument
             android:name="category_name"

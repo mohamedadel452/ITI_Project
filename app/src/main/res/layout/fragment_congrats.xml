@@ -16,12 +16,13 @@
         />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up_successful"
         android:textColor="@color/primaryColor"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="16dp"
         android:translationY="140dp"
         />
@@ -30,7 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/congrat_message"
-        android:textColor="@color/cardview_shadow_start_color"
         android:textSize="18sp"
         android:layout_marginHorizontal="16dp"
         android:translationY="200dp"

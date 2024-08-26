@@ -19,24 +19,9 @@ import kotlin.math.log
 
 class RecipeActivityVIewModel (private val repository: UserRepo): ViewModel() {
 
-    private val _LoginState = MutableLiveData<Boolean>()
-    val LoginState: LiveData<Boolean> get() = _LoginState
-
     fun setLoggedIn(): Boolean {
-
-//        CoroutineScope(viewModelScope.coroutineContext).launch(Dispatchers.IO) {
-
         return  repository.setLoggedIn("Not Found")
-//        GlobalScope.launch(Dis/patchers.IO){ delay(200)}
-//            Log.i("response view","  "+ result.await() )
-
-//        }
     }
-
-
-
-
-
 
 }
 

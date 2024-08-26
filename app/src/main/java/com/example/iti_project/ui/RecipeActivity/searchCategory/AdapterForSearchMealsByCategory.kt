@@ -12,7 +12,7 @@ import com.example.iti_project.R
 import com.example.iti_project.data.models.Category
 import com.example.iti_project.data.models.CategoryMealResponse
 
-class AdapterForSearchMealsByCategory (private val onItemClicked: (String) -> Unit ,
+class AdapterForSearchMealsByCategory (private val onItemClicked: (String,String) -> Unit ,
 ) : RecyclerView.Adapter<AdapterForSearchMealsByCategory.MyViewHolder>() {
 
     var mealFiltered = mutableListOf<CategoryMealResponse>()
@@ -28,7 +28,7 @@ class AdapterForSearchMealsByCategory (private val onItemClicked: (String) -> Un
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-        return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_catagory, parent, false))
+        return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_catagory_search, parent, false))
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -40,7 +40,7 @@ class AdapterForSearchMealsByCategory (private val onItemClicked: (String) -> Un
 
            holder.mealFilteredImage.setOnClickListener {
                val id = mealFiltered[position].idMeal
-               if (id != null) onItemClicked(id)
+               if (id != null) onItemClicked(id,mealFiltered[position].strMeal)
            }
 
     }

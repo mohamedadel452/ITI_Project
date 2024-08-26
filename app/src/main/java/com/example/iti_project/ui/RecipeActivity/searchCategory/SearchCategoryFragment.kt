@@ -28,7 +28,6 @@ class SearchCategoryFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var mProgressDialog: ProgressDialog
     private lateinit var adapter: AdapterForSearchMealsByCategory
-    private lateinit var categoryName: TextView
     private lateinit var searchBar: SearchBar
     private lateinit var emptyState: TextView
     private val args: SearchCategoryFragmentArgs by navArgs()
@@ -55,18 +54,15 @@ class SearchCategoryFragment : Fragment() {
         //searchBar = view.findViewById(R.id.search_bar)
         recyclerView = view.findViewById(R.id.list_meals_by_category_name)
         searchBar=view.findViewById(R.id.search_bar)
-        categoryName = view.findViewById(R.id.tvCategory)
         emptyState = view.findViewById(R.id.empty_state_text)
-        args.categoryName.let {
-            categoryName.text = "Explore $it"
-        }
+
         searchBar.setOnClickListener {
             findNavController().navigate(R.id.action_searchCategoryFragment_to_search)
         }
 
         mProgressDialog = ProgressDialog(requireContext())
-          adapter = AdapterForSearchMealsByCategory{id ->
-              val action = SearchCategoryFragmentDirections.actionSearchCategoryFragmentToRecipeDetailsFragment(id)
+          adapter = AdapterForSearchMealsByCategory{id,titel ->
+              val action = SearchCategoryFragmentDirections.actionSearchCategoryFragmentToRecipeDetailsFragment(id, titleFragment = titel)
               findNavController().navigate(action)
           }
         recyclerView.adapter = adapter
