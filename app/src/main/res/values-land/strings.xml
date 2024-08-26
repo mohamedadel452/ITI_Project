@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="full_name">Full Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="info_details">Please enter your account details below!</string>
+    <string name="welcome">Welcome to Recipe App</string>
+    <string name="accept_terms_condition"><![CDATA[Accept terms & Condition]]></string>
+    <string name="error_message"><![CDATA[your password should be greater than 8 and have A-z letters and number and special characters like _ , &]]></string>
+    <string name="error_message_email">you already have an account with this email</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up_successful">Sign up successful!</string>
+    <string name="congrat_message">Your account has been created. Please wait a moment, we are preparing for you...</string>
+    <string name="continue_button">Continue</string>
+    <string name="cancel">Cancel</string>
     <string name="recipe_details">Recipe details</string>
-    <string name="welcome_to_your_kitchen_companion_discover_delicious_recipes_with_what_you_have_at_hand_making_cooking_easier_every_day_with_recipe_ease">welcome to Your kitchen companion Discover delicious recipes with what you have at hand, making cooking easier every day with Recipe Ease</string>
-    <string name="connect_with_us">Connect with us\\nSupportRecipeEase@gmail.com</string>
+    <string name="welcome_message_about">Your kitchen companion Discover delicious recipes with what you have at hand, making cooking easier every day with Recipe Ease</string>
+    <string name="connect_with_us">Connect with us</string>
+    <string name="SupportRecipeEase">SupportRecipeEase@gmail.com</string>
+    <string name="no_favourite">No Favourite</string>
 </resources>

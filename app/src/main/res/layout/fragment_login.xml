@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Welcome! 😊🤗"
-        android:textColor="@color/black"
         android:textSize="40sp"
         android:textStyle="bold"
         android:layout_marginStart="16dp"
@@ -129,7 +128,7 @@
 
     <TextView
         android:id="@+id/tv_signUp"
-        android:layout_width="139dp"
+        android:layout_width="0dp"
         android:layout_height="33dp"
         android:layout_marginTop="32dp"
         android:clickable="true"

@@ -14,6 +14,8 @@ interface FavoriteRecipeRepo {
 
 //    suspend fun getFavouriteRecipe(id : String) : Meals
 
-    suspend fun deleteFavouriteRecipeList(meals : Meals)
-//    fun getRecipes() :LiveData<List<Meals>>
+    suspend fun deleteFavouriteRecipeList(meals: Meals)
+
+    //    fun getRecipes() :LiveData<List<Meals>>
+    fun getStatusOfRecipe(id: String): Boolean
 }
