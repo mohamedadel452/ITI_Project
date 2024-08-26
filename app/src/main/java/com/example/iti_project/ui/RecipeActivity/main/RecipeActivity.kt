@@ -44,9 +44,7 @@ class RecipeActivity : AppCompatActivity() {
         RecipeActivityVIewModelFactory(
             UserRepoImp(
                 LocalDataSourceImp(
-                    this,
-                    RoomDataBaseImp.getInstance(this),
-                    SharedPreferenceImp.getInstance(this)
+                    this
                 )
             )
         )

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
     android:paddingTop="16dp"
+    android:id="@+id/registerFragment"
     tools:context=".ui.actitvity1.mainActitvity.registerFragment.RegisterFragment">
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,9 +34,8 @@
         android:layout_marginTop="32dp"
         android:text="@string/info_details"
         android:textAlignment="center"
-        android:textColor="@color/cardview_shadow_start_color"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tx_welcome" />

@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainer
 import androidx.fragment.app.FragmentContainerView
@@ -41,7 +43,7 @@ class RegisterFragment : Fragment() {
     private lateinit var cb_acceptance: CheckBox
     private var fcv_welcome : FragmentContainerView? = null
     val registerFragmentViewModel: RegisterViewModel by viewModels {
-        RegisterViewModelFactory(UserRepoImp(LocalDataSourceImp(requireContext() , RoomDataBaseImp.getInstance(requireContext()) , null)))
+        RegisterViewModelFactory(UserRepoImp(LocalDataSourceImp(requireContext())))
     }
 
     override fun onCreateView(
@@ -100,7 +102,6 @@ class RegisterFragment : Fragment() {
                         registerFragmentViewModel.insertData(userName, email, password)
                         registerFragmentViewModel.isSuccess.observe(viewLifecycleOwner) {
                             if (it) {
-//                                findNavController().navigate(R.id.loginFragment)
                                 fcv_welcome = view?.findViewById(R.id.fcv_welcome)
                                 fcv_welcome?.visibility = View.VISIBLE
                             } else {
