@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ITI_Project</string>
+    <string name="app_name">Recipe Ease</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_home_fragment">Hello blank fragment</string>
     <string name="full_name">Full Name</string>
@@ -67,4 +67,7 @@
     <string name="ingredients">Ingredients</string>
     <string name="cancel">Cancel</string>
     <string name="recipe_details">Recipe details</string>
+    <string name="welcome_message_about">Your kitchen companion Discover delicious recipes with what you have at hand, making cooking easier every day with Recipe Ease</string>
+    <string name="connect_with_us">Connect with us</string>
+    <string name="SupportRecipeEase">SupportRecipeEase@gmail.com</string>
 </resources>

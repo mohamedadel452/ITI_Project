@@ -30,6 +30,5 @@
         <item name="cornerSizeTopLeft">0dp</item>
         <item name="cornerSizeBottomRight">100dp</item>
         <item name="cornerSizeBottomLeft">100dp</item>
-        <item name="cardBackgroundColor">@color/primaryColor</item>
     </style>
 </resources>

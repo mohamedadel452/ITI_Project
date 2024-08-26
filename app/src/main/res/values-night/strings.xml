@@ -14,4 +14,6 @@
     <string name="continue_button">Continue</string>
     <string name="cancel">cancel</string>
     <string name="recipe_details">Recipe details</string>
+    <string name="welcome_to_your_kitchen_companion_discover_delicious_recipes_with_what_you_have_at_hand_making_cooking_easier_every_day_with_recipe_ease">welcome to Your kitchen companion Discover delicious recipes with what you have at hand, making cooking easier every day with Recipe Ease</string>
+    <string name="connect_with_us">Connect with us\\nSupportRecipeEase@gmail.com</string>
 </resources>
