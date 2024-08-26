@@ -1,21 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="16dp"
     tools:context=".ui.RecipeActivity.home.HomeFragment">
 
+
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+
+    <!-- Header section -->
+    <TextView
+        android:id="@+id/tvExploreRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Explore Recipes"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- Weekly Pick Section -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/weeklyPickCard"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackground"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvExploreRecipes">
+
+        <ImageView
+            android:id="@+id/weeklyPickImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_foreground"
+            tools:ignore="ContentDescription" />
+
+        <!-- Overlay for text and play button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="start|bottom"
+            android:orientation="vertical"
+            android:background="#6D656565"
+            android:padding="16dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/weeklyPickTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekly Pick"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:id="@+id/weeklyPickSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="This Italian pasta and steak will warm up the faintest of hearts."
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <!-- Play Button -->
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/weeklyPickPlayButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginTop="8dp"
+            android:layout_margin="16dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/play" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Recent Recipes Section -->
+    <TextView
+        android:id="@+id/tvRecentRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recent Recipes"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/weeklyPickCard"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <!-- Nested Scroll View -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        android:padding="16dp"
         app:layout_behavior="@string/fab_transformation_sheet_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_bar">
+        app:layout_constraintTop_toBottomOf="@id/tvRecentRecipes">
         <!-- Screen content goes here. -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_recipe"
@@ -29,16 +134,28 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.search.SearchBar
-        android:id="@+id/search_bar"
-        android:layout_width="0dp"
-        android:layout_height="53dp"
-        android:hint="Search ..."
-        app:layout_constraintHorizontal_bias="1.0"
+    <!-- Discover More Section -->
+    <ImageView
+        android:id="@+id/ivDiscoverMore"
+        android:layout_width="355dp"
+        android:layout_height="92.77dp"
+        android:src="@drawable/exploremore"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/nestedScrollView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        />
+
+
+
+
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

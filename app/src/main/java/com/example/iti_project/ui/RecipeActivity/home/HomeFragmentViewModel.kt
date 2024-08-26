@@ -35,6 +35,8 @@ class HomeFragmentViewModel(
     }
 
     fun getMeals() {
+
+        if (_meals.value !is  UiState.Success ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
 
@@ -56,6 +58,7 @@ class HomeFragmentViewModel(
                     _meals.postValue(UiState.Error(e.toString()))
                 }
             }
+        }
         }
     }
 
