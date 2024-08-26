@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/favorite"
         android:name="com.example.iti_project.ui.RecipeActivity.Favourit.FavoriteFragment"
-        android:label="Favourit"
+        android:label="Favourite"
         tools:layout="@layout/fragment_favourit" >
         <action
             android:id="@+id/action_favourit_to_recipeDetailsFragment"
@@ -48,12 +48,12 @@
     <fragment
         android:id="@+id/about"
         android:name="com.example.iti_project.ui.RecipeActivity.About.AboutFragment"
-        android:label="fragment_about"
+        android:label="About us"
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/recipeDetailsFragment"
         android:name="com.example.iti_project.ui.RecipeActivity.recipeDetails.RecipeDetailsFragment"
-        android:label="fragment_recipe_details"
+        android:label="{titleFragment}"
         tools:layout="@layout/fragment_recipe_details" >
         <argument
             android:name="idMeal"
@@ -63,6 +63,11 @@
             android:name="count"
             app:argType="integer"
             android:defaultValue="0" />
+        <argument
+            android:name="titleFragment"
+            app:argType="string"
+            android:defaultValue="RecipeDetails" />
+
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"

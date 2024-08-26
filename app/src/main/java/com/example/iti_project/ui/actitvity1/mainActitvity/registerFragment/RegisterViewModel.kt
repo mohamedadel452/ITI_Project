@@ -32,11 +32,15 @@ class RegisterViewModel(
     }
 
     fun checkedEmail(email : String): Boolean{
-        return email.contains("@") && email.contains(".")
+        val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"
+        return email.matches(emailPattern.toRegex())
     }
+
+
 
     fun insertData(userName : String, email: String, password: String){
 //        Log.i("TAG", userName +" " + email + " "+ password  )
+
         val user  = UserModel(email =  email , userName = userName , password = password)
         var isInserted : Long
 

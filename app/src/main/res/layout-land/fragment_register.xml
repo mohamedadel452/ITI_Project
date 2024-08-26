@@ -69,6 +69,8 @@
                 android:hint="@string/full_name"
                 android:inputType="text"
                 android:textStyle="bold"
+                android:drawablePadding="10dp"
+
                 app:hintTextColor="@color/auth_text_color" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -94,10 +96,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableStart="@drawable/email"
+                android:drawableStart="@drawable/message"
                 android:hint="@string/email_address"
                 android:inputType="textEmailAddress"
                 android:textStyle="bold"
+                android:drawablePadding="10dp"
                 app:hintTextColor="@color/auth_text_color" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,6 +140,7 @@
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:textStyle="bold"
+                android:drawablePadding="10dp"
                 app:hintTextColor="@color/auth_text_color" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -177,6 +181,7 @@
                 android:hint="@string/confirm_password"
                 android:inputType="textPassword"
                 android:textStyle="bold"
+                android:drawablePadding="10dp"
                 app:hintTextColor="@color/auth_text_color" />
 
         </com.google.android.material.textfield.TextInputLayout>
