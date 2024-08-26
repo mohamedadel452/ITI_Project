@@ -57,8 +57,8 @@ class HomeFragment : Fragment() {
         searchBar = view.findViewById(R.id.search_bar)
         recyclerView = view.findViewById(R.id.list_recipe)
         mProgressDialog = ProgressDialog(requireContext())
-        adapter = AdapterForListRecipe{id , count ->
-            val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment( id , count)
+        adapter = AdapterForListRecipe{id , count , title->
+            val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment( id , count , title)
             findNavController().navigate(action)
         }
 
