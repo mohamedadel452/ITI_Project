@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.RecipeActivity.category.CategoryFragment">
-
+    tools:context=".ui.RecipeActivity.searchCategory.SearchCategoryFragment">
 
     <TextView
         android:id="@+id/tvCategory"
@@ -20,12 +19,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/search"
+        app:layout_constraintTop_toBottomOf="@+id/tvCategory">
+
+    </com.google.android.material.search.SearchBar>
+
+
+    <!-- Screen content goes here. -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_meals_by_category_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <TextView
         android:id="@+id/empty_state_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="@string/there_is_no_category_yet"
+        android:text="@string/there_is_no_meals_yet"
         android:textSize="24sp"
         android:alpha=".5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,26 +66,5 @@
         android:visibility="visible"
 
         />
-
-
-
-
-      <!-- Screen content goes here. -->
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/list_categories"
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_margin="16dp"
-          android:layout_marginBottom="16dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.0"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tvCategory"
-          app:layout_constraintBottom_toBottomOf="parent"
-          android:visibility="gone"
-
-          >
-
-      </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

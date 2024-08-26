@@ -6,6 +6,7 @@ import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.MealsResponse
 import com.example.iti_project.data.models.MealsResponseDetails
 import com.example.iti_project.data.models.ResultState
+import com.example.iti_project.data.models.SearchCategoryResponse
 import com.google.gson.GsonBuilder
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -95,6 +96,21 @@ object RetrofitClient : RemoteDataSource {
             ResultState.Error(e.toString())
 
 
+        }
+    }
+
+    override suspend fun getCategoryByName(categoryName: String): ResultState<SearchCategoryResponse> {
+        return try {
+            val response = apiService.getCategoryByName(categoryName)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    ResultState.Success(it)
+                } ?: ResultState.Error(Exception("Empty response body").toString())
+            } else {
+                ResultState.Error(Exception("Network call failed: ${response.code()} ${response.message()}").toString())
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.toString())
         }
     }
 

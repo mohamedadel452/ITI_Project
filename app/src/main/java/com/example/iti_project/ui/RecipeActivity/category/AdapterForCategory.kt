@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.iti_project.R
 import com.example.iti_project.data.models.Category
 import com.example.iti_project.data.models.Meals
-class AdapterForCategory (//private val onItemClicked: (String,Int) -> Unit ,
+class AdapterForCategory (private val onItemClicked: (String) -> Unit ,
 ) : RecyclerView.Adapter<AdapterForCategory.MyViewHolder>() {
 
     var categories = mutableListOf<Category>()
@@ -39,11 +39,10 @@ class AdapterForCategory (//private val onItemClicked: (String,Int) -> Unit ,
 
 
 
-     /*   holder.mealImage.setOnClickListener {
-            val id = categories[position].idMeal
-            val count = categories[position].count
-            if (id != null) onItemClicked(id, count )
-        }*/
+        holder.itemView.rootView.setOnClickListener {
+            val id = categories[position].strCategory
+            if (id != null) onItemClicked(id)
+        }
 
     }
 
