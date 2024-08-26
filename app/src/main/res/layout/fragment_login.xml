@@ -40,7 +40,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="398dp"
+        android:layout_width="0dp"
         android:layout_height="74dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="109dp"
@@ -59,12 +59,13 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/sign_in_email"
-            android:layout_width="378dp"
+            android:layout_width="match_parent"
             android:layout_height="62dp"
             android:drawableLeft="@drawable/message"
             android:hint="  Email address"
             android:inputType="textEmailAddress"
             android:textStyle="bold"
+            android:drawablePadding="10dp"
             app:hintTextColor="@color/auth_text_color" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +73,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="380dp"
+        android:layout_width="0dp"
         android:layout_height="71dp"
         android:layout_marginTop="24dp"
         app:boxCornerRadiusBottomEnd="20dp"
@@ -88,12 +89,13 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/sign_in_password"
-            android:layout_width="378dp"
+            android:layout_width="match_parent"
             android:layout_height="62dp"
             android:drawableStart="@drawable/lock"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textStyle="bold"
+            android:drawablePadding="10dp"
             app:hintTextColor="@color/auth_text_color" />
     </com.google.android.material.textfield.TextInputLayout>
 
