@@ -43,6 +43,10 @@ class AdapterForCategory (private val onItemClicked: (String) -> Unit ,
             val id = categories[position].strCategory
             if (id != null) onItemClicked(id)
         }
+        holder.categoryImage.setOnClickListener {
+            val id = categories[position].strCategory
+            if (id != null) onItemClicked(id)
+        }
 
     }
 
