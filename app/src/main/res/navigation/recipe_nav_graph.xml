@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/recipeDetailsFragment"
         android:name="com.example.iti_project.ui.RecipeActivity.recipeDetails.RecipeDetailsFragment"
-        android:label="Recipe details"
+        android:label="{titleFragment}"
         tools:layout="@layout/fragment_recipe_details" >
         <argument
             android:name="idMeal"
@@ -60,5 +60,10 @@
             android:name="count"
             app:argType="integer"
             android:defaultValue="0" />
+        <argument
+            android:name="titleFragment"
+            app:argType="string"
+            android:defaultValue="RecipeDetails" />
+
     </fragment>
 </navigation>

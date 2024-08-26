@@ -15,7 +15,7 @@ import com.example.iti_project.R
 import com.example.iti_project.data.models.Meals
 
 class AdapterForListRecipe(
-    private val onItemClicked: (String,Int) -> Unit ,
+    private val onItemClicked: (String,Int, String) -> Unit ,
 ) : RecyclerView.Adapter<AdapterForListRecipe.MyViewHolder>() {
 
     var meals = mutableListOf<Meals>()
@@ -75,7 +75,8 @@ class AdapterForListRecipe(
         holder.mealImage.setOnClickListener {
             val id = meals[position].idMeal
             val count = meals[position].count
-            if (id != null) onItemClicked(id, count )
+            val title= meals[position].strMeal
+            if (id != null) onItemClicked(id, count , title)
         }
 
     }
