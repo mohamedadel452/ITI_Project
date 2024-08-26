@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ class FavoriteFragment : Fragment() {
 
 
     private lateinit var favoriteRecipesAdapter: FavoriteRecipesAdapter
-
+    private lateinit var tv_no_favorite: TextView
     private val viewModel: FavoriteFragmentViewModel by viewModels() {
         FavoriteFragmentViewModelFactory(
             FavoriteRecipeRepoImp(
@@ -48,6 +49,7 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
+        tv_no_favorite = view.findViewById(R.id.tv_no_favorite)
         instantiateProductsRecyclerView()
         listenToDeleteFavouriteItems()
         listenToUpdateFavouriteItems()
@@ -98,6 +100,8 @@ class FavoriteFragment : Fragment() {
                 favoriteRecipesAdapter.setIDs(
                     response as MutableList<String>
                 )
+            }else{
+                tv_no_favorite.visibility = View.VISIBLE
             }
         }
 
