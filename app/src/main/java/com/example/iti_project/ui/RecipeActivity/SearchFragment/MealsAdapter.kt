@@ -65,7 +65,7 @@ class MealsAdapter(
 
         }
         holder.itemView.setOnClickListener {
-            val bundle = bundleOf("idMeal" to meal.idMeal)
+//            val bundle = bundleOf("idMeal" to meal.idMeal)
             onItemClicked(meal)
         }
     }

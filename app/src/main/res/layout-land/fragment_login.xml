@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".ui.actitvity1.mainActitvity.loginFragment.LoginFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Welcome! 😊🤗"
-        android:textColor="@color/black"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Please enter your login details \nhere."
+        android:text="Please enter your login details here."
         android:textColor="@color/cardview_shadow_start_color"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -63,22 +61,13 @@
             android:id="@+id/sign_in_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:drawableStart="@drawable/email"
+            android:drawableStart="@drawable/message"
             android:hint="@string/email_address"
             android:inputType="textEmailAddress"
             android:textStyle="bold"
+            android:drawablePadding="10dp"
             app:hintTextColor="@color/auth_text_color" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/tx_email_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="18sp"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@id/et_email"
-        app:layout_constraintTop_toBottomOf="@id/et_email" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_password"
@@ -96,7 +85,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:passwordToggleEnabled="true"
-        app:layout_constraintTop_toBottomOf="@+id/tx_email_error">
+        app:layout_constraintTop_toBottomOf="@+id/et_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/sign_in_password"
@@ -106,18 +95,10 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textStyle="bold"
+            android:drawablePadding="10dp"
             app:hintTextColor="@color/auth_text_color" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tx_password_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="18sp"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@id/et_password"
-        app:layout_constraintTop_toBottomOf="@id/et_password" />
 
     <Button
         android:id="@+id/sign_in_login_btn"
@@ -130,7 +111,7 @@
         app:cornerRadius="?attr/listPreferredItemHeightLarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tx_password_error" />
+        app:layout_constraintTop_toBottomOf="@id/et_password" />
 
     <TextView
         android:id="@+id/tv_suggestion"

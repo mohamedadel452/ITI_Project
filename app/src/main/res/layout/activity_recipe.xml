@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-
+        android:paddingBottom="8dp"
         >
 
     </androidx.fragment.app.FragmentContainerView>
@@ -52,6 +52,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/recipe_bottom_menu"
         android:fitsSystemWindows="true"
+        app:itemRippleColor="@color/primaryColor"
+        app:itemTextColor="@color/primaryColor"
+        app:itemIconTint="@color/primaryColor"
         >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
@@ -62,7 +65,6 @@
         android:layout_width="wrap_content"
         android:layout_height="400dp"
         android:layout_centerInParent="true"
-        android:background="@color/white"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

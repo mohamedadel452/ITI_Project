@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:paddingHorizontal="16dp"
     android:paddingBottom="16dp"
     tools:context=".ui.actitvity1.mainActitvity.registerFragment.RegisterFragment">
@@ -20,7 +19,6 @@
             android:layout_marginTop="32dp"
             android:text="@string/welcome"
             android:textAlignment="center"
-            android:textColor="@color/black"
             android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,6 +67,8 @@
                 android:hint="@string/full_name"
                 android:inputType="text"
                 android:textStyle="bold"
+                android:drawablePadding="10dp"
+
                 app:hintTextColor="@color/auth_text_color" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -94,10 +94,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableStart="@drawable/email"
+                android:drawableStart="@drawable/message"
                 android:hint="@string/email_address"
                 android:inputType="textEmailAddress"
                 android:textStyle="bold"
+                android:drawablePadding="10dp"
                 app:hintTextColor="@color/auth_text_color" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,6 +138,7 @@
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:textStyle="bold"
+                android:drawablePadding="10dp"
                 app:hintTextColor="@color/auth_text_color" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -177,6 +179,7 @@
                 android:hint="@string/confirm_password"
                 android:inputType="textPassword"
                 android:textStyle="bold"
+                android:drawablePadding="10dp"
                 app:hintTextColor="@color/auth_text_color" />
 
         </com.google.android.material.textfield.TextInputLayout>

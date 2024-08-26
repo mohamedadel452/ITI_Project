@@ -1,8 +1,11 @@
 package com.example.iti_project.ui.RecipeActivity.recipeDetails
 
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +22,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,14 +57,14 @@ class RecipeDetailsFragment : Fragment() {
             )
         )
     }
-
+    private lateinit var mProgressDialog: ProgressDialog
     private lateinit var recipeImage : ImageView
     private lateinit var play_video : ImageView
     private lateinit var recipeTitle : TextView
     private lateinit var author_image : ImageView
     private lateinit var recipyCatagory : TextView
     private lateinit var recipyArea : TextView
-    private lateinit var add_to_fav : Button
+    private lateinit var add_to_fav : ImageView
     private lateinit var showIngredient : Button
     private lateinit var showInstructions : Button
     private lateinit var recipeDescription : TextView
@@ -69,7 +73,7 @@ class RecipeDetailsFragment : Fragment() {
     private lateinit var allIngredients: ScrollView
     private lateinit var ingredientsAdapter: AdapterForDetailsFragment
     private  var strYoutube : String? = null
-
+    private var isFavorite : Boolean = false
     private lateinit var imageContainer: RelativeLayout
     private lateinit var webView : WebView
 
@@ -79,8 +83,10 @@ class RecipeDetailsFragment : Fragment() {
 
     private lateinit var recipeDetailsFragment : ScrollView
 
+    private var favoritelistIds : List<String> = listOf()
 
-
+    val colorVisible = "#FFED6E3A" // Color when button is visible
+    val colorNotVisible = "#FFB6BAB6" // Color when button is not visible
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -108,11 +114,10 @@ class RecipeDetailsFragment : Fragment() {
         webView_dialog = Dialog(requireContext())
         imageContainer = view.findViewById(R.id.image_container)
         recipeDetailsFragment = view.findViewById(R.id.recipe_details_scroll_view)
+        mProgressDialog = ProgressDialog(requireContext())
 
-
-        val colorVisible = "#FFED6E3A" // Color when button is visible
-        val colorNotVisible = "#FFB6BAB6" // Color when button is not visible
         listenToUpdateFavouriteItems()
+
         showInstructions.setOnClickListener {
             if (allInstructions.visibility == View.GONE) {
                 allInstructions.visibility = View.VISIBLE
@@ -148,18 +153,19 @@ class RecipeDetailsFragment : Fragment() {
             }
         }
 
-        add_to_fav.setOnClickListener {
-            if (add_to_fav.text == "Add to favorites") {
-                // Change the button text to "Added"
-                add_to_fav.setBackgroundColor(Color.parseColor(colorNotVisible))
 
+        add_to_fav.setOnClickListener {
+            if (!isFavorite) {
+                // Change the button text to "Added"
                 viewModel.addFavoriteRecipe(meal,args.count)
-                add_to_fav.text = "Added"
+                isFavorite = true
+                add_to_fav.setColorFilter(Color.argb(100, 255, 0, 0))
+
             } else {
                 // Change the button text back to "Add"
-                add_to_fav.setBackgroundColor(Color.parseColor(colorVisible))
                 viewModel.deleteFavoriteRecipe(meal,args.count)
-                add_to_fav.text = "Add to favorites"
+                isFavorite = false
+                add_to_fav.clearColorFilter()
             }
         }
 
@@ -180,11 +186,30 @@ class RecipeDetailsFragment : Fragment() {
         viewModel.mealDetails.observe(viewLifecycleOwner){
 
             when(it){
-                is UiState.Error -> Toast.makeText(requireContext(), "error ", Toast.LENGTH_SHORT).show()
-                UiState.Loading -> Toast.makeText(requireContext(), "loading ", Toast.LENGTH_SHORT).show()
+                is UiState.Error -> {
+                    mProgressDialog.cancel()
+                    Toast.makeText(requireContext(), "error ", Toast.LENGTH_SHORT).show()
+                    Glide.with(recipeImage.context).load(R.drawable.error_image).into(recipeImage)
+                    add_to_fav.isClickable = false
+                    play_video.visibility = View.GONE
+                }
+                is UiState.Loading ->{
+                    mProgressDialog.setTitle("Loading Data")
+                    mProgressDialog.setMessage("please wait while we are loading data")
+                    mProgressDialog.show()
+                    Toast.makeText(requireContext(), "loading ", Toast.LENGTH_SHORT).show()
+                }
                 is UiState.Success -> {
                     setData(it.data)
                     meal = it.data
+                    play_video.visibility = View.VISIBLE
+
+                    add_to_fav.isClickable = true
+                    mProgressDialog.cancel()
+                    if(favoritelistIds != null) {
+                        Log.i("true","true1" )
+                        isFavoriteOrNot()
+                    }
                 }
             }
 
@@ -265,6 +290,21 @@ class RecipeDetailsFragment : Fragment() {
 
     }
     private fun listenToUpdateFavouriteItems() {
-        viewModel.favoriteUserIds.observe(viewLifecycleOwner) {}
+        viewModel.favoriteUserIds.observe(viewLifecycleOwner) {
+            if(!it.isNullOrEmpty()) favoritelistIds = it
+
+        }
+    }
+
+    private fun isFavoriteOrNot() {
+
+        viewModel.isFavorite(meal.idMeal)
+        viewModel.isfavorite.observe(viewLifecycleOwner){
+            if (it){
+                isFavorite = true
+                add_to_fav.setColorFilter(Color.argb(100, 255, 0, 0))
+            }
+
+        }
     }
 }

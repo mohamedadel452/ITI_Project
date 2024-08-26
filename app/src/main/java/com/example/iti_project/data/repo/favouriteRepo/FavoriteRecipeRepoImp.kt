@@ -63,4 +63,10 @@ class FavoriteRecipeRepoImp(
 
         localdata.deleteFavouriteRecipeList(meal)
     }
+    override fun getStatusOfRecipe(id: String): Boolean {
+
+        val found : Boolean = favoriteRecipeIDs.value?.contains(id) == (true ?: false)
+        return found
+
+    }
 }

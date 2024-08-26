@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
-    android:background="@color/white"
     android:paddingTop="16dp"
     tools:context=".ui.actitvity1.mainActitvity.registerFragment.RegisterFragment">
 
@@ -21,7 +20,6 @@
         android:layout_marginTop="32dp"
         android:text="@string/welcome"
         android:textAlignment="center"
-        android:textColor="@color/black"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,6 +67,7 @@
             android:drawableStart="@drawable/profile"
             android:hint="@string/full_name"
             android:inputType="text"
+            android:drawablePadding="10dp"
             android:textStyle="bold"
             app:hintTextColor="@color/auth_text_color" />
 
@@ -95,9 +94,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:drawableStart="@drawable/email"
+            android:drawableStart="@drawable/message"
             android:hint="@string/email_address"
             android:textStyle="bold"
+            android:drawablePadding="10dp"
             android:inputType="textEmailAddress"
             app:hintTextColor="@color/auth_text_color" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -136,6 +136,8 @@
             android:layout_height="match_parent"
             android:drawableStart="@drawable/lock"
             android:hint="@string/password"
+            android:drawablePadding="10dp"
+
             android:textStyle="bold"
             android:inputType="textPassword"
             app:hintTextColor="@color/auth_text_color" />
@@ -178,6 +180,8 @@
             android:hint="@string/confirm_password"
             android:textStyle="bold"
             android:inputType="textPassword"
+            android:drawablePadding="10dp"
+
             app:hintTextColor="@color/auth_text_color" />
 
     </com.google.android.material.textfield.TextInputLayout>

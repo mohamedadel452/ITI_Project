@@ -1,6 +1,11 @@
 package com.example.iti_project.ui.RecipeActivity.home
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -29,7 +34,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var mProgressDialog: ProgressDialog
     private lateinit var weeklyRecipe_Img: ImageView
@@ -52,6 +56,11 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: AdapterForListRecipe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (!isNetworkConnected()) {
+            showNetworkErrorDialog()
+        } else {
+            viewModel.getMeals()
+        }
 
     }
 
@@ -64,7 +73,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //searchBar = view.findViewById(R.id.search_bar)
         recyclerView = view.findViewById(R.id.list_recipe)
         weeklyRecipe_Img = view.findViewById(R.id.weeklyPickImage)
         weeklyRecipe_Name = view.findViewById(R.id.weeklyPickSubtitle)
@@ -83,8 +91,8 @@ class HomeFragment : Fragment() {
 
         }
         mProgressDialog = ProgressDialog(requireContext())
-        adapter = AdapterForListRecipe{id , count ->
-            val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment( id , count)
+        adapter = AdapterForListRecipe{id , count , title->
+            val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment( id , count , title)
             findNavController().navigate(action)
         }
 
@@ -155,5 +163,32 @@ class HomeFragment : Fragment() {
             }
         }
     }
+    private fun isNetworkConnected(): Boolean {
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            val networkInfo = connectivityManager.activeNetworkInfo ?: return false
+            return networkInfo.isConnected
+        }
+    }
 
+    private fun showNetworkErrorDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("No network connection available. Please check your internet settings.")
+            .setTitle("Network Error")
+            .setPositiveButton("Close") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
 }

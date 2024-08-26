@@ -27,6 +27,7 @@ import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDat
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceInterface
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
+import com.example.iti_project.ui.RecipeActivity.home.HomeFragmentDirections
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import com.google.android.material.textfield.TextInputLayout
@@ -36,8 +37,6 @@ class SearchFragment : Fragment() {
     private lateinit var favoriteRepo: FavoriteRecipeRepoImp
     private lateinit var searchRecyclerView: RecyclerView
     private lateinit var mealsAdapter: MealsAdapter
-    private lateinit var searchBar: SearchBar
-    private lateinit var searchView: SearchView
     private lateinit var et_email: TextInputLayout
 
     private val searchViewModel: SearchViewModel by viewModels {
@@ -67,8 +66,7 @@ class SearchFragment : Fragment() {
         favoriteRepo = FavoriteRecipeRepoImp(localDataSource)
 
         // Initialize SearchBar and SearchView
-//        searchBar = view.findViewById(R.id.search_bar)
-//        searchView = view.findViewById(R.id.sr4vw)
+
         et_email = view.findViewById(R.id.sr4vw)
 
         // Initialize RecyclerView
@@ -87,8 +85,8 @@ class SearchFragment : Fragment() {
                 .show()
         }, { meal ->
             Log.d("SearchFragment", "Navigating to details for meal: ${meal.idMeal}")
-            val bundle = bundleOf("idMeal" to meal.idMeal)
-            findNavController().navigate(R.id.action_search_to_recipeDetailsFragment, bundle)
+            val action = SearchFragmentDirections.actionSearchToRecipeDetailsFragment( meal.idMeal , 1 , meal.strMeal)
+            findNavController().navigate(action)
         })
         searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         searchRecyclerView.adapter = mealsAdapter
@@ -115,26 +113,7 @@ class SearchFragment : Fragment() {
             }
         )
         setupObservers()
-//        searchView.editText.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//                // Not used
-//
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                val newText = s.toString()
-//
-//                if (newText.isEmpty()) {
-//                    mealsAdapter.updateMeals(emptyList())
-//                } else {
-//                    searchViewModel.searchMeals(newText)
-//                }
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//                // Not used
-//            }
-//        })
+
 
         if (savedInstanceState?.getBoolean("restart") == true) {
             savedInstanceState.putBoolean("restart", false)
@@ -148,11 +127,8 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-//        searchView.requestFocus()
         listenToUpdateFavouriteItems()
-        // Show keyboard
-        showKeyboard()
+
     }
 
     private fun setupObservers() {
@@ -177,13 +153,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showKeyboard() {
-//        searchView.requestFocus()  // Request focus on the SearchView
-//        searchBar.visibility = View.GONE
-//        val inputMethodManager =
-//            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
-    }
 
     override fun onPause() {
         super.onPause()
