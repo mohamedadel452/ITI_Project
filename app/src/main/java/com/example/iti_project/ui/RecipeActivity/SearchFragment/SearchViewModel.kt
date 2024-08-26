@@ -12,6 +12,7 @@ import com.example.iti_project.data.models.Meals
 import com.example.iti_project.data.models.ResultState
 import com.example.iti_project.data.models.UiState
 import com.example.iti_project.data.repo.Meals.MealsRepo
+import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepo
 import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -20,7 +21,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchViewModel (private val mealsRepo: MealsRepo,
-                       private val favoriteRepo: FavoriteRecipeRepoImp
+                       private val favoriteRepo: FavoriteRecipeRepo
 ) : ViewModel() {
 
     private val _search = MutableLiveData<UiState<List<Meals>>>()

@@ -39,7 +39,7 @@ class FavoriteRecipesAdapter(private val onItemClicked: (String,Int, String) -> 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
         return MyViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_recipe_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_favorite_recipe_list, parent, false)
         )
     }
 

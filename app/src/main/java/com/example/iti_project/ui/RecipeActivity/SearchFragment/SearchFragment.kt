@@ -30,18 +30,20 @@ import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 import com.example.iti_project.ui.RecipeActivity.home.HomeFragmentDirections
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 
 class SearchFragment : Fragment() {
-
-    private lateinit var favoriteRepo: FavoriteRecipeRepoImp
     private lateinit var searchRecyclerView: RecyclerView
     private lateinit var mealsAdapter: MealsAdapter
     private lateinit var et_email: TextInputLayout
 
     private val searchViewModel: SearchViewModel by viewModels {
 
-        SearchViewModel.SearchViewModelFactory(MealsRepoImpl(RetrofitClient), favoriteRepo)
+        SearchViewModel.SearchViewModelFactory(
+            MealsRepoImpl(),
+            FavoriteRecipeRepoImp(LocalDataSourceImp(requireContext()))
+        )
     }
 
     override fun onCreateView(
@@ -50,21 +52,6 @@ class SearchFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-
-        // Initialize RoomDataSource (example using Room)
-        val roomDataSource: RoomDatabaseInterface = RoomDataBaseImp.getInstance(requireContext())
-
-        // Initialize SharedPreferencesDataSource using your SharedPreferenceImp class
-        val sharedPreferencesDataSource: SharedPreferenceInterface =
-            SharedPreferenceImp.getInstance(requireContext())
-
-        // Initialize LocalDataSourceImp
-        val localDataSource =
-            LocalDataSourceImp(requireContext(), roomDataSource, sharedPreferencesDataSource)
-
-        // Initialize favoriteRepo
-        favoriteRepo = FavoriteRecipeRepoImp(localDataSource)
-
         // Initialize SearchBar and SearchView
 
         et_email = view.findViewById(R.id.sr4vw)
@@ -123,22 +110,22 @@ class SearchFragment : Fragment() {
 
         return view
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         listenToUpdateFavouriteItems()
 
     }
-
     private fun setupObservers() {
         searchViewModel.search.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is UiState.Error -> {
-                    Toast.makeText(requireContext(), response.errorMessage, Toast.LENGTH_SHORT)
-                        .show()
+                    Snackbar.make(
+                        requireView(),
+                        R.string.error_loading_data,
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
-
                 UiState.Loading -> {
 
                 }

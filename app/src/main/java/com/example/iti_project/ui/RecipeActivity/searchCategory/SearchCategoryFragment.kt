@@ -65,8 +65,8 @@ class SearchCategoryFragment : Fragment() {
         }
 
         mProgressDialog = ProgressDialog(requireContext())
-          adapter = AdapterForSearchMealsByCategory{id ->
-              val action = SearchCategoryFragmentDirections.actionSearchCategoryFragmentToRecipeDetailsFragment(id)
+          adapter = AdapterForSearchMealsByCategory{id,titel ->
+              val action = SearchCategoryFragmentDirections.actionSearchCategoryFragmentToRecipeDetailsFragment(id, titleFragment = titel)
               findNavController().navigate(action)
           }
         recyclerView.adapter = adapter

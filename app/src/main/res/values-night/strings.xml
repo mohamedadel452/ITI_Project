@@ -17,4 +17,5 @@
     <string name="welcome_message_about">Your kitchen companion Discover delicious recipes with what you have at hand, making cooking easier every day with Recipe Ease</string>
     <string name="connect_with_us">Connect with us</string>
     <string name="SupportRecipeEase">SupportRecipeEase@gmail.com</string>
+    <string name="no_favourite">No Favourite</string>
 </resources>

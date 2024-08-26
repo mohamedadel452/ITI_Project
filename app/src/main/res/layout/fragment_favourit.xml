@@ -6,24 +6,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.RecipeActivity.Favourit.FavoriteFragment">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_list_favorite_recipe"
+    <!-- Screen content goes here. -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_favorite_recipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/fab_transformation_sheet_behavior"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_bar">
-        <!-- Screen content goes here. -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_favorite_recipe"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        />
 
-            >
+    <TextView
+        android:id="@+id/tv_no_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_favourite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        />
 
-        </androidx.recyclerview.widget.RecyclerView>
-
-
-    </androidx.core.widget.NestedScrollView>
 </FrameLayout>
