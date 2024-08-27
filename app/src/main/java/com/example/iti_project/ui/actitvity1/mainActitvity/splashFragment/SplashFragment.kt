@@ -16,6 +16,7 @@ import com.example.iti_project.data.DataSource.LocalDataSource.InterFace.LocalDa
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.RoomDatabase.RoomDataBaseImp
 import com.example.iti_project.data.DataSource.LocalDataSource.LocalData.SharedPrefrence.SharedPreferenceImp
 import com.example.iti_project.data.repo.UserRepo.UserRepoImp
+import com.example.iti_project.ui.actitvity1.mainActitvity.loginFragment.LoginFragmentDirections
 
 
 class SplashFragment : Fragment() {
@@ -55,13 +56,18 @@ class SplashFragment : Fragment() {
                         findNavController().navigate(
                             R.id.recipeActivity, null,
                             NavOptions.Builder().setPopUpTo(R.id.splashFragment, true).build()
+
                         )
+                        activity?.finish()
 
                     } else {
-                        findNavController().navigate(
-                            R.id.action_splashFragment_to_loginFragment, null,
-                            NavOptions.Builder().setPopUpTo(R.id.splashFragment, true).build()
+                        val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
+                        findNavController().navigate(action,
+                            NavOptions.Builder()
+                                .setPopUpTo(R.id.splashFragment, true) // Clear back stack up to and including LoginFragment
+                                .build()
                         )
+
 
                     }
                 }

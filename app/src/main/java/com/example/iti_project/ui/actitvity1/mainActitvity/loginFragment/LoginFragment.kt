@@ -85,11 +85,13 @@ class LoginFragment : Fragment() {
                     Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(R.id.loginFragment, true)
-                    // findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    findNavController().navigate(R.id.recipeActivity, null,
-                        NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build())
-
-
+                    val action = LoginFragmentDirections.actionLoginFragmentToRecipeActivity()
+                    findNavController().navigate(action,
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.loginFragment, true) // Clear back stack up to and including LoginFragment
+                            .build()
+                    )
+                    activity?.finish()
 
 
                 }

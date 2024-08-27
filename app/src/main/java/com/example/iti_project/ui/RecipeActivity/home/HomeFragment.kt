@@ -88,6 +88,14 @@ class HomeFragment : Fragment() {
 
 
         }
+        weeklyRecipe_Img.setOnClickListener {
+            weekly_id?.let { nonNullWeeklyId ->
+                val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment(nonNullWeeklyId)
+                findNavController().navigate(action)
+            }
+
+
+        }
         mProgressDialog = ProgressDialog(requireContext())
         adapter = AdapterForListRecipe{id , count , title->
             val action = HomeFragmentDirections.actionHomeToRecipeDetailsFragment( id , count , title)
@@ -156,9 +164,8 @@ class HomeFragment : Fragment() {
     }
     private fun listenToUpdateFavouriteItems() {
         viewModel.favoriteUserIds.observe(viewLifecycleOwner) { response ->
-            if (!response.isNullOrEmpty() ) {
-                adapter.updateIDs(response as MutableList<String>)
-            }
+            adapter.updateIDs(response as MutableList<String>)
+
         }
     }
     private fun isNetworkConnected(): Boolean {
