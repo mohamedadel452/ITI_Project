@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +22,7 @@ import com.example.iti_project.data.repo.favouriteRepo.FavoriteRecipeRepoImp
 class FavoriteFragment : Fragment() {
 
     private lateinit var rv_favoriteRecipes: RecyclerView
-
-
+    private lateinit var emptyState: TextView
     private lateinit var favoriteRecipesAdapter: FavoriteRecipesAdapter
 
     private val viewModel: FavoriteFragmentViewModel by viewModels() {
@@ -46,6 +47,7 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_favoriteRecipes = view.findViewById(R.id.rv_favorite_recipe)
+        emptyState = view.findViewById(R.id.empty_state_text)
         instantiateProductsRecyclerView()
         listenToDeleteFavouriteItems()
         listenToUpdateFavouriteItems()
@@ -75,6 +77,7 @@ class FavoriteFragment : Fragment() {
                 }
             }
         }
+        listenToUpdateFavouriteItems()
     }
 
     private fun listenToUpdateFavouriteItems() {
@@ -83,19 +86,31 @@ class FavoriteFragment : Fragment() {
         viewModel.favoriteRecipes.observe(viewLifecycleOwner) { response ->
 //            Log.i("response", "  " + response.first().strMealThumb)
             if (!response.isNullOrEmpty()) {
-
+                Toast.makeText(requireContext(), "hi am here", Toast.LENGTH_SHORT).show()
+                rv_favoriteRecipes.visibility = View.VISIBLE
+                emptyState.visibility = View.GONE
                 favoriteRecipesAdapter.setData(
                     response as MutableList<Meals>
                 )
+            }
+            else{
+                rv_favoriteRecipes.visibility = View.INVISIBLE
+                emptyState.visibility = View.VISIBLE
             }
         }
 
         viewModel.favoriteUserIds.observe(viewLifecycleOwner){ response ->
             if (!response.isNullOrEmpty()) {
 
+                rv_favoriteRecipes.visibility = View.VISIBLE
+                emptyState.visibility = View.GONE
                 favoriteRecipesAdapter.setIDs(
                     response as MutableList<String>
                 )
+            }
+            else{
+                rv_favoriteRecipes.visibility = View.GONE
+                emptyState.visibility = View.VISIBLE
             }
         }
 

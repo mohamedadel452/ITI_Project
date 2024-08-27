@@ -94,9 +94,9 @@ class AdapterForListRecipe(
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateIDs(recipeIDs : MutableList<String> ) {
         favoriteUserIds = recipeIDs
-        Log.i("favoriteRecipeViewModel", "   " + favoriteUserIds[0])
         notifyDataSetChanged()
     }
 }
