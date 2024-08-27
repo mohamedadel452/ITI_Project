@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="30dp"
+    app:cardCornerRadius="20dp"
+    >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/image_category"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            >
+
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="#6D333333"
+            >
+
+            <TextView
+                android:id="@+id/title_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Titel"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                android:gravity="start"
+                android:textColor="@color/white"
+                android:src="@drawable/ic_launcher_background"
+                >
+
+            </TextView>
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

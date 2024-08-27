@@ -28,7 +28,7 @@ class AdapterForSearchMealsByCategory (private val onItemClicked: (String,String
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-        return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_catagory, parent, false))
+        return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_catagory_search, parent, false))
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
